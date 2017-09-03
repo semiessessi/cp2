@@ -1,0 +1,6 @@
+grammar             =   production* ;
+production          =   identifier identifier identifier ;
+production          =   identifier identifier identifier ;
+rule-expression     =   identifier ;
+rule-expression     =   identifier ;
+rule-expression     =   identifier ;

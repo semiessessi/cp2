@@ -1,0 +1,13 @@
+import bool;
+
+align< 4 > real type byte[ 4 ] float32;
+
+pure commutative bool ==( float32 a, float32 b )
+{
+    return cmp< int32 >( cast_to< int32 >( a ), cast_to< int32 >( b ) );
+}
+
+pure commutative bool !=( float32 a, float32 b )
+{
+    return cmp_ne< int32 >( cast_to< int32 >( a ), cast_to< int32 >( b ) );
+}

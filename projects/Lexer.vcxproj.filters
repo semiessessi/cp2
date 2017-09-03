@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="common">
+      <UniqueIdentifier>{150e8721-d7c3-4f34-9ed0-7cf8102f7a37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lexer">
+      <UniqueIdentifier>{27e4d380-1c3e-4e38-a8ff-be297c1e119d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\common\cpp\Token.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lexer\cpp\Lexer.h">
+      <Filter>lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\cpp\Report.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lexer\cpp\CP2Lexer.h">
+      <Filter>lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lexer\cpp\CBNFLexer.h">
+      <Filter>lexer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\lexer\cpp\Lexer.cpp">
+      <Filter>lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lexer\cpp\CP2Lexer.cpp">
+      <Filter>lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lexer\cpp\CBNFLexer.cpp">
+      <Filter>lexer</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

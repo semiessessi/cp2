@@ -1,0 +1,33 @@
+type byte bool;
+
+const bool true = 1;
+const bool false = 0;
+
+identity int32 & true;
+identity int32 | false;
+identity int32 ^ false;
+
+pure commutative bool &&( a, b )
+{
+	return and< byte >( a, b );
+}
+
+pure commutative bool ||( a, b )
+{
+	return or< byte >( a, b );
+}
+
+pure commutative associative selfinverse bool ^^( a, b )
+{
+	return xor< byte >( a, b );
+}
+
+pure bool ==( a, b )
+{
+    return cmp< byte >( a, b );
+}
+
+pure bool !=( a, b )
+{
+    return cmp_ne< byte >( a, b );
+}

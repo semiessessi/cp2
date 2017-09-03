@@ -1,0 +1,23 @@
+import cstd;
+import int32;
+
+// SE - NOTE: there should be a more language-y way to do this.
+type byte[] string;
+
+string implicit up convert( const address b )
+{
+    string returnValue;
+    
+    // allocate memory (!)
+    
+    
+    return returnValue;
+}
+
+pure commutative associative string +( a, b )
+{
+    // allocate memory (!)
+    
+	return a;
+}
+

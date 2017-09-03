@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="parser">
+      <UniqueIdentifier>{f8c2ad84-4670-4636-a281-6bad93533e6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{c616e15d-2dda-4501-9bb2-260edd934f9a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\parser\cpp\Parser.cpp">
+      <Filter>parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\parser\cpp\Grammar.cpp">
+      <Filter>parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\parser\cpp\CP2Parser.cpp">
+      <Filter>parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\parser\cpp\CBNFParser.cpp">
+      <Filter>parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\parser\cpp\GrammarCompiler.cpp">
+      <Filter>parser</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\parser\cpp\Parser.h">
+      <Filter>parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\parser\cpp\Grammar.h">
+      <Filter>parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\cpp\ASTNode.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\cpp\Report.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\cpp\Token.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\parser\cpp\CP2Parser.h">
+      <Filter>parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\parser\cpp\CBNFParser.h">
+      <Filter>parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\parser\cpp\GrammarCompiler.h">
+      <Filter>parser</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

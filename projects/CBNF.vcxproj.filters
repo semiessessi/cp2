@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="cbnf">
+      <UniqueIdentifier>{bf4c02a5-3883-4379-8052-fc4034a68d75}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\cbnf\cpp\EntryPoint.cpp">
+      <Filter>cbnf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cbnf\cpp\HelpHandler.cpp">
+      <Filter>cbnf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cbnf\cpp\ParameterHandlers.cpp">
+      <Filter>cbnf</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\cbnf\cpp\CommandLineHandler.h">
+      <Filter>cbnf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cbnf\cpp\SwitchHandler.h">
+      <Filter>cbnf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cbnf\cpp\Parameters.h">
+      <Filter>cbnf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cbnf\cpp\SwitchHandlerDecls.h">
+      <Filter>cbnf</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
