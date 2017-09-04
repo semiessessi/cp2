@@ -5,6 +5,8 @@ grammar				=	production* ;
 production			=	identifier "=" rule-expression ";" ;
 production			=	identifier "=" "..." ";" ;
 
+rule-expression     =   string ;
 rule-expression		=	identifier ;
 rule-expression		=	identifier "*" ;
 rule-expression		=	identifier "?" ;
+rule-expression		=	identifier "+" ;
