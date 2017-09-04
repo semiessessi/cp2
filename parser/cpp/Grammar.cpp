@@ -105,9 +105,11 @@ void GrammarExpression::GetCBNFRecursive( std::string& xWorkingString ) const
 		{
 			xWorkingString += " ";
 		}
-		xWorkingString += ( IsOptional()
-			? ( xName + "?" )
-			: ( IsList() ? ( xName + "*" ) : xName ) );
+		xWorkingString += IsNonEmpty()
+			? ( xName + "+" ) :
+			( IsOptional()
+				? ( xName + "?" )
+				: ( IsList() ? ( xName + "*" ) : xName ) );
 	}
 
 	if( mpxRight != nullptr )

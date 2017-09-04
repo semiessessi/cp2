@@ -34,7 +34,7 @@ GrammarExpression CompileExpression( ASTNode* const pxRuleExpression )
 		}
 		else if( pxSymbolNode->GetProductionName() == "<string>" )
 		{
-			return GrammarExpression( xSymbolName.substr( 1, xSymbolName.length() - 1 ) );
+			return GrammarExpression( xSymbolName.substr( 1, xSymbolName.length() - 2 ) );
 		}
 		else if( pxSymbolNode->GetProductionName() == "..." )
 		{
@@ -116,10 +116,11 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 		// then = (should we check?)
 		// then the expression followed by the ;
 		// build the first expression bit, then concatenate the rest
-		ASTNode* const pxWorkingChild = pxProductionAST->GetChild( 2 );
+		ASTNode* pxWorkingChild = pxProductionAST->GetChild( 2 );
 		GrammarExpression xExpression( CompileExpression( pxWorkingChild ) );
-		for( int j = 4; j < ( iProductionChildCount - 1 ); ++j )
+		for( int j = 3; j < ( iProductionChildCount - 1 ); ++j )
 		{
+			pxWorkingChild = pxProductionAST->GetChild( j );
 			xExpression = xExpression + CompileExpression( pxWorkingChild );
 		}
 
