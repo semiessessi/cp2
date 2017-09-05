@@ -32,7 +32,12 @@ void LastMessageWasInternalError()
 	gaxReportMessages.back().bInternal = true;
 }
 
-void ResetCounters()
+void SetLastMessageCode( const int iCode )
+{
+	gaxReportMessages.back().iCode = iCode;
+}
+
+void ResetMessageReports()
 {
 	giErrorCount = 0;
 	giWarningCount = 0;
@@ -67,6 +72,10 @@ void Message( const char* const szString, ... )
 	ReportMessage xMessage =
 	{
 		szBuffer,
+		0,
+		false,
+		false,
+		false,
 	};
 
 	gaxReportMessages.push_back( xMessage );
@@ -94,6 +103,7 @@ void Warning( const int iWarningNumber, const char* const szFilename, const int 
 	Report( szFilename, iLine, iColumn, "warning %.4d: %s", iWarningNumber, szBuffer );
 
 	LastMessageWasWarning();
+	SetLastMessageCode( iWarningNumber );
 }
 
 void Error( const int iErrorNumber, const char* const szFilename, const int iLine, const int iColumn, const char* const szString, ... )
@@ -107,6 +117,7 @@ void Error( const int iErrorNumber, const char* const szFilename, const int iLin
 	Report( szFilename, iLine, iColumn, "error %.4d: %s", iErrorNumber, szBuffer );
 
 	LastMessageWasError();
+	SetLastMessageCode( iErrorNumber );
 }
 
 void InternalError( const int iErrorNumber, const char* const szFilename, const int iLine, const int iColumn, const char* const szString, ... )
@@ -120,6 +131,7 @@ void InternalError( const int iErrorNumber, const char* const szFilename, const 
 	Report( szFilename, iLine, iColumn, "internal error %.4d: %s", iErrorNumber, szBuffer );
 
 	LastMessageWasInternalError();
+	SetLastMessageCode( iErrorNumber );
 }
 
 }

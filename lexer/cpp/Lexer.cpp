@@ -84,6 +84,12 @@ std::vector< Token > Lex( const char* const szFilename, const char* const szSour
 {
 	std::vector< Token > axTokens;
 
+	if( axRules.size() == 0 )
+	{
+		InternalError( 2401, szFilename, 0, 0, "Empty ruleset provided for lexical analysis" );
+		return axTokens;
+	}
+
 	int iColumn = 1;
 	int iLine = 1;
 

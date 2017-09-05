@@ -12,12 +12,13 @@ namespace CP2
 struct ReportMessage
 {
 	std::string szMessage;
+	int iCode;
 	bool bInternal;
 	bool bError;
 	bool bWarning;
 };
 
-void ResetCounters();
+void ResetMessageReports();
 int GetErrorCount();
 int GetWarningCount();
 std::vector< ReportMessage > GetAllMessages();
