@@ -2,6 +2,7 @@
 
 #include "CommandLineHandler.h"
 #include "Parameters.h"
+#include "TestHelper.h"
 #include "SwitchHandler.h"
 #include "SwitchHandlerDecls.h"
 
@@ -30,9 +31,17 @@ int main( const int iArgumentCount, const char* const* const pszArguments )
 		return xCommandLine.GetReturnCode();
 	}
 
+	CP2::Message( "Running lexer tests..." );
+
 	CP2::Tests::DoLexerTests();
 
-	CP2::Message( "Completed - %d errors and %d warnings", CP2::GetErrorCount(), CP2::GetWarningCount() );
+	if( CP2::Tests::giTestsFailed > 0 )
+	{
+		CP2::Message( "Tests completed with failures - %d passed and %d failed", CP2::Tests::giTestsPassed, CP2::Tests::giTestsFailed );
+		return -1;
+	}
+
+	CP2::Message( "Tests complete - %d passed and 0 failed", CP2::Tests::giTestsPassed );
 
 	return 0;
 }

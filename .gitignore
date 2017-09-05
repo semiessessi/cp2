@@ -3,3 +3,5 @@ projects/x64/
 x64/
 *.pdb
 *.ilk
+*.iobj
+*.ipdb

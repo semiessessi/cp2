@@ -21,6 +21,9 @@
     <ClCompile Include="..\tests\cpp\lexer\LexerTests.cpp">
       <Filter>tests\lexer</Filter>
     </ClCompile>
+    <ClCompile Include="..\tests\cpp\TestHelper.cpp">
+      <Filter>tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tests\cpp\CommandLineHandler.h">

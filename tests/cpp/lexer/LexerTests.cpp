@@ -12,7 +12,8 @@ namespace Tests
 {
 
 static const std::string kxSimpleLexerInput = "abc";
-static const std::string kxDummyLexerInput = "abcbacabcbbabbc\nababcabcacb\nabacbacabacb";
+static const std::string kxSimpleSpacedLexerInput = "a b c";
+static const std::string kxDummyLexerInput = "abcbacabcbb ab bc\nababca bcacb\nabacbac abacb";
 static const std::string kxEmptyString = "";
 static std::string gxLong = kxDummyLexerInput;
 
@@ -60,39 +61,44 @@ static const std::vector< Lexer::Comment > kaxBCommentRules =
 
 void DoEdgecaseInputTests()
 {
+	CP2_LEXER_TEST_SINGLE_INTERNAL_ERROR(
+		"no rules, no comments, no input", "empty-test-input",
+		kxEmptyString.c_str(), kaxEmptyLexerRules, kaxEmptyCommentRules, 2401 );
 
-	ResetMessageReports();
+	CP2_LEXER_TEST_SINGLE_INTERNAL_ERROR(
+		"no rules, no comments, short input", "simple-test-input",
+		kxSimpleLexerInput.c_str(), kaxEmptyLexerRules, kaxEmptyCommentRules, 2401 );
 
-	// no rules and no input
-	Lexer::Lex( "empty-test-input", kxEmptyString.c_str(), kaxEmptyLexerRules, kaxEmptyCommentRules );
+	CP2_LEXER_TEST_CLEAN(
+		"abc rules, no comments, no input", "long-test-input",
+		kxEmptyString.c_str(), kaxABCRules, kaxEmptyCommentRules );
 
-	ExpectSingleInternalError( "no rules, no comments, no input", 2401 );
+	CP2_LEXER_TEST_CLEAN(
+		"abc rules, no comments, long input", "long-test-input",
+		gxLong.c_str(), kaxABCRules, kaxEmptyCommentRules );
+	
+	CP2_LEXER_TEST_CLEAN(
+		"ac rules, b line comments, long input", "long-test-input",
+		gxLong.c_str(), kaxACRules, kaxBCommentRules );
 
-	ResetMessageReports();
+	CP2_LEXER_TEST_CLEAN(
+		"b rules, ac block comments, long input", "long-test-input",
+		gxLong.c_str(), kaxBRules, kaxACCommentRules );
+}
 
-	// input, but no rules
-	Lexer::Lex( "simple-test-input", kxSimpleLexerInput.c_str(), kaxEmptyLexerRules, kaxEmptyCommentRules );
+void DoBadTokenTests()
+{
+	CP2_LEXER_TEST_SINGLE_ERROR(
+		"ac rules, no comments, short input", "simple-test-input",
+		kxSimpleLexerInput.c_str(), kaxACRules, kaxEmptyCommentRules, 2002 );
 
-	ExpectSingleInternalError( "no rules, no comments, no input", 2401 );
+	CP2_LEXER_TEST_SINGLE_ERROR(
+		"ac rules, no comments, short spaced input", "simple-spaced-test-input",
+		kxSimpleSpacedLexerInput.c_str(), kaxACRules, kaxEmptyCommentRules, 2002 );
+}
 
-	ResetMessageReports();
-
-	std::vector< Token > axTokens;
-
-	// lengthy input with abc rules, no comments
-	axTokens = Lexer::Lex( "long-test-input", gxLong.c_str(), kaxABCRules, kaxEmptyCommentRules );
-
-	ExpectClean( "abc rules, no comments, long input" );
-
-	// lengthy input with ac rules, b line comments
-	axTokens = Lexer::Lex( "long-test-input", gxLong.c_str(), kaxACRules, kaxBCommentRules );
-
-	ExpectClean( "ac rules, b line comments, long input" );
-
-	// lengthy input with b rules, a and c block comments
-	axTokens = Lexer::Lex( "long-test-input", gxLong.c_str(), kaxBRules, kaxACCommentRules );
-
-	ExpectClean( "b rules, ac block comments, long input" );
+void DoAccuracyTests()
+{
 
 }
 
@@ -100,13 +106,23 @@ void DoLexerTests()
 {
 	if( gxLong.size() < 1000 )
 	{
-		for( int i = 0; i < 13; ++i )
+#ifdef _DEBUG
+		for( int i = 0; i < 11; ++i )
+#else
+		for( int i = 0; i < 15; ++i )
+#endif
 		{
 			gxLong += gxLong;
 		}
 	}
 
+	ResetMessageReports();
+
 	DoEdgecaseInputTests();
+	DoBadTokenTests();
+	DoAccuracyTests();
+
+	DoAccuracyTests();
 }
 
 }

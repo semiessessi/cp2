@@ -166,21 +166,24 @@ static inline bool MatchRules(
 				szCursor, szCursor + iCachedStringLength );
 			if( axStrings[ i ] == xValue )
 			{
-				UpdateLongest( i, xValue, xLongestValue, iLongestLength, iLongestRule );
+				UpdateLongest( static_cast< int >( i ),
+					xValue, xLongestValue, iLongestLength, iLongestRule );
 			}
 
 			// otherwise, we know we didn't match, don't waste time on regexes
 		}
 		else if( std::regex_match( szCursor, szNewCursor, xMatch, axRegexes[ i ] ) )
 		{
-			UpdateLongest( i, xMatch.str( 0 ), xLongestValue, iLongestLength, iLongestRule );
+			UpdateLongest( static_cast< int >( i ),
+				xMatch.str( 0 ), xLongestValue, iLongestLength, iLongestRule );
 		}
 		else if( std::regex_search( szCursor, szNewCursor, xMatch, axRegexes[ i ] ) )
 		{
 			// make sure the match is at the start of the string...
 			if( xMatch.prefix().length() == 0 )
 			{
-				UpdateLongest( i, xMatch.str( 0 ), xLongestValue, iLongestLength, iLongestRule );
+				UpdateLongest( static_cast< int >( i ),
+					xMatch.str( 0 ), xLongestValue, iLongestLength, iLongestRule );
 			}
 		}
 	}

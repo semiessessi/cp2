@@ -191,6 +191,7 @@
     <ClCompile Include="..\tests\cpp\HelpHandler.cpp" />
     <ClCompile Include="..\tests\cpp\lexer\LexerTests.cpp" />
     <ClCompile Include="..\tests\cpp\ParameterHandlers.cpp" />
+    <ClCompile Include="..\tests\cpp\TestHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tests\cpp\CommandLineHandler.h" />
