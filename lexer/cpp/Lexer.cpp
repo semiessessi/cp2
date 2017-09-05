@@ -79,7 +79,7 @@ void HandleCounts( const char* const szCursor, int& iLine, int& iColumn )
 	}
 }
 
-std::vector< Token > Lex( const char* const szFilename,
+std::vector< Token > Lex( const char* const szFilename, const char* const szSourceCode,
 	const std::vector< Rule >& axRules, const std::vector< Comment >& axComments )
 {
 	std::vector< Token > axTokens;
@@ -87,22 +87,7 @@ std::vector< Token > Lex( const char* const szFilename,
 	int iColumn = 1;
 	int iLine = 1;
 
-	FILE* const pxFile = fopen( szFilename, "rb" );
-	if( pxFile == nullptr )
-	{
-		Error( 2001, szFilename, 0, 0, "Unable to open file: %s", szFilename );
-		return axTokens;
-	}
-
-	fseek( pxFile, 0, SEEK_END );
-	const int iLength = ftell( pxFile );
-	rewind( pxFile );
-	char* const pcData = new char[ iLength + 1 ];
-	pcData[ iLength ] = 0;
-	fread( pcData, 1, iLength, pxFile );
-	fclose( pxFile );
-
-	const char* szCursor = pcData;
+	const char* szCursor = szSourceCode;
 	bool bFatalError = false;
 	
 	// reuse and cache stuff for speed...
@@ -218,6 +203,31 @@ std::vector< Token > Lex( const char* const szFilename,
 			}
 		}
 	}
+
+	return axTokens;
+}
+
+std::vector< Token > Lex( const char* const szFilename,
+	const std::vector< Rule >& axRules, const std::vector< Comment >& axComments )
+{
+	std::vector< Token > axTokens;
+
+	FILE* const pxFile = fopen( szFilename, "rb" );
+	if( pxFile == nullptr )
+	{
+		Error( 2001, szFilename, 0, 0, "Unable to open file: %s", szFilename );
+		return axTokens;
+	}
+
+	fseek( pxFile, 0, SEEK_END );
+	const int iLength = ftell( pxFile );
+	rewind( pxFile );
+	char* const pcData = new char[ iLength + 1 ];
+	pcData[ iLength ] = 0;
+	fread( pcData, 1, iLength, pxFile );
+	fclose( pxFile );
+
+	axTokens = Lex( szFilename, pcData, axRules, axComments );
 
 	delete[] pcData;
 	return axTokens;
