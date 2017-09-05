@@ -3,12 +3,25 @@
 #ifndef REPORT_H
 #define REPORT_H
 
+#include <string>
+#include <vector>
+
 namespace CP2
 {
+
+struct ReportMessage
+{
+	std::string szMessage;
+	bool bInternal;
+	bool bError;
+	bool bWarning;
+};
 
 void ResetCounters();
 int GetErrorCount();
 int GetWarningCount();
+std::vector< ReportMessage > GetAllMessages();
+
 void Message( const char* const szString, ... );
 void Report( const char* const szFilename, const int iLine, const int iColumn, const char* const szString, ... );
 void Warning( const int iWarningNumber, const char* const szFilename, const int iLine, const int iColumn, const char* const szString, ... );
