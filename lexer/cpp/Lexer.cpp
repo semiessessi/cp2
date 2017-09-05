@@ -130,37 +130,57 @@ static inline const char* FindNewCursor( const char* const szStartCursor )
 	return szNewCursor;
 }
 
+static inline void UpdateLongest( const int i,
+	const std::string& xValue, std::string& xLongestValue,
+	int& iLongestLength, int& iLongestRule )
+{
+	const int iNewLength = static_cast< int >( xValue.length() );
+	if( iNewLength <= iLongestLength )
+	{
+		return;
+	}
+
+	xLongestValue = xValue;
+	iLongestLength = iNewLength;
+	iLongestRule = i;
+}
+
 static inline bool MatchRules(
 	const std::vector< Rule >& axRules,
 	std::vector< Token >& axTokens, const char*& szCursor, const char* const szNewCursor,
 	std::cmatch& xMatch, const std::vector< std::basic_regex< char > >& axRegexes,
+	const std::vector< std::string >& axStrings,
 	const char* const szFilename, int& iLine, int& iColumn )
 {
 	// check if we match a rule...
 	std::string xLongestValue = "";
 	int iLongestRule = -1;
+	int iLongestLength = -1;
 	for( size_t i = 0; i < axRules.size(); ++i )
 	{
-		if( std::regex_match( szCursor, szNewCursor, xMatch, axRegexes[ i ] ) )
+		const int iCachedStringLength =
+			static_cast< int >( axStrings[ i ].length() );
+		if( iCachedStringLength > iLongestLength )
 		{
-			const std::string xValue = xMatch.str( 0 );
-			if( xValue.length() > xLongestValue.length() )
+			const std::string xValue(
+				szCursor, szCursor + iCachedStringLength );
+			if( axStrings[ i ] == xValue )
 			{
-				xLongestValue = xValue;
-				iLongestRule = static_cast< int >( i );
+				UpdateLongest( i, xValue, xLongestValue, iLongestLength, iLongestRule );
 			}
+
+			// otherwise, we know we didn't match, don't waste time on regexes
+		}
+		else if( std::regex_match( szCursor, szNewCursor, xMatch, axRegexes[ i ] ) )
+		{
+			UpdateLongest( i, xMatch.str( 0 ), xLongestValue, iLongestLength, iLongestRule );
 		}
 		else if( std::regex_search( szCursor, szNewCursor, xMatch, axRegexes[ i ] ) )
 		{
 			// make sure the match is at the start of the string...
 			if( xMatch.prefix().length() == 0 )
 			{
-				const std::string xValue = xMatch.str( 0 );
-				if( xValue.length() > xLongestValue.length() )
-				{
-					xLongestValue = xValue;
-					iLongestRule = static_cast< int >( i );
-				}
+				UpdateLongest( i, xMatch.str( 0 ), xLongestValue, iLongestLength, iLongestRule );
 			}
 		}
 	}
@@ -170,9 +190,9 @@ static inline bool MatchRules(
 		axTokens.push_back( Token(
 			axRules[ iLongestRule ].GetBaseToken(),
 			szFilename, iLine, iColumn, xLongestValue ) );
-		szCursor += xLongestValue.length();
-		iColumn += static_cast< int >( xLongestValue.length() );
+		szCursor += iLongestLength;
 		// SE - TODO: handle new lines in matches.
+		iColumn += iLongestLength;
 		return true;
 	}
 
@@ -183,6 +203,7 @@ static inline void HandleNextCharacter(
 	const std::vector< Comment >& axComments, const std::vector< Rule >& axRules,
 	std::vector< Token >& axTokens, const char*& szCursor,
 	std::cmatch& xMatch, const std::vector< std::basic_regex< char > >& axRegexes,
+	const std::vector< std::string >& axStrings,
 	const char* const szFilename, int& iLine, int& iColumn )
 {
 	switch( *szCursor )
@@ -208,7 +229,8 @@ static inline void HandleNextCharacter(
 			const char* szNewCursor = FindNewCursor( szCursor );
 			if( MatchRules(
 				axRules, axTokens, szCursor, szNewCursor,
-				xMatch, axRegexes, szFilename, iLine, iColumn ) )
+				xMatch, axRegexes, axStrings,
+				szFilename, iLine, iColumn ) )
 			{
 				break;
 			}
@@ -221,6 +243,66 @@ static inline void HandleNextCharacter(
 			break;
 		}
 	}
+}
+
+static inline bool IsRuleNotRegex( const std::string& xRule )
+{
+	bool bSafe = true;
+	for( size_t i = 0; i < xRule.length(); ++i )
+	{
+		bSafe &= ( xRule[ 0 ] != '\\' )
+			&& ( xRule[ 0 ] != '.' )
+			&& ( xRule[ 0 ] != '(' )
+			&& ( xRule[ 0 ] != '[' )
+			&& ( xRule[ 0 ] != '$' )
+			&& ( xRule[ 0 ] != ':' );
+
+		if( i > 0 )
+		{
+			bSafe &= ( xRule[ 0 ] != ')' )
+				&& ( xRule[ 0 ] != ']' )
+				&& ( xRule[ 0 ] != '-' )
+				&& ( xRule[ 0 ] != ':' )
+				&& ( xRule[ 0 ] != '+' )
+				&& ( xRule[ 0 ] != '*' )
+				&& ( xRule[ 0 ] != '^' )
+				&& ( xRule[ 0 ] != '?' );
+		}
+	}
+
+	return bSafe;
+}
+
+static inline std::vector< std::basic_regex< char > > BuildRegexCache(
+	const std::vector< Rule >& axRules )
+{
+	std::vector< std::basic_regex< char > > axRegexes;
+	for( size_t i = 0; i < axRules.size(); ++i )
+	{
+		axRegexes.push_back( std::basic_regex< char >(
+			axRules[ i ].GetExpression().c_str() ) );
+	}
+
+	return axRegexes;
+}
+
+static inline std::vector< std::string > BuildStringCache(
+	const std::vector< Rule >& axRules )
+{
+	std::vector< std::string > axStrings;
+	for( size_t i = 0; i < axRules.size(); ++i )
+	{
+		if( IsRuleNotRegex( axRules[ i ].GetExpression() ) )
+		{
+			axStrings.push_back( axRules[ i ].GetExpression() );
+		}
+		else
+		{
+			axStrings.push_back( std::string() );
+		}
+	}
+
+	return axStrings;
 }
 
 std::vector< Token > Lex( const char* const szFilename, const char* const szSourceCode,
@@ -241,17 +323,13 @@ std::vector< Token > Lex( const char* const szFilename, const char* const szSour
 	
 	// reuse and cache stuff for speed...
 	std::cmatch xMatch;
-	std::vector< std::basic_regex< char > > axRegexes;
-	for( size_t i = 0; i < axRules.size(); ++i )
-	{
-		axRegexes.push_back( std::basic_regex< char >( axRules[ i ].GetExpression().c_str() ) );
-	}
-
+	std::vector< std::basic_regex< char > > axRegexes( BuildRegexCache( axRules ) );
+	std::vector< std::string > axStrings( BuildStringCache( axRules ) );
 	while( *szCursor )
 	{
 		HandleNextCharacter( axComments, axRules,
 			axTokens, szCursor,
-			xMatch, axRegexes,
+			xMatch, axRegexes, axStrings,
 			szFilename, iLine, iColumn );
 	}
 
