@@ -12,7 +12,7 @@ namespace Tests
 {
 
 static const std::string kxSimpleLexerInput = "abc";
-static const std::string kxDummyLexerInput = "abcbacc\nababccab\nabacbcabaca";
+static const std::string kxDummyLexerInput = "abcbacabcbbabbc\nababcabcacb\nabacbacabacb";
 static const std::string kxEmptyString = "";
 static std::string gxLong = kxDummyLexerInput;
 
@@ -100,7 +100,7 @@ void DoLexerTests()
 {
 	if( gxLong.size() < 1000 )
 	{
-		for( int i = 0; i < 14; ++i )
+		for( int i = 0; i < 13; ++i )
 		{
 			gxLong += gxLong;
 		}

@@ -52,7 +52,7 @@ int Comment::GetLength( const char* const szCursor, const char* const szFilename
 	}
 }
 
-void HandleCounts( const char* const szCursor, int& iLine, int& iColumn )
+static inline void HandleCounts( const char* const szCursor, int& iLine, int& iColumn )
 {
 	switch( *szCursor )
 	{
@@ -79,6 +79,150 @@ void HandleCounts( const char* const szCursor, int& iLine, int& iColumn )
 	}
 }
 
+static inline bool HandleComments(
+	const std::vector< Comment >& axComments, const char*& szCursor,
+	const char* const szFilename, int& iLine, int& iColumn )
+{
+	for( size_t i = 0; i < axComments.size(); ++i )
+	{
+		const int iCommentLength = axComments[ i ].GetLength(
+			szCursor, szFilename, iLine, iColumn );
+		if( iCommentLength > 0 )
+		{
+			// update the line and column numbers...
+			for( int i = 0; i < iCommentLength; ++i )
+			{
+				HandleCounts( szCursor, iLine, iColumn );
+				++szCursor;
+			}
+			
+			return true;
+		}
+	}
+
+	return false;
+}
+
+static inline const char* FindNewCursor( const char* const szStartCursor )
+{
+	const char* szNewCursor = szStartCursor;
+	while( *szNewCursor
+		&& ( *szNewCursor != ' ' )
+		&& ( *szNewCursor != '\t' )
+		&& ( *szNewCursor != '\r' )
+		&& ( *szNewCursor != '\n' ) )
+	{
+		// skip quoted stuff...
+		++szNewCursor;
+		if( *( szNewCursor - 1 ) == '"' )
+		{
+			while( *szNewCursor &&
+				!( ( *( szNewCursor - 1 ) != '\\' )
+					&& ( *( szNewCursor ) == '"' ) ) )
+			{
+				++szNewCursor;
+			}
+			++szNewCursor;
+			return szNewCursor;
+		}
+	}
+
+	return szNewCursor;
+}
+
+static inline bool MatchRules(
+	const std::vector< Rule >& axRules,
+	std::vector< Token >& axTokens, const char*& szCursor, const char* const szNewCursor,
+	std::cmatch& xMatch, const std::vector< std::basic_regex< char > >& axRegexes,
+	const char* const szFilename, int& iLine, int& iColumn )
+{
+	// check if we match a rule...
+	std::string xLongestValue = "";
+	int iLongestRule = -1;
+	for( size_t i = 0; i < axRules.size(); ++i )
+	{
+		if( std::regex_match( szCursor, szNewCursor, xMatch, axRegexes[ i ] ) )
+		{
+			const std::string xValue = xMatch.str( 0 );
+			if( xValue.length() > xLongestValue.length() )
+			{
+				xLongestValue = xValue;
+				iLongestRule = static_cast< int >( i );
+			}
+		}
+		else if( std::regex_search( szCursor, szNewCursor, xMatch, axRegexes[ i ] ) )
+		{
+			// make sure the match is at the start of the string...
+			if( xMatch.prefix().length() == 0 )
+			{
+				const std::string xValue = xMatch.str( 0 );
+				if( xValue.length() > xLongestValue.length() )
+				{
+					xLongestValue = xValue;
+					iLongestRule = static_cast< int >( i );
+				}
+			}
+		}
+	}
+
+	if( iLongestRule >= 0 )
+	{
+		axTokens.push_back( Token(
+			axRules[ iLongestRule ].GetBaseToken(),
+			szFilename, iLine, iColumn, xLongestValue ) );
+		szCursor += xLongestValue.length();
+		iColumn += static_cast< int >( xLongestValue.length() );
+		// SE - TODO: handle new lines in matches.
+		return true;
+	}
+
+	return false;
+}
+
+static inline void HandleNextCharacter(
+	const std::vector< Comment >& axComments, const std::vector< Rule >& axRules,
+	std::vector< Token >& axTokens, const char*& szCursor,
+	std::cmatch& xMatch, const std::vector< std::basic_regex< char > >& axRegexes,
+	const char* const szFilename, int& iLine, int& iColumn )
+{
+	switch( *szCursor )
+	{
+		case ' ':
+		case '\n':
+		case '\r':
+		case '\t':
+		{
+			HandleCounts( szCursor, iLine, iColumn );
+			++szCursor;
+			break;
+		}
+		default:
+		{
+			// check if we match a comment...
+			if( HandleComments( axComments, szCursor, szFilename, iLine, iColumn ) )
+			{
+				break;
+			}
+
+			// work out where the end of the next token is by whitespace, ignoring quotes...
+			const char* szNewCursor = FindNewCursor( szCursor );
+			if( MatchRules(
+				axRules, axTokens, szCursor, szNewCursor,
+				xMatch, axRegexes, szFilename, iLine, iColumn ) )
+			{
+				break;
+			}
+
+			Error( 2002, szFilename, iLine, iColumn, "Failed to tokenise here: %s",
+				std::string( szCursor, szNewCursor ).c_str() );
+
+			// carry on anyway ... 
+			szCursor = szNewCursor;
+			break;
+		}
+	}
+}
+
 std::vector< Token > Lex( const char* const szFilename, const char* const szSourceCode,
 	const std::vector< Rule >& axRules, const std::vector< Comment >& axComments )
 {
@@ -94,7 +238,6 @@ std::vector< Token > Lex( const char* const szFilename, const char* const szSour
 	int iLine = 1;
 
 	const char* szCursor = szSourceCode;
-	bool bFatalError = false;
 	
 	// reuse and cache stuff for speed...
 	std::cmatch xMatch;
@@ -104,110 +247,12 @@ std::vector< Token > Lex( const char* const szFilename, const char* const szSour
 		axRegexes.push_back( std::basic_regex< char >( axRules[ i ].GetExpression().c_str() ) );
 	}
 
-	while( *szCursor && !bFatalError )
+	while( *szCursor )
 	{
-		switch( *szCursor )
-		{
-			case ' ':
-			case '\n':
-			case '\r':
-			case '\t':
-			{
-				HandleCounts( szCursor, iLine, iColumn );
-				++szCursor;
-				break;
-			}
-			default:
-			{
-				// check if we match a comment...
-				bool bEscape = false;
-				for( size_t i = 0; i < axComments.size(); ++i )
-				{
-					const int iCommentLength = axComments[ i ].GetLength(
-						szCursor, szFilename, iLine, iColumn );
-					if( iCommentLength > 0 )
-					{
-						// update the line and column numbers...
-						for( int i = 0; i < iCommentLength; ++i )
-						{
-							HandleCounts( szCursor, iLine, iColumn );
-							++szCursor;
-						}
-						bEscape = true;
-						break;
-					}
-				}
-
-				if( bEscape )
-				{
-					break;
-				}
-
-				// check if we match a rule...
-				// work out where the next whitespace is...
-				// SE - TODO: quotes.
-				const char* szNewCursor = szCursor;
-				while( *szNewCursor
-					&& ( *szNewCursor != ' ' )
-					&& ( *szNewCursor != '\t' )
-					&& ( *szNewCursor != '\r' )
-					&& ( *szNewCursor != '\n' ) )
-				{
-					// skip quoted stuff...
-					++szNewCursor;
-					if( *( szNewCursor - 1 ) == '"' )
-					{
-						while( *szNewCursor &&
-							!( ( *( szNewCursor - 1 ) != '\\' )
-							&& ( *( szNewCursor ) == '"' ) ) )
-						{
-							++szNewCursor;
-						}
-						++szNewCursor;
-						break;
-					}
-				}
-
-				std::string xLongestValue = "";
-				int iLongestRule = -1;
-				for( size_t i = 0; i < axRules.size(); ++i )
-				{
-					if( std::regex_search( szCursor, szNewCursor, xMatch, axRegexes[ i ] ) )
-					{
-						// make sure the match is at the start of the string...
-						if( xMatch.prefix().length() == 0 )
-						{
-							const std::string xValue = xMatch.str( 0 );
-							if( xValue.length() > xLongestValue.length() )
-							{
-								xLongestValue = xValue;
-								iLongestRule = static_cast< int >( i );
-							}
-						}
-					}
-				}
-
-				if( iLongestRule >= 0 )
-				{
-					axTokens.push_back( Token(
-						axRules[ iLongestRule ].GetBaseToken(),
-						szFilename, iLine, iColumn, xLongestValue ) );
-					szCursor += xLongestValue.length();
-					iColumn += static_cast< int >( xLongestValue.length() );
-					bEscape = true;
-				}
-
-				if( bEscape )
-				{
-					break;
-				}
-
-				Error( 2002, szFilename, iLine, iColumn, "Failed to tokenise here: %s",
-					std::string( szCursor, szNewCursor ).c_str() );
-				bFatalError = true;
-				break;
-			}
-		}
+		HandleNextCharacter( axComments, axRules,
+			axTokens, szCursor,
+			xMatch, axRegexes,
+			szFilename, iLine, iColumn );
 	}
 
 	return axTokens;
