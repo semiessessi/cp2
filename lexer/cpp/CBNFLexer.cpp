@@ -43,5 +43,12 @@ std::vector< Token > CBNFLex( const char* const szFilename )
 	return Lex( szFilename, CBNFLexerRules(), CBNFCommentRules() );
 }
 
+std::vector< Token > CBNFLex( const char* const szFilename, const char* const szSource )
+{
+	std::vector< Token > xTokenList;
+
+	return Lex( szFilename, szSource, CBNFLexerRules(), CBNFCommentRules() );
+}
+
 }
 }

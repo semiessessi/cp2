@@ -107,7 +107,7 @@ void DoLexerTests()
 	if( gxLong.size() < 1000 )
 	{
 #ifdef _DEBUG
-		for( int i = 0; i < 11; ++i )
+		for( int i = 0; i < 10; ++i )
 #else
 		for( int i = 0; i < 15; ++i )
 #endif

@@ -14,17 +14,16 @@ namespace Parser
 
 #define GE( ... ) GrammarExpression( __VA_ARGS__ )
 
-
-ASTNode* CBNFParse( const std::vector< Token >& axTokens )
+const Grammar& GetCBNFGrammar()
 {
 	static const Grammar kxCBNFGrammar(
 	{
 		GrammarProduction( "<grammar>", !GE( "<production>" ) ),
 
 		GrammarProduction( "<production>",
-			GE( "<identifier>" ) + GE( "=" ) + !GE( "<rule-expression>" ) + GE( ";" ) ),
+		GE( "<identifier>" ) + GE( "=" ) + !GE( "<rule-expression>" ) + GE( ";" ) ),
 		GrammarProduction( "<production>",
-			GE( "<identifier>" ) + GE( "=" ) + GE( "..." ) + GE( ";" ) ),
+		GE( "<identifier>" ) + GE( "=" ) + GE( "..." ) + GE( ";" ) ),
 
 		// SE - NOTE: comment this next rule, helpful for testing error handling.
 		GrammarProduction( "<rule-expression>", GE( "<string>" ) ),
@@ -34,7 +33,12 @@ ASTNode* CBNFParse( const std::vector< Token >& axTokens )
 		GrammarProduction( "<rule-expression>", GE( "<identifier>" ) + GE( "?" ) ),
 	});
 
-	return Parse( axTokens, kxCBNFGrammar );
+	return kxCBNFGrammar;
+}
+
+ASTNode* CBNFParse( const std::vector< Token >& axTokens )
+{
+	return Parse( axTokens, GetCBNFGrammar() );
 }
 
 #undef GE

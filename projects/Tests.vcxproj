@@ -187,6 +187,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\tests\cpp\cbnf\CBNFTests.cpp" />
     <ClCompile Include="..\tests\cpp\EntryPoint.cpp" />
     <ClCompile Include="..\tests\cpp\HelpHandler.cpp" />
     <ClCompile Include="..\tests\cpp\lexer\LexerTests.cpp" />
@@ -195,6 +196,7 @@
     <ClCompile Include="..\tests\cpp\TestHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\tests\cpp\cbnf\CBNFTests.h" />
     <ClInclude Include="..\tests\cpp\CommandLineHandler.h" />
     <ClInclude Include="..\tests\cpp\lexer\LexerTests.h" />
     <ClInclude Include="..\tests\cpp\Parameters.h" />

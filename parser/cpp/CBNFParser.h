@@ -14,6 +14,9 @@ namespace CP2
 namespace Parser
 {
 
+class Grammar;
+
+const Grammar& GetCBNFGrammar();
 ASTNode* CBNFParse( const std::vector< Token >& axTokens );
 
 }
