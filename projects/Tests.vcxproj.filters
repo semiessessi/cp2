@@ -7,6 +7,9 @@
     <Filter Include="tests\lexer">
       <UniqueIdentifier>{39a0decd-65cc-4561-b8f5-321406d26d7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="tests\parser">
+      <UniqueIdentifier>{e7d727b6-9486-4c76-a584-fc6e7da67070}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tests\cpp\EntryPoint.cpp">
@@ -23,6 +26,9 @@
     </ClCompile>
     <ClCompile Include="..\tests\cpp\TestHelper.cpp">
       <Filter>tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\cpp\parser\ParserTests.cpp">
+      <Filter>tests\parser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +49,9 @@
     </ClInclude>
     <ClInclude Include="..\tests\cpp\TestHelper.h">
       <Filter>tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tests\cpp\parser\ParserTests.h">
+      <Filter>tests\parser</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
