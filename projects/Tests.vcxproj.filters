@@ -10,6 +10,9 @@
     <Filter Include="tests\parser">
       <UniqueIdentifier>{e7d727b6-9486-4c76-a584-fc6e7da67070}</UniqueIdentifier>
     </Filter>
+    <Filter Include="tests\cbnf">
+      <UniqueIdentifier>{4727a0a1-696d-420f-95f5-89f8d9bc9bbe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tests\cpp\EntryPoint.cpp">
@@ -29,6 +32,9 @@
     </ClCompile>
     <ClCompile Include="..\tests\cpp\parser\ParserTests.cpp">
       <Filter>tests\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\cpp\cbnf\CBNFTests.cpp">
+      <Filter>tests\cbnf</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +58,9 @@
     </ClInclude>
     <ClInclude Include="..\tests\cpp\parser\ParserTests.h">
       <Filter>tests\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tests\cpp\cbnf\CBNFTests.h">
+      <Filter>tests\cbnf</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

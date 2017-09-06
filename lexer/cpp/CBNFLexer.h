@@ -16,6 +16,7 @@ class Rule;
 
 const std::vector< Rule >& CBNFLexerRules();
 std::vector< Token > CBNFLex( const char* const szFilename );
+std::vector< Token > CBNFLex( const char* const szFilename, const char* const szSource );
 
 }
 }

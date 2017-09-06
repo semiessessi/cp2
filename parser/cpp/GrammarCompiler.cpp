@@ -125,7 +125,8 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 		}
 
 		axProductions.push_back(
-			GrammarProduction( pxNameNode->GetTokenValue(), xExpression ) );
+			GrammarProduction(
+				std::string( "<" ) + pxNameNode->GetTokenValue() + ">", xExpression ) );
 	}
 	
 	return Grammar( axProductions );

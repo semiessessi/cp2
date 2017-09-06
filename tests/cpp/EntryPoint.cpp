@@ -7,6 +7,7 @@
 #include "SwitchHandlerDecls.h"
 
 #include "../../common/cpp/Report.h"
+#include "../../tests/cpp/cbnf/CBNFTests.h"
 #include "../../tests/cpp/lexer/LexerTests.h"
 #include "../../tests/cpp/parser/ParserTests.h"
 
@@ -39,6 +40,10 @@ int main( const int iArgumentCount, const char* const* const pszArguments )
 	CP2::Message( "Running parser tests..." );
 
 	CP2::Tests::DoParserTests();
+
+	CP2::Message( "Running CBNF tests..." );
+
+	CP2::Tests::DoCBNFTests();
 
 	if( CP2::Tests::giTestsFailed > 0 )
 	{
