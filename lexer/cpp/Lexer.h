@@ -66,6 +66,8 @@ private:
 
 };
 
+std::vector< Token > Lex( const char* const szFilename, const char* const szSourceCode,
+	const std::vector< Rule >& axRules, const std::vector< Comment >& axComments );
 std::vector< Token > Lex( const char* const szFilename,
 	const std::vector< Rule >& axRules, const std::vector< Comment >& axComments );
 

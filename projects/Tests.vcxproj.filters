@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="tests">
+      <UniqueIdentifier>{bf4c02a5-3883-4379-8052-fc4034a68d75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tests\lexer">
+      <UniqueIdentifier>{39a0decd-65cc-4561-b8f5-321406d26d7a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\tests\cpp\EntryPoint.cpp">
+      <Filter>tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\cpp\HelpHandler.cpp">
+      <Filter>tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\cpp\ParameterHandlers.cpp">
+      <Filter>tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\cpp\lexer\LexerTests.cpp">
+      <Filter>tests\lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\cpp\TestHelper.cpp">
+      <Filter>tests</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\tests\cpp\CommandLineHandler.h">
+      <Filter>tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tests\cpp\SwitchHandler.h">
+      <Filter>tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tests\cpp\Parameters.h">
+      <Filter>tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tests\cpp\SwitchHandlerDecls.h">
+      <Filter>tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tests\cpp\lexer\LexerTests.h">
+      <Filter>tests\lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tests\cpp\TestHelper.h">
+      <Filter>tests</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

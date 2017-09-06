@@ -183,7 +183,8 @@ std::string Grammar::GetCBNF() const
 	{
 		if( xProduction.GetName().length() > iMaxProductionNameLength )
 		{
-			iMaxProductionNameLength = xProduction.GetName().length();
+			iMaxProductionNameLength =
+				static_cast< int >( xProduction.GetName().length() );
 		}
 	}
 

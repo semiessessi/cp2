@@ -196,6 +196,12 @@ ASTNode* Parse( const std::vector< Token >& axTokens, const Grammar& xGrammar )
 		return nullptr;
 	}
 
+	if( axTokens.size() == 0 )
+	{
+		Warning( 3501, szFilename, 0, 0, "No tokens to parse, ignoring input" );
+		return nullptr;
+	}
+
 	std::vector< ParseState > axStates = ParseRecursive( axTokens, xGrammar, 0, axTopLevelProductions );
 
 	if( axStates.size() == 0 )

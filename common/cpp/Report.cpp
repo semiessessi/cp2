@@ -11,10 +11,37 @@ namespace CP2
 int giErrorCount = 0;
 int giWarningCount = 0;
 
-void ResetCounters()
+std::vector< ReportMessage > gaxReportMessages;
+
+void LastMessageWasWarning()
+{
+	++giWarningCount;
+	gaxReportMessages.back().bWarning = true;
+}
+
+void LastMessageWasError()
+{
+	++giErrorCount;
+	gaxReportMessages.back().bError = true;
+}
+
+void LastMessageWasInternalError()
+{
+	++giErrorCount;
+	gaxReportMessages.back().bError = true;
+	gaxReportMessages.back().bInternal = true;
+}
+
+void SetLastMessageCode( const int iCode )
+{
+	gaxReportMessages.back().iCode = iCode;
+}
+
+void ResetMessageReports()
 {
 	giErrorCount = 0;
 	giWarningCount = 0;
+	gaxReportMessages.clear();
 }
 
 int GetErrorCount()
@@ -27,6 +54,11 @@ int GetWarningCount()
 	return giWarningCount;
 }
 
+std::vector< ReportMessage > GetAllMessages()
+{
+	return gaxReportMessages;
+}
+
 void Message( const char* const szString, ... )
 {
 	char szBuffer[ 256 ];
@@ -36,6 +68,17 @@ void Message( const char* const szString, ... )
 	va_end( xArguments );
 
 	puts( szBuffer );
+
+	ReportMessage xMessage =
+	{
+		szBuffer,
+		0,
+		false,
+		false,
+		false,
+	};
+
+	gaxReportMessages.push_back( xMessage );
 }
 
 void Report( const char* const szFilename, const int iLine, const int iColumn, const char* const szString, ... )
@@ -57,8 +100,10 @@ void Warning( const int iWarningNumber, const char* const szFilename, const int 
 	vsnprintf( szBuffer, 256, szString, xArguments );
 	va_end( xArguments );
 
-	++giWarningCount;
 	Report( szFilename, iLine, iColumn, "warning %.4d: %s", iWarningNumber, szBuffer );
+
+	LastMessageWasWarning();
+	SetLastMessageCode( iWarningNumber );
 }
 
 void Error( const int iErrorNumber, const char* const szFilename, const int iLine, const int iColumn, const char* const szString, ... )
@@ -69,8 +114,10 @@ void Error( const int iErrorNumber, const char* const szFilename, const int iLin
 	vsnprintf( szBuffer, 256, szString, xArguments );
 	va_end( xArguments );
 
-	++giErrorCount;
 	Report( szFilename, iLine, iColumn, "error %.4d: %s", iErrorNumber, szBuffer );
+
+	LastMessageWasError();
+	SetLastMessageCode( iErrorNumber );
 }
 
 void InternalError( const int iErrorNumber, const char* const szFilename, const int iLine, const int iColumn, const char* const szString, ... )
@@ -81,8 +128,10 @@ void InternalError( const int iErrorNumber, const char* const szFilename, const 
 	vsnprintf( szBuffer, 256, szString, xArguments );
 	va_end( xArguments );
 
-	++giErrorCount;
 	Report( szFilename, iLine, iColumn, "internal error %.4d: %s", iErrorNumber, szBuffer );
+
+	LastMessageWasInternalError();
+	SetLastMessageCode( iErrorNumber );
 }
 
 }

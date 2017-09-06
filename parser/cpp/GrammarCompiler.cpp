@@ -27,7 +27,7 @@ GrammarExpression CompileExpression( ASTNode* const pxRuleExpression )
 	const std::string& xSymbolName = pxSymbolNode->GetTokenValue();
 	if( pxRuleExpression->GetChildCount() == 1 )
 	{
-		// string or ident... pr catch all
+		// string or ident... or catch all
 		if( pxSymbolNode->GetProductionName() == "<identifier>" )
 		{
 			return GrammarExpression( std::string( "<" ) + xSymbolName + ">" );
