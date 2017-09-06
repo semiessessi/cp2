@@ -177,6 +177,44 @@ std::string Grammar::GetCBNF() const
 {
 	std::string xReturnValue;
 
+	for( const Lexer::Comment& xComment : maxCommentRules )
+	{
+		xReturnValue += "comment \"";
+		xReturnValue += CBNFQuoteEscape( xComment.GetStart() );
+		xReturnValue += "\"";
+		if( xComment.GetEnd() )
+		{
+			xReturnValue += " \"";
+			xReturnValue += CBNFQuoteEscape( xComment.GetEnd() );
+			xReturnValue += "\"";
+		}
+		xReturnValue += " ;\r\n";
+	}
+
+	if( maxCommentRules.size() != 0 )
+	{
+		xReturnValue += "\r\n";
+	}
+
+	bool bDoneALexeme = false;
+	for( const Lexer::Rule& xLexeme : maxLexemeRules )
+	{
+		if( xLexeme.GetBaseToken().IsValued() )
+		{
+			xReturnValue += "lexeme ";
+			xReturnValue += xLexeme.GetBaseToken().GetName();
+			xReturnValue += " \"";
+			xReturnValue += CBNFQuoteEscape( xLexeme.GetExpression() );
+			xReturnValue += "\" ;\r\n";
+			bDoneALexeme = true;
+		}
+	}
+
+	if( bDoneALexeme )
+	{
+		xReturnValue += "\r\n";
+	}
+
 	// make some effort to make this pretty...
 	int iMaxProductionNameLength = 8;
 	for( const GrammarProduction& xProduction : maxProductions )
@@ -193,9 +231,16 @@ std::string Grammar::GetCBNF() const
 	iMaxProductionNameLength += 7;
 	iMaxProductionNameLength &= ~3;
 
+	std::string xLast = maxProductions.size() ? maxProductions[ 0 ].GetName() : "";
 	for( const GrammarProduction& xProduction : maxProductions )
 	{
 		std::string xName = xProduction.GetName();
+		if( xName != xLast )
+		{
+			xReturnValue += "\r\n";
+			xLast = xName;
+		}
+
 		int iNameLength = static_cast< int >( xName.length() );
 		// remove angled brackets...
 		if( ( iNameLength > 2 )
@@ -227,6 +272,59 @@ std::string Grammar::GetCBNF() const
 void Grammar::Merge( const Grammar& xOther )
 {
 	maxProductions.insert( maxProductions.end(), xOther.maxProductions.begin(), xOther.maxProductions.end() );
+
+	//for( size_t i = 0; i < xOther.GetCommentCount(); ++i )
+	//{
+	//	// ...
+	//}
+}
+void Grammar::AddLexeme( const char* const szPrettyName, const char* const szExpression )
+{
+	static const int iBaseID = 8000;
+	const int iID = iBaseID + static_cast< int >( maxBaseTokens.size() );
+	const char* const szPrettyNameCopy = mxTokenStrings.insert( szPrettyName ).first->c_str();
+	maxBaseTokens.push_back( Token( szPrettyNameCopy, iID, true ) );
+	maxLexemeRules.push_back( Lexer::Rule( szExpression, maxBaseTokens.back() ) );
+}
+
+void Grammar::AddLineComment( const char* const szStart )
+{
+	maxCommentRules.push_back( Lexer::Comment( szStart ) );
+}
+
+void Grammar::AddBlockComment( const char* const szStart, const char* const szEnd )
+{
+	maxCommentRules.push_back( Lexer::Comment( szStart, szEnd ) );
+}
+
+void Grammar::InferLexemes()
+{
+	std::unordered_set< std::string > xStrings;
+	for( const GrammarProduction& xProduction : maxProductions )
+	{
+		const std::vector< std::string >& axNames =
+			xProduction.GetExpression().GetFlattenedNames();
+
+		for( const std::string& xString : axNames )
+		{
+			if( xString.length() > 2 )
+			{
+				if( ( xString.front() == '\"' )
+					&& ( xString.back() == '\"' ) )
+				{
+					xStrings.insert( xString.substr( 1, xString.length() - 2 ) );
+				}
+			}
+		}
+	}
+
+	int iID = 7000;
+	for( const std::string& xString : xStrings )
+	{
+		maxBaseTokens.push_back( Token( xString.c_str(), iID, false ) );
+		++iID;
+		maxLexemeRules.push_back( Lexer::Rule( xString.c_str(), maxBaseTokens.back() ) );
+	}
 }
 
 }

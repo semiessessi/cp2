@@ -13,21 +13,21 @@ namespace Lexer
 
 int Comment::GetLength( const char* const szCursor, const char* const szFilename, const int iLine, const int iColumn ) const
 {
-	if( mszMarkerStart == nullptr )
+	if( mszMarkerStart.empty() )
 	{
 		return 0;
 	}
 
-	if( strncmp( szCursor, mszMarkerStart, strlen( mszMarkerStart ) ) != 0 )
+	if( strncmp( szCursor, mszMarkerStart.c_str(), strlen( mszMarkerStart.c_str() ) ) != 0 )
 	{
 		return 0;
 	}
 
 	const char* szEnd = szCursor;
-	if( mszMarkerEnd != nullptr )
+	if( !mszMarkerEnd.empty() )
 	{
 		// find the end.
-		szEnd = strstr( szCursor, mszMarkerEnd );
+		szEnd = strstr( szCursor, mszMarkerEnd.c_str() );
 		if( szEnd == nullptr )
 		{
 			// consider the whole remainder to be comment, but warn the user
@@ -35,7 +35,7 @@ int Comment::GetLength( const char* const szCursor, const char* const szFilename
 			return static_cast< int >( strlen( szCursor ) );
 		}
 
-		szEnd += strlen( mszMarkerEnd );
+		szEnd += strlen( mszMarkerEnd.c_str() );
 		return static_cast< int >( szEnd - szCursor );
 	}
 	//else

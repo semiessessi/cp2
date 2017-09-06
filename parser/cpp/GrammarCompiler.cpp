@@ -82,7 +82,8 @@ GrammarExpression CompileExpression( ASTNode* const pxRuleExpression )
 Grammar CompileGrammar( ASTNode* const pxAST )
 {
 	std::vector< GrammarProduction > axProductions;
-
+	std::vector< Lexer::Comment > axComments;
+	std::vector< std::pair< std::string, std::string > > axLexemes;
 	// the top should be <grammar>
 	// i feel the parser stops this being hit...
 	if( pxAST->GetProductionName() != "<grammar>" )
@@ -104,15 +105,61 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 	{
 		ASTNode* const pxProductionAST = pxAST->GetChild( i );
 		const int iProductionChildCount = pxProductionAST->GetChildCount();
+
+		// i feel the parser stops this being hit...
+		if( iProductionChildCount <= 1 )
+		{
+			Error( 4001, pxAST->GetFilename(), pxAST->GetLine(), pxAST->GetColumn(),
+				"Unexpectedly short production found: %s", pxProductionAST->GetTokenValue() );
+			continue;
+		}
+
+		// the first child should be the name
+		ASTNode* const pxNameNode = pxProductionAST->GetChild( 0 );
+		if( pxNameNode->GetProductionName() == "comment" )
+		{
+			ASTNode* const pxFirst = pxProductionAST->GetChild( 1 );
+			const std::string& xStart = pxFirst->GetTokenValue();
+			if( iProductionChildCount == 4 )
+			{
+				ASTNode* const pxLast = pxProductionAST->GetChild( 2 );
+				const std::string& xEnd = pxLast->GetTokenValue();
+				axComments.push_back( Lexer::Comment(
+					xStart.substr( 1, xStart.length() - 2 ).c_str(),
+					xEnd.substr( 1, xEnd.length() - 2 ).c_str() ) );
+			}
+			else
+			{
+				axComments.push_back( Lexer::Comment(
+					xStart.substr( 1, xStart.length() - 2 ).c_str() ) );
+			}
+
+			continue;
+		}
+		else if( pxNameNode->GetProductionName() == "lexeme" )
+		{
+			if( iProductionChildCount == 4 )
+			{
+				ASTNode* const pxName = pxProductionAST->GetChild( 1 );
+				ASTNode* const pxExpression = pxProductionAST->GetChild( 2 );
+				const std::string& xExpression = pxExpression->GetTokenValue();
+				axLexemes.push_back(
+				{
+					pxName->GetTokenValue(),
+					CBNFQuoteUnescape( xExpression.substr( 1, xExpression.length() - 2 ) )
+				} );
+			}
+			continue;
+		}
+
 		// i feel the parser stops this being hit...
 		if( iProductionChildCount <= 3 )
 		{
 			Error( 4001, pxAST->GetFilename(), pxAST->GetLine(), pxAST->GetColumn(),
 				"Unexpectedly short production found: %s", pxProductionAST->GetTokenValue() );
+			continue;
 		}
 
-		// the first child should be the name
-		ASTNode* const pxNameNode = pxProductionAST->GetChild( 0 );
 		// then = (should we check?)
 		// then the expression followed by the ;
 		// build the first expression bit, then concatenate the rest
@@ -129,7 +176,26 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 				std::string( "<" ) + pxNameNode->GetTokenValue() + ">", xExpression ) );
 	}
 	
-	return Grammar( axProductions );
+	Grammar xReturnValue( axProductions );
+
+	for( const Lexer::Comment& xComment : axComments )
+	{
+		if( xComment.GetEnd() )
+		{
+			xReturnValue.AddBlockComment( xComment.GetStart(), xComment.GetEnd() );
+		}
+		else
+		{
+			xReturnValue.AddLineComment( xComment.GetStart() );
+		}
+	}
+
+	for( const std::pair< std::string, std::string >& xLexeme : axLexemes )
+	{
+		xReturnValue.AddLexeme( xLexeme.first.c_str(), xLexeme.second.c_str() );
+	}
+
+	return xReturnValue;
 }
 
 }

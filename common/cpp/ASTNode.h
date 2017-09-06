@@ -55,6 +55,7 @@ public:
 	int GetLine() const { return mxToken.GetLine(); }
 	int GetColumn() const { return mxToken.GetColumn(); }
 	const std::string& GetTokenValue() const { return mxToken.GetValue(); }
+	const char* GetTokenName() const { return mxToken.GetName(); }
 
 	static ASTNode* DuplicateAndAddChild( const ASTNode* const pxNode, ASTNode* const pxChild );
 	static ASTNode* Duplicate( const ASTNode* const pxNode );

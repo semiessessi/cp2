@@ -44,7 +44,7 @@ public:
 
 	Comment( const char* const szLineCommentMarker )
 	: mszMarkerStart( szLineCommentMarker )
-	, mszMarkerEnd( nullptr )
+	, mszMarkerEnd( "" )
 	{
 
 	}
@@ -57,12 +57,15 @@ public:
 
 	}
 
+	const char* GetStart() const { return mszMarkerStart.c_str(); }
+	const char* GetEnd() const { return mszMarkerEnd.empty() ? nullptr : mszMarkerEnd.c_str(); }
+
 	int GetLength( const char* const szCursor, const char* const szFilename, const int iLine, const int iColumn ) const;
 
 private:
 
-	const char* mszMarkerStart;
-	const char* mszMarkerEnd;
+	const std::string mszMarkerStart;
+	const std::string mszMarkerEnd;
 
 };
 

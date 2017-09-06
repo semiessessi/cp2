@@ -1,6 +1,17 @@
 // Copyright (c) 2017 Cranium Software
 
+comment "//" ;
+comment "/*" "*/" ;
+
+lexeme identifier "[_a-zA-Z][_\\-a-zA-Z0-9]*" ;
+lexeme string "\"(?:[^\\\"\\\\]|\\\\.)*\"" ;
+
 grammar				=	production* ;
+
+production			=	"comment" string ";" ;
+production			=	"comment" string string ";" ;
+
+production			=	"lexeme" identifier string ";" ;
 
 production			=	identifier "=" rule-expression ";" ;
 production			=	identifier "=" "..." ";" ;
