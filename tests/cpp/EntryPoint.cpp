@@ -8,6 +8,7 @@
 
 #include "../../common/cpp/Report.h"
 #include "../../tests/cpp/lexer/LexerTests.h"
+#include "../../tests/cpp/parser/ParserTests.h"
 
 #include <string>
 #include <vector>
@@ -34,6 +35,10 @@ int main( const int iArgumentCount, const char* const* const pszArguments )
 	CP2::Message( "Running lexer tests..." );
 
 	CP2::Tests::DoLexerTests();
+
+	CP2::Message( "Running parser tests..." );
+
+	CP2::Tests::DoParserTests();
 
 	if( CP2::Tests::giTestsFailed > 0 )
 	{

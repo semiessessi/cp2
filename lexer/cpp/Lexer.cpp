@@ -253,23 +253,23 @@ static inline bool IsRuleNotRegex( const std::string& xRule )
 	bool bSafe = true;
 	for( size_t i = 0; i < xRule.length(); ++i )
 	{
-		bSafe &= ( xRule[ 0 ] != '\\' )
-			&& ( xRule[ 0 ] != '.' )
-			&& ( xRule[ 0 ] != '(' )
-			&& ( xRule[ 0 ] != '[' )
-			&& ( xRule[ 0 ] != '$' )
-			&& ( xRule[ 0 ] != ':' );
+		bSafe &= ( xRule[  i ] != '\\' )
+			&& ( xRule[ i ] != '.' )
+			&& ( xRule[ i ] != '(' )
+			&& ( xRule[ i ] != '[' )
+			&& ( xRule[ i ] != '$' )
+			&& ( xRule[ i ] != ':' );
 
 		if( i > 0 )
 		{
-			bSafe &= ( xRule[ 0 ] != ')' )
-				&& ( xRule[ 0 ] != ']' )
-				&& ( xRule[ 0 ] != '-' )
-				&& ( xRule[ 0 ] != ':' )
-				&& ( xRule[ 0 ] != '+' )
-				&& ( xRule[ 0 ] != '*' )
-				&& ( xRule[ 0 ] != '^' )
-				&& ( xRule[ 0 ] != '?' );
+			bSafe &= ( xRule[ i ] != ')' )
+				&& ( xRule[ i ] != ']' )
+				&& ( xRule[ i ] != '-' )
+				&& ( xRule[ i ] != ':' )
+				&& ( xRule[ i ] != '+' )
+				&& ( xRule[ i ] != '*' )
+				&& ( xRule[ i ] != '^' )
+				&& ( xRule[ i ] != '?' );
 		}
 	}
 

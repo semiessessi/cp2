@@ -181,10 +181,11 @@ std::string Grammar::GetCBNF() const
 	int iMaxProductionNameLength = 8;
 	for( const GrammarProduction& xProduction : maxProductions )
 	{
-		if( xProduction.GetName().length() > iMaxProductionNameLength )
+		const int iProductionNameLength =
+			static_cast< int >( xProduction.GetName().length() );
+		if( iProductionNameLength > iMaxProductionNameLength )
 		{
-			iMaxProductionNameLength =
-				static_cast< int >( xProduction.GetName().length() );
+			iMaxProductionNameLength = iProductionNameLength;
 		}
 	}
 
@@ -195,17 +196,19 @@ std::string Grammar::GetCBNF() const
 	for( const GrammarProduction& xProduction : maxProductions )
 	{
 		std::string xName = xProduction.GetName();
+		int iNameLength = static_cast< int >( xName.length() );
 		// remove angled brackets...
-		if( ( xName.length() > 2 )
+		if( ( iNameLength > 2 )
 			&& ( xName.front() == '<' )
 			&& ( xName.back() == '>' ) )
 		{
-			xName = xName.substr( 1, xName.length() - 2 );
+			xName = xName.substr( 1, iNameLength - 2 );
+			iNameLength -= 2;
 		}
 
 		xReturnValue += xName;
 
-		const int iSpaces = iMaxProductionNameLength - static_cast< int >( xName.length() );
+		const int iSpaces = iMaxProductionNameLength - iNameLength;
 		for( int i = 0; i < iSpaces; ++i )
 		{
 			xReturnValue += " ";
