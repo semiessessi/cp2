@@ -160,7 +160,8 @@ static inline bool MatchRules(
 	{
 		const int iCachedStringLength =
 			static_cast< int >( axStrings[ i ].length() );
-		if( iCachedStringLength > iLongestLength )
+		if( ( iCachedStringLength != 0 )
+			&& ( iCachedStringLength > iLongestLength ) )
 		{
 			const std::string xValue(
 				szCursor, szCursor + iCachedStringLength );
