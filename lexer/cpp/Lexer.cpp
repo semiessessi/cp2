@@ -1,5 +1,6 @@
 #include "Lexer.h"
 
+#include "../../common/cpp/Escaping.h"
 #include "../../common/cpp/Report.h"
 
 #include <cstdio>
@@ -13,21 +14,21 @@ namespace Lexer
 
 int Comment::GetLength( const char* const szCursor, const char* const szFilename, const int iLine, const int iColumn ) const
 {
-	if( mszMarkerStart == nullptr )
+	if( mszMarkerStart.empty() )
 	{
 		return 0;
 	}
 
-	if( strncmp( szCursor, mszMarkerStart, strlen( mszMarkerStart ) ) != 0 )
+	if( strncmp( szCursor, mszMarkerStart.c_str(), strlen( mszMarkerStart.c_str() ) ) != 0 )
 	{
 		return 0;
 	}
 
 	const char* szEnd = szCursor;
-	if( mszMarkerEnd != nullptr )
+	if( !mszMarkerEnd.empty() )
 	{
 		// find the end.
-		szEnd = strstr( szCursor, mszMarkerEnd );
+		szEnd = strstr( szCursor, mszMarkerEnd.c_str() );
 		if( szEnd == nullptr )
 		{
 			// consider the whole remainder to be comment, but warn the user
@@ -35,7 +36,7 @@ int Comment::GetLength( const char* const szCursor, const char* const szFilename
 			return static_cast< int >( strlen( szCursor ) );
 		}
 
-		szEnd += strlen( mszMarkerEnd );
+		szEnd += strlen( mszMarkerEnd.c_str() );
 		return static_cast< int >( szEnd - szCursor );
 	}
 	//else
@@ -249,33 +250,33 @@ static inline void HandleNextCharacter(
 	}
 }
 
-static inline bool IsRuleNotRegex( const std::string& xRule )
-{
-	bool bSafe = true;
-	for( size_t i = 0; i < xRule.length(); ++i )
-	{
-		bSafe &= ( xRule[  i ] != '\\' )
-			&& ( xRule[ i ] != '.' )
-			&& ( xRule[ i ] != '(' )
-			&& ( xRule[ i ] != '[' )
-			&& ( xRule[ i ] != '$' )
-			&& ( xRule[ i ] != ':' );
-
-		if( i > 0 )
-		{
-			bSafe &= ( xRule[ i ] != ')' )
-				&& ( xRule[ i ] != ']' )
-				&& ( xRule[ i ] != '-' )
-				&& ( xRule[ i ] != ':' )
-				&& ( xRule[ i ] != '+' )
-				&& ( xRule[ i ] != '*' )
-				&& ( xRule[ i ] != '^' )
-				&& ( xRule[ i ] != '?' );
-		}
-	}
-
-	return bSafe;
-}
+//static inline bool IsRuleNotRegex( const std::string& xRule )
+//{
+//	bool bSafe = true;
+//	for( size_t i = 0; i < xRule.length(); ++i )
+//	{
+//		bSafe &= ( xRule[ i ] != '\\' )
+//			&& ( xRule[ i ] != '.' )
+//			&& ( xRule[ i ] != '(' )
+//			&& ( xRule[ i ] != '[' )
+//			&& ( xRule[ i ] != '$' )
+//			&& ( xRule[ i ] != ':' );
+//
+//		if( i > 0 )
+//		{
+//			bSafe &= ( xRule[ i ] != ')' )
+//				&& ( xRule[ i ] != ']' )
+//				&& ( xRule[ i ] != '-' )
+//				&& ( xRule[ i ] != ':' )
+//				&& ( xRule[ i ] != '+' )
+//				&& ( xRule[ i ] != '*' )
+//				&& ( xRule[ i ] != '^' )
+//				&& ( xRule[ i ] != '?' );
+//		}
+//	}
+//
+//	return bSafe;
+//}
 
 static inline std::vector< std::basic_regex< char > > BuildRegexCache(
 	const std::vector< Rule >& axRules )
@@ -296,9 +297,11 @@ static inline std::vector< std::string > BuildStringCache(
 	std::vector< std::string > axStrings;
 	for( size_t i = 0; i < axRules.size(); ++i )
 	{
-		if( IsRuleNotRegex( axRules[ i ].GetExpression() ) )
+		//if( IsRuleNotRegex( axRules[ i ].GetExpression() ) )
+		if( !axRules[ i ].GetBaseToken().IsValued() )
 		{
-			axStrings.push_back( axRules[ i ].GetExpression() );
+			axStrings.push_back(
+				SimpleUnescape( axRules[ i ].GetExpression() ) );
 		}
 		else
 		{
