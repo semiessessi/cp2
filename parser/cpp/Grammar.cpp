@@ -107,7 +107,7 @@ void GrammarExpression::GetCBNFRecursive( std::string& xWorkingString ) const
 		{
 			xWorkingString += " ";
 		}
-		xWorkingString += IsNonEmpty()
+		xWorkingString += IsNonEmpty()   
 			? ( xName + "+" ) :
 			( IsOptional()
 				? ( xName + "?" )
@@ -320,12 +320,12 @@ void Grammar::InferLexemes()
 					&& ( xString.front() != '!' )
 					&& ( xString.front() != '+' ) )
 				{
-					xStrings.insert( RegexEscape( xString ) );
+					xStrings.insert( xString );
 				}
 			}
 			else if( xString.length() >= 1 )
 			{
-				xStrings.insert( RegexEscape( xString ) );
+				xStrings.insert( xString );
 			}
 		}
 	}
@@ -333,10 +333,13 @@ void Grammar::InferLexemes()
 	int iID = 7000;
 	for( const std::string& xString : xStrings )
 	{
-		const char* const szPrettyName = mxTokenStrings.insert( xString ).first->c_str();
+		const char* const szRuleExpression =
+			mxTokenStrings.insert( RegexEscape( xString ) ).first->c_str();
+		const char* const szPrettyName =
+			mxTokenStrings.insert( xString ).first->c_str();
 		maxBaseTokens.push_back( Token( szPrettyName, iID, false ) );
 		++iID;
-		maxLexemeRules.push_back( Lexer::Rule( szPrettyName, maxBaseTokens.back() ) );
+		maxLexemeRules.push_back( Lexer::Rule( szRuleExpression, maxBaseTokens.back() ) );
 	}
 }
 

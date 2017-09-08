@@ -2,6 +2,7 @@
 
 #include "Grammar.h"
 #include "../../common/cpp/ASTNode.h"
+#include "../../common/cpp/Escaping.h"
 #include "../../common/cpp/Report.h"
 
 namespace CP2

@@ -25,6 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\cpp\ASTNode.h" />
+    <ClInclude Include="..\common\cpp\ASTVisitor.h" />
     <ClInclude Include="..\common\cpp\Escaping.h" />
     <ClInclude Include="..\common\cpp\Report.h" />
     <ClInclude Include="..\common\cpp\Token.h" />

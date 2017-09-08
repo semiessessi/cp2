@@ -29,5 +29,8 @@
     <ClInclude Include="..\common\cpp\Escaping.h">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="..\common\cpp\ASTVisitor.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
