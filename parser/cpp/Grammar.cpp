@@ -1,5 +1,7 @@
 #include "Grammar.h"
 
+#include "../../../common/cpp/Escaping.h"
+
 #include <unordered_set>
 
 namespace CP2
@@ -201,8 +203,9 @@ std::string Grammar::GetCBNF() const
 	{
 		if( xLexeme.GetBaseToken().IsValued() )
 		{
+			std::string xName = xLexeme.GetBaseToken().GetName();
 			xReturnValue += "lexeme ";
-			xReturnValue += xLexeme.GetBaseToken().GetName();
+			xReturnValue += xName.substr( 1, xName.length() - 2 );
 			xReturnValue += " \"";
 			xReturnValue += CBNFQuoteEscape( xLexeme.GetExpression() );
 			xReturnValue += "\" ;\r\n";
@@ -299,6 +302,9 @@ void Grammar::AddBlockComment( const char* const szStart, const char* const szEn
 
 void Grammar::InferLexemes()
 {
+	// SE - NOTE: it is important that the regexes come afterwards in the list
+	// so they are ignored when parsing e.g. if, the regex will match 2 long
+	// but the constant string should already have matched.
 	std::unordered_set< std::string > xStrings;
 	for( const GrammarProduction& xProduction : maxProductions )
 	{
@@ -309,11 +315,17 @@ void Grammar::InferLexemes()
 		{
 			if( xString.length() > 2 )
 			{
-				if( ( xString.front() == '\"' )
-					&& ( xString.back() == '\"' ) )
+				if( ( xString.front() != '<' )
+					&& ( xString.front() != '?' )
+					&& ( xString.front() != '!' )
+					&& ( xString.front() != '+' ) )
 				{
-					xStrings.insert( xString.substr( 1, xString.length() - 2 ) );
+					xStrings.insert( RegexEscape( xString ) );
 				}
+			}
+			else if( xString.length() >= 1 )
+			{
+				xStrings.insert( RegexEscape( xString ) );
 			}
 		}
 	}
@@ -321,9 +333,10 @@ void Grammar::InferLexemes()
 	int iID = 7000;
 	for( const std::string& xString : xStrings )
 	{
-		maxBaseTokens.push_back( Token( xString.c_str(), iID, false ) );
+		const char* const szPrettyName = mxTokenStrings.insert( xString ).first->c_str();
+		maxBaseTokens.push_back( Token( szPrettyName, iID, false ) );
 		++iID;
-		maxLexemeRules.push_back( Lexer::Rule( xString.c_str(), maxBaseTokens.back() ) );
+		maxLexemeRules.push_back( Lexer::Rule( szPrettyName, maxBaseTokens.back() ) );
 	}
 }
 

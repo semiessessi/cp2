@@ -192,7 +192,9 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 
 	for( const std::pair< std::string, std::string >& xLexeme : axLexemes )
 	{
-		xReturnValue.AddLexeme( xLexeme.first.c_str(), xLexeme.second.c_str() );
+		xReturnValue.AddLexeme(
+			( std::string( "<" ) + xLexeme.first + ">" ).c_str(),
+			xLexeme.second.c_str() );
 	}
 
 	return xReturnValue;

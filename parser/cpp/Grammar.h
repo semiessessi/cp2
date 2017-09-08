@@ -254,6 +254,8 @@ public:
 	int GetLexemeCount() const { return static_cast< int >( maxLexemeRules.size() ); }
 	int GetCommentCount() const { return static_cast< int >( maxCommentRules.size() ); }
 
+	const std::vector< Lexer::Comment >& GetComments() const { return maxCommentRules; }
+	const std::vector< Lexer::Rule >& GetLexemes() const { return maxLexemeRules; }
 private:
 
 	void InferLexemes();

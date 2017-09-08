@@ -45,8 +45,8 @@ const Grammar& GetCBNFGrammar()
 	{
 		kxCBNFGrammar.AddLineComment( "//" );
 		kxCBNFGrammar.AddBlockComment( "/*", "*/" );
-		kxCBNFGrammar.AddLexeme( "identifier", "[_a-zA-Z][_\\-a-zA-Z0-9]*" );
-		kxCBNFGrammar.AddLexeme( "string", "\"(?:[^\\\"\\\\]|\\\\.)*\"" );
+		kxCBNFGrammar.AddLexeme( "<identifier>", "[_a-zA-Z][_\\-a-zA-Z0-9]*" );
+		kxCBNFGrammar.AddLexeme( "<string>", "\"(?:[^\\\"\\\\]|\\\\.)*\"" );
 	}
 
 	return kxCBNFGrammar;

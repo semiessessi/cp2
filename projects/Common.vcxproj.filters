@@ -26,5 +26,8 @@
     <ClInclude Include="..\common\cpp\Token.h">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="..\common\cpp\Escaping.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
