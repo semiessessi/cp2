@@ -57,7 +57,7 @@ void DoParserTests()
 #ifdef _DEBUG
 		for( int i = 0; i < 8; ++i )
 #else
-		for( int i = 0; i < 15; ++i )
+		for( int i = 0; i < 13; ++i )
 #endif
 		{
 			kaxATokensLong.insert(
@@ -68,9 +68,9 @@ void DoParserTests()
 	if( kaxABCTokensLong.size() < 1000 )
 	{
 #ifdef _DEBUG
-		for( int i = 0; i < 8; ++i )
+		for( int i = 0; i < 7; ++i )
 #else
-		for( int i = 0; i < 15; ++i )
+		for( int i = 0; i < 12; ++i )
 #endif
 		{
 			kaxABCTokensLong.insert(

@@ -109,7 +109,7 @@ void DoLexerTests()
 #ifdef _DEBUG
 		for( int i = 0; i < 10; ++i )
 #else
-		for( int i = 0; i < 15; ++i )
+		for( int i = 0; i < 14; ++i )
 #endif
 		{
 			gxLong += gxLong;

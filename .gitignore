@@ -7,3 +7,4 @@ x64/
 *.ipdb
 projects/Win32/
 Win32/
+*.user
