@@ -272,14 +272,38 @@ std::string Grammar::GetCBNF() const
 	return xReturnValue;
 }
 
+template< typename ElementType >
+static inline void MergeHelper(
+	std::vector< ElementType >& axMine, const std::vector< ElementType > &axTheirs )
+{
+	for( const ElementType& xOtherThing : axTheirs )
+	{
+		bool bFound = false;
+		for( const ElementType& xThing : axMine )
+		{
+			if( xThing == xOtherThing )
+			{
+				bFound = true;
+				break;
+			}
+		}
+
+		if( !bFound )
+		{
+			axMine.push_back( xOtherThing );
+		}
+	}
+}
+
 void Grammar::Merge( const Grammar& xOther )
 {
 	maxProductions.insert( maxProductions.end(), xOther.maxProductions.begin(), xOther.maxProductions.end() );
 
-	//for( size_t i = 0; i < xOther.GetCommentCount(); ++i )
-	//{
-	//	// ...
-	//}
+	MergeHelper( maxCommentRules, xOther.maxCommentRules );
+	MergeHelper( maxLexemeRules, xOther.maxLexemeRules );
+
+	RebuildTokens();
+
 }
 void Grammar::AddLexeme( const char* const szPrettyName, const char* const szExpression )
 {
@@ -340,6 +364,26 @@ void Grammar::InferLexemes()
 		maxBaseTokens.push_back( Token( szPrettyName, iID, false ) );
 		++iID;
 		maxLexemeRules.push_back( Lexer::Rule( szRuleExpression, maxBaseTokens.back() ) );
+	}
+}
+
+void Grammar::RebuildTokens()
+{
+	maxBaseTokens.clear();
+	int iID = 7000;
+	for( Lexer::Rule& xRule : maxLexemeRules )
+	{
+		const std::string xExpression = xRule.GetExpression();
+		const Token& xOriginalToken = xRule.GetBaseToken();
+		const char* const szRuleExpression =
+			mxTokenStrings.insert( xExpression ).first->c_str();
+		const char* const szPrettyName =
+			mxTokenStrings.insert( xOriginalToken.GetName() ).first->c_str();
+
+		maxBaseTokens.push_back(
+			Token( szPrettyName, iID, xOriginalToken.IsValued() ) );
+		xRule = Lexer::Rule( szRuleExpression, maxBaseTokens.back() );
+		++iID;
 	}
 }
 

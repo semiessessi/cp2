@@ -209,6 +209,7 @@ public:
 private:
 
 	void InferLexemes();
+	void RebuildTokens();
 
 	mutable std::unordered_map< std::string, std::vector< GrammarProduction > > mxProductionCache;
 	// removed const to allow merging
