@@ -55,6 +55,17 @@ void DoCBNFTests()
 	{
 		Message( "error: Failed test: expected CBNF grammar to compile from itself" );
 	} );
+
+	Parser::Grammar xMergedGrammar;
+	xMergedGrammar.Merge( xNewGrammar );
+
+	const std::string xMerged( xMergedGrammar.GetCBNF() );
+
+	Expect( xMerged == xTest, [ & ]()
+	{
+		Message( "error: Failed test: expected merged CBNF grammar to be correct" );
+	} );
+
 }
 
 }

@@ -30,6 +30,13 @@ public:
 	const std::string& GetExpression() const { return mxExpression; }
 	const Token& GetBaseToken() const { return mxBaseToken; }
 
+	bool operator ==( const Rule& xOther ) const
+	{
+		// SE - TODO: token id? its not used atm.
+		return ( mxExpression == xOther.mxExpression )
+			&& ( mxBaseToken.GetName() == xOther.mxBaseToken.GetName() );
+	}
+
 private:
 
 	std::string mxExpression;
@@ -61,6 +68,12 @@ public:
 	const char* GetEnd() const { return mszMarkerEnd.empty() ? nullptr : mszMarkerEnd.c_str(); }
 
 	int GetLength( const char* const szCursor, const char* const szFilename, const int iLine, const int iColumn ) const;
+
+	bool operator ==( const Comment& xOther ) const
+	{
+		return ( mszMarkerStart == xOther.mszMarkerStart )
+			&& ( mszMarkerEnd == xOther.mszMarkerEnd );
+	}
 
 private:
 
