@@ -1,6 +1,8 @@
 #ifndef PARSER_TESTS_H
 #define PARSER_TESTS_H
 
+#include "../../../common/cpp/Profiling.h"
+
 namespace CP2
 {
 
@@ -9,9 +11,11 @@ namespace CP2
 
 #define CP2_PARSER_TEST_SIMPLE_CLEAN( name, input, grammar ) \
 do { \
-	Message( "Running simple parser tests for \"" name "\"..." ); \
+	Message( "Running simple parser tests for \"" name "\" on %d input tokens...", input.size() ); \
 	ResetMessageReports(); \
+	StartProfiling( name ); \
 	ASTNode* const pxAST = Parser::Parse( input, grammar ); \
+	EndProfiling( name ); \
 	ExpectClean( name ); \
 	ResetMessageReports(); \
 	Expect( pxAST->GetChildCount() == input.size(), [&] \

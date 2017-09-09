@@ -59,6 +59,18 @@ std::vector< ReportMessage > GetAllMessages()
 	return gaxReportMessages;
 }
 
+
+void UntrackedMessage( const char* const szString, ... )
+{
+	char szBuffer[ 256 ];
+	va_list xArguments;
+	va_start( xArguments, szString );
+	vsnprintf( szBuffer, 256, szString, xArguments );
+	va_end( xArguments );
+
+	puts( szBuffer );
+}
+
 void Message( const char* const szString, ... )
 {
 	char szBuffer[ 256 ];

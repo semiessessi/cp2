@@ -3,6 +3,7 @@
 #ifndef ASTNODE_H
 #define ASTNODE_H
 
+#include "Pool.h"
 #include "Token.h"
 
 #include <string>
@@ -12,6 +13,7 @@ namespace CP2
 {
 
 class ASTNode
+: public PoolAllocated< ASTNode >
 {
 	
 public:

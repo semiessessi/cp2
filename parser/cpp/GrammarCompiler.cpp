@@ -82,6 +82,13 @@ GrammarExpression CompileExpression( ASTNode* const pxRuleExpression )
 
 Grammar CompileGrammar( ASTNode* const pxAST )
 {
+	if( pxAST == nullptr )
+	{
+		Warning( 4501, "<unknown>", 0, 0,
+			"Unable to compiler grammar from empty syntax tree, producing empty grammar" );
+		return Grammar();
+	}
+
 	std::vector< GrammarProduction > axProductions;
 	std::vector< Lexer::Comment > axComments;
 	std::vector< std::pair< std::string, std::string > > axLexemes;
