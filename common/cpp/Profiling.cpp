@@ -28,7 +28,7 @@ void EndProfiling( const char* const szName )
 	const double dTime = GetTimeInSeconds() - gaxStartTimes.back();
 	gaxStartTimes.pop_back();
 
-	Message( "Profiling: %s took %.3f seconds", szName, dTime );
+	UntrackedMessage( "Profiling: %s took %.3f seconds", szName, dTime );
 }
 
 }

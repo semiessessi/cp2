@@ -23,6 +23,7 @@ int GetErrorCount();
 int GetWarningCount();
 std::vector< ReportMessage > GetAllMessages();
 
+void UntrackedMessage( const char* const szString, ... );
 void Message( const char* const szString, ... );
 void Report( const char* const szFilename, const int iLine, const int iColumn, const char* const szString, ... );
 void Warning( const int iWarningNumber, const char* const szFilename, const int iLine, const int iColumn, const char* const szString, ... );
