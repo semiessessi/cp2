@@ -22,7 +22,11 @@ struct ParseState
 	}
 };
 
-bool HandleListOrOptional(
+std::vector< ParseState > ParseRecursive(
+	const std::vector< Token >& axTokens, const Grammar& xGrammar,
+	const int iCursor, const std::vector< GrammarProduction >& axProductions );
+
+static inline bool HandleListOrOptional(
 	const bool bOptional, const bool bList, const bool bNonEmpty,
 	int& iCurrentListCount, size_t& j,
 	const std::vector< ParseState >& axWorkingNewStates,
@@ -62,6 +66,132 @@ bool HandleListOrOptional(
 	return false;
 }
 
+static inline bool HandleCatchAll(
+	const std::vector< GrammarProduction >& axNewProductions )
+{
+	return ( axNewProductions.size() == 1 )
+		&& ( axNewProductions[ 0 ].GetExpression().IsCatchAll() );
+}
+
+static inline bool ContinueState( size_t& k,
+	const std::vector< Token >& axTokens,
+	const Grammar& xGrammar,
+	const std::string& xName,
+	const std::vector< GrammarProduction >& axNewProductions,
+	std::vector< ParseState >& axWorkingNewStates,
+	std::vector< ParseState >& axNewStates )
+{
+	// continue where this state left off
+	const int iCurrentCursor = axNewStates[ k ].miCursor;
+	ASTNode* const pxBaseNode = axNewStates[ k ].mpxAST;
+	if( iCurrentCursor >= axTokens.size() )
+	{
+		// report error?
+		return false;
+	}
+
+	if( axNewProductions.size() == 0 )
+	{
+		// this is a terminal
+		// does it match what we expect?
+		if( xName == axTokens[ iCurrentCursor ].GetName() )
+		{
+			// add the terminal as the one option here.
+			ParseState xNewState =
+			{
+				ASTNode::DuplicateAndAddChild(
+					pxBaseNode,
+					new ASTNode(
+						iCurrentCursor, axTokens[ iCurrentCursor ], xName ) ),
+				iCurrentCursor + 1
+			};
+			axWorkingNewStates.push_back( xNewState );
+		}
+		//else
+		//{
+		//	// report error?
+		//}
+
+		return false;
+	}
+
+	//
+	std::vector< ParseState > axChildStates =
+		ParseRecursive( axTokens, xGrammar, iCurrentCursor, axNewProductions );
+	for( ParseState& xState : axChildStates )
+	{
+		ParseState xNewState =
+		{
+			ASTNode::DuplicateAndAddChild(
+				pxBaseNode,
+				ASTNode::Duplicate( xState.mpxAST ) ),
+			xState.miCursor
+		};
+		axWorkingNewStates.push_back( xNewState );
+	}
+
+	return false;
+}
+
+static inline bool ParseName(
+	const std::vector< Token >& axTokens,
+	const std::vector< std::string >& axNames,
+	const Grammar& xGrammar,
+	int& iCurrentListCount, size_t& j,
+	std::vector< ParseState >& axWorkingNewStates,
+	std::vector< ParseState >& axNewStates )
+{
+	axWorkingNewStates.clear();
+
+	const std::string& xBaseName = axNames[ j ];
+
+	// safety...
+	if( xBaseName.empty() )
+	{
+		return false;
+	}
+
+	// tidy up the name.
+	// SE - TODO: something better than magical encodings
+	const std::string xListName( &xBaseName[ 1 ] );
+	const bool bNonEmpty = ( xBaseName[ 0 ] == '+' ) && ( xBaseName.length() > 1 );
+	const bool bList = bNonEmpty ||
+		( ( xBaseName[ 0 ] == '!' ) && ( xBaseName.length() > 1 ) );
+	const bool bOptional = ( xBaseName[ 0 ] == '?' ) && ( xBaseName.length() > 1 );
+	const std::string& xName = ( bList || bOptional ) ? xListName : xBaseName;
+
+	// do we have any productions for this thing?
+	const std::vector< GrammarProduction > axNewProductions =
+		xGrammar.GetProductions( xName );
+
+	// handle catch all ...
+	if( HandleCatchAll( axNewProductions ) )
+	{
+		return true;
+	}
+
+	// for each state we continue from some previous states...
+	for( size_t k = 0; k < axNewStates.size(); ++k )
+	{
+		ContinueState( k,
+			axTokens, xGrammar,
+			xName, axNewProductions,
+			axWorkingNewStates, axNewStates );
+	}
+
+	if( HandleListOrOptional(
+		bOptional, bList, bNonEmpty,
+		iCurrentListCount, j,
+		axWorkingNewStates, axNewStates ) )
+	{
+		return false;
+	}
+
+	axNewStates = axWorkingNewStates;
+
+	return false;
+}
+
 std::vector< ParseState > ParseRecursive(
 	const std::vector< Token >& axTokens, const Grammar& xGrammar,
 	const int iCursor, const std::vector< GrammarProduction >& axProductions )
@@ -88,7 +218,7 @@ std::vector< ParseState > ParseRecursive(
 		axWorkingNewStates.clear();
 
 		// we always start with one state.
-		ParseState xInitialState =
+		const ParseState xInitialState =
 		{
 			ASTNode::Duplicate( pxTopBaseNode ),
 			iCursor,
@@ -99,102 +229,12 @@ std::vector< ParseState > ParseRecursive(
 		int iCurrentListCount = 0;
 		for( size_t j = 0; j < axNames.size(); ++j )
 		{
-			axWorkingNewStates.clear();
-
-			const std::string& xBaseName = axNames[ j ];
-
-			// safety...
-			if( xBaseName.empty() )
-			{
-				continue;
-			}
-
-			// tidy up the name.
-			// SE - TODO: something better than magical encodings
-			const std::string xListName( &xBaseName[ 1 ] );
-			const bool bNonEmpty = ( xBaseName[ 0 ] == '+' ) && ( xBaseName.length() > 1 );
-			const bool bList = bNonEmpty ||
-				( ( xBaseName[ 0 ] == '!' ) && ( xBaseName.length() > 1 ) );
-			const bool bOptional = ( xBaseName[ 0 ] == '?' ) && ( xBaseName.length() > 1 );
-			const std::string& xName = ( bList || bOptional ) ? xListName : xBaseName;
-
-			// do we have any productions for this thing?
-			const std::vector< GrammarProduction > axNewProductions =
-				xGrammar.GetProductions( xName );
-
-			// handle catch all ...
-			if( axNewProductions.size() == 1 )
-			{
-				if( axNewProductions[ 0 ].GetExpression().IsCatchAll() )
-				{
-					// we are done, insert the new states, as-is
-					break;
-				}
-			}
-
-			// for each state we continue from some previous states...
-			for( size_t k = 0; k < axNewStates.size(); ++k )
-			{
-				// continue where this state left off
-				const int iCurrentCursor = axNewStates[ k ].miCursor;
-				ASTNode* const pxBaseNode = axNewStates[ k ].mpxAST;
-				if( iCurrentCursor >= axTokens.size() )
-				{
-					// report error?
-					continue;
-				}
-
-				if( axNewProductions.size() == 0 )
-				{
-					// this is a terminal
-					// does it match what we expect?
-					if( xName == axTokens[ iCurrentCursor ].GetName() )
-					{
-						// add the terminal as the one option here.
-						ParseState xNewState =
-						{
-							ASTNode::DuplicateAndAddChild(
-								pxBaseNode,
-								new ASTNode(
-									iCurrentCursor, axTokens[ iCurrentCursor ], xName ) ),
-							iCurrentCursor + 1
-						};
-						axWorkingNewStates.push_back( xNewState );
-					}
-					//else
-					//{
-					//	// report error?
-					//}
-
-					continue;
-				}
-
-				//
-				std::vector< ParseState > axChildStates =
-					ParseRecursive( axTokens, xGrammar, iCurrentCursor, axNewProductions );
-				for( ParseState& xState : axChildStates )
-				{
-					ParseState xNewState =
-					{
-						ASTNode::DuplicateAndAddChild(
-							pxBaseNode,
-							ASTNode::Duplicate( xState.mpxAST ) ),
-						xState.miCursor
-					};
-					axWorkingNewStates.push_back( xNewState );
-				}
-				
-			}
-
-			if( HandleListOrOptional(
-				bOptional, bList, bNonEmpty,
+			if( ParseName( axTokens, axNames, xGrammar,
 				iCurrentListCount, j,
 				axWorkingNewStates, axNewStates ) )
 			{
-				continue;
+				break;
 			}
-
-			axNewStates = axWorkingNewStates;
 		}
 
 		axStates.insert( axStates.end(), axNewStates.begin(), axNewStates.end() );
