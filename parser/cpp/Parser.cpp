@@ -22,6 +22,46 @@ struct ParseState
 	}
 };
 
+bool HandleListOrOptional(
+	const bool bOptional, const bool bList, const bool bNonEmpty,
+	int& iCurrentListCount, size_t& j,
+	const std::vector< ParseState >& axWorkingNewStates,
+	std::vector< ParseState >& axNewStates )
+{
+	// if its optional in anyway ...
+	const bool bNotOptional = bNonEmpty && ( iCurrentListCount == 0 );
+	if( bOptional || bList )
+	{
+		// ... and we failed to parse anything
+		if( axWorkingNewStates.size() == 0 )
+		{
+			// then continue with the next name
+			// with the same states we just tried...
+			return true;
+		}
+	}
+
+	if( bList ) // if its a list, and we didn't skip out ...
+	{
+
+		// ... try and parse the same thing again, add to the list
+		--j;
+		++iCurrentListCount;
+	}
+	else
+	{
+		iCurrentListCount = 0;
+	}
+
+	// cleanup the old 'new' states before forgetting them.
+	for( ParseState& xState : axNewStates )
+	{
+		xState.Cleanup();
+	}
+
+	return false;
+}
+
 std::vector< ParseState > ParseRecursive(
 	const std::vector< Token >& axTokens, const Grammar& xGrammar,
 	const int iCursor, const std::vector< GrammarProduction >& axProductions )
@@ -143,35 +183,12 @@ std::vector< ParseState > ParseRecursive(
 				
 			}
 
-			// if its optional in anyway ...
-			const bool bNotOptional = bNonEmpty && ( iCurrentListCount == 0 );
-			if( bOptional || bList )
+			if( HandleListOrOptional(
+				bOptional, bList, bNonEmpty,
+				iCurrentListCount, j,
+				axWorkingNewStates, axNewStates ) )
 			{
-				// ... and we failed to parse anything
-				if( axWorkingNewStates.size() == 0 )
-				{
-					// then continue with the next name
-					// with the same states we just tried...
-					continue;
-				}
-			}
-
-			if( bList ) // if its a list, and we didn't skip out ...
-			{
-				
-				// ... try and parse the same thing again, add to the list
-				--j;
-				++iCurrentListCount;
-			}
-			else
-			{
-				iCurrentListCount = 0;
-			}
-
-			// cleanup the old 'new' states before forgetting them.
-			for( ParseState& xState : axNewStates )
-			{
-				xState.Cleanup();
+				continue;
 			}
 
 			axNewStates = axWorkingNewStates;
