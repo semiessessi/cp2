@@ -202,8 +202,7 @@ std::vector< ParseState > ParseRecursive(
 		return axStates;
 	}
 	
-	ASTNode* const pxTopBaseNode =
-		new ASTNode( iCursor, axTokens[ iCursor ], axProductions[ 0 ].GetName() );
+	ASTNode xTopBaseNode( iCursor, axTokens[ iCursor ], axProductions[ 0 ].GetName() );
 
 	// we have one list of new states we iterate on
 	// and one we write the next set of new states into
@@ -220,7 +219,7 @@ std::vector< ParseState > ParseRecursive(
 		// we always start with one state.
 		const ParseState xInitialState =
 		{
-			ASTNode::Duplicate( pxTopBaseNode ),
+			ASTNode::Duplicate( &xTopBaseNode ),
 			iCursor,
 		};
 		axNewStates.push_back( xInitialState );
@@ -239,8 +238,6 @@ std::vector< ParseState > ParseRecursive(
 
 		axStates.insert( axStates.end(), axNewStates.begin(), axNewStates.end() );
 	}
-
-	delete pxTopBaseNode;
 
 	return axStates;
 }

@@ -63,38 +63,38 @@ void DoEdgecaseInputTests()
 {
 	CP2_LEXER_TEST_SINGLE_INTERNAL_ERROR(
 		"no rules, no comments, no input", "empty-test-input",
-		kxEmptyString.c_str(), kaxEmptyLexerRules, kaxEmptyCommentRules, 2401 );
+		kxEmptyString, kaxEmptyLexerRules, kaxEmptyCommentRules, 2401 );
 
 	CP2_LEXER_TEST_SINGLE_INTERNAL_ERROR(
 		"no rules, no comments, short input", "simple-test-input",
-		kxSimpleLexerInput.c_str(), kaxEmptyLexerRules, kaxEmptyCommentRules, 2401 );
+		kxSimpleLexerInput, kaxEmptyLexerRules, kaxEmptyCommentRules, 2401 );
 
 	CP2_LEXER_TEST_CLEAN(
 		"abc rules, no comments, no input", "long-test-input",
-		kxEmptyString.c_str(), kaxABCRules, kaxEmptyCommentRules );
+		kxEmptyString, kaxABCRules, kaxEmptyCommentRules );
 
 	CP2_LEXER_TEST_CLEAN(
 		"abc rules, no comments, long input", "long-test-input",
-		gxLong.c_str(), kaxABCRules, kaxEmptyCommentRules );
+		gxLong, kaxABCRules, kaxEmptyCommentRules );
 	
 	CP2_LEXER_TEST_CLEAN(
 		"ac rules, b line comments, long input", "long-test-input",
-		gxLong.c_str(), kaxACRules, kaxBCommentRules );
+		gxLong, kaxACRules, kaxBCommentRules );
 
 	CP2_LEXER_TEST_CLEAN(
 		"b rules, ac block comments, long input", "long-test-input",
-		gxLong.c_str(), kaxBRules, kaxACCommentRules );
+		gxLong, kaxBRules, kaxACCommentRules );
 }
 
 void DoBadTokenTests()
 {
 	CP2_LEXER_TEST_SINGLE_ERROR(
 		"ac rules, no comments, short input", "simple-test-input",
-		kxSimpleLexerInput.c_str(), kaxACRules, kaxEmptyCommentRules, 2002 );
+		kxSimpleLexerInput, kaxACRules, kaxEmptyCommentRules, 2002 );
 
 	CP2_LEXER_TEST_SINGLE_ERROR(
 		"ac rules, no comments, short spaced input", "simple-spaced-test-input",
-		kxSimpleSpacedLexerInput.c_str(), kaxACRules, kaxEmptyCommentRules, 2002 );
+		kxSimpleSpacedLexerInput, kaxACRules, kaxEmptyCommentRules, 2002 );
 }
 
 void DoAccuracyTests()

@@ -70,7 +70,7 @@ void DoParserTests()
 #ifdef _DEBUG
 		for( int i = 0; i < 7; ++i )
 #else
-		for( int i = 0; i < 12; ++i )
+		for( int i = 0; i < 11; ++i )
 #endif
 		{
 			kaxABCTokensLong.insert(
