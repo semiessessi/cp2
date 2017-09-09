@@ -75,15 +75,18 @@ std::vector< ParseState > ParseRecursive(
 	ASTNode* const pxTopBaseNode =
 		new ASTNode( iCursor, axTokens[ iCursor ], axProductions[ 0 ].GetName() );
 
+	// we have one list of new states we iterate on
+	// and one we write the next set of new states into
+	std::vector< ParseState > axNewStates;
+	std::vector< ParseState > axWorkingNewStates;
 	for( size_t i = 0; i < axProductions.size(); ++i )
 	{
 		const std::vector< std::string >& axNames =
 			axProductions[ i ].GetExpression().GetFlattenedNames();
 
-		// we have one list of new states we iterate on
-		// and one we write the next set of new states into
-		std::vector< ParseState > axNewStates;
-		std::vector< ParseState > axWorkingNewStates;
+		axNewStates.clear();
+		axWorkingNewStates.clear();
+
 		// we always start with one state.
 		ParseState xInitialState =
 		{
