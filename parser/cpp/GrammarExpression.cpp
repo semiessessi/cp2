@@ -7,31 +7,32 @@ namespace CP2
 namespace Parser
 {
 
-std::vector< std::string > GrammarExpression::GetReferencedNames() const
+std::vector< Name > GrammarExpression::GetReferencedNames() const
 {
-	std::vector< std::string > axNames;
+	std::vector< Name > axNames;
 
 	if( !mxSymbolName.empty() )
 	{
-		axNames.push_back( mxSymbolName );
+		axNames.push_back( {
+			mxSymbolName, mbList, mbOptional, mbNonEmpty } );
 	}
 
 	if( mpxLeft != nullptr )
 	{
-		std::vector< std::string > axOtherNames = mpxLeft->GetReferencedNames();
+		std::vector< Name > axOtherNames = mpxLeft->GetReferencedNames();
 		axNames.insert( axNames.end(), axOtherNames.begin(), axOtherNames.end() );
 	}
 
 	if( mpxRight != nullptr )
 	{
-		std::vector< std::string > axOtherNames = mpxRight->GetReferencedNames();
+		std::vector< Name > axOtherNames = mpxRight->GetReferencedNames();
 		axNames.insert( axNames.end(), axOtherNames.begin(), axOtherNames.end() );
 	}
 
 	return axNames;
 }
 
-const std::vector< std::string >& GrammarExpression::GetFlattenedNames() const
+const std::vector< Name >& GrammarExpression::GetFlattenedNames() const
 {
 	if( maxFlattenedNames.size() == 0 )
 	{
@@ -54,7 +55,7 @@ bool GrammarExpression::IsCatchAll() const
 }
 
 void GrammarExpression::GetFlattenedNamesRecursive(
-	std::vector< std::string >& xWorkingVector ) const
+	std::vector< Name >& xWorkingVector ) const
 {
 	if( mpxLeft != nullptr )
 	{
@@ -64,12 +65,9 @@ void GrammarExpression::GetFlattenedNamesRecursive(
 	const std::string xName = GetName();
 	if( !xName.empty() )
 	{
-		// SE - TODO: something less shitty...
-		xWorkingVector.push_back( IsNonEmpty()
-			? ( std::string( "+" ) + xName )
-			: IsOptional()
-			? ( std::string( "?" ) + xName )
-			: ( IsList() ? ( std::string( "!" ) + xName ) : xName ) );
+		xWorkingVector.push_back( {
+			xName, IsList(), IsOptional(), IsNonEmpty()
+		} );
 	}
 
 	if( mpxRight != nullptr )

@@ -19,10 +19,10 @@ std::vector< GrammarProduction > Grammar::GetTopLevelProductions() const
 	for( int i = 0; i < iProductionCount; ++i )
 	{
 		const GrammarProduction& xProduction = GetProduction( i );
-		std::vector< std::string > axNames = xProduction.GetExpression().GetReferencedNames(); 
+		std::vector< Name > axNames = xProduction.GetExpression().GetReferencedNames(); 
 		for( size_t j = 0; j < axNames.size(); ++j )
 		{
-			xLowerLevelProductions.insert( axNames[ j ] );
+			xLowerLevelProductions.insert( axNames[ j ].xName );
 		}
 	}
 
@@ -221,24 +221,24 @@ void Grammar::InferLexemes()
 	std::unordered_set< std::string > xStrings;
 	for( const GrammarProduction& xProduction : maxProductions )
 	{
-		const std::vector< std::string >& axNames =
+		const std::vector< Name >& axNames =
 			xProduction.GetExpression().GetFlattenedNames();
 
-		for( const std::string& xString : axNames )
+		for( const Name& xName : axNames )
 		{
-			if( xString.length() > 2 )
+			if( xName.xName.length() > 2 )
 			{
-				if( ( xString.front() != '<' )
-					&& ( xString.front() != '?' )
-					&& ( xString.front() != '!' )
-					&& ( xString.front() != '+' ) )
+				if( ( xName.xName.front() != '<' )
+					&& ( xName.xName.front() != '?' )
+					&& ( xName.xName.front() != '!' )
+					&& ( xName.xName.front() != '+' ) )
 				{
-					xStrings.insert( xString );
+					xStrings.insert( xName.xName );
 				}
 			}
-			else if( xString.length() >= 1 )
+			else if( xName.xName.length() >= 1 )
 			{
-				xStrings.insert( xString );
+				xStrings.insert( xName.xName );
 			}
 		}
 	}

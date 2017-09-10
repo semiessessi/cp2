@@ -135,7 +135,7 @@ static inline bool ContinueState( size_t& k,
 
 static inline bool ParseName(
 	const std::vector< Token >& axTokens,
-	const std::vector< std::string >& axNames,
+	const std::vector< Name >& axNames,
 	const Grammar& xGrammar,
 	int& iCurrentListCount, size_t& j,
 	std::vector< ParseState >& axWorkingNewStates,
@@ -143,22 +143,16 @@ static inline bool ParseName(
 {
 	axWorkingNewStates.clear();
 
-	const std::string& xBaseName = axNames[ j ];
+	const std::string& xName = axNames[ j ].xName;
 
 	// safety...
-	if( xBaseName.empty() )
+	if( xName.empty() )
 	{
 		return false;
 	}
-
-	// tidy up the name.
-	// SE - TODO: something better than magical encodings
-	const std::string xListName( &xBaseName[ 1 ] );
-	const bool bNonEmpty = ( xBaseName[ 0 ] == '+' ) && ( xBaseName.length() > 1 );
-	const bool bList = bNonEmpty ||
-		( ( xBaseName[ 0 ] == '!' ) && ( xBaseName.length() > 1 ) );
-	const bool bOptional = ( xBaseName[ 0 ] == '?' ) && ( xBaseName.length() > 1 );
-	const std::string& xName = ( bList || bOptional ) ? xListName : xBaseName;
+	const bool bNonEmpty = axNames[ j ].bNonEmpty;
+	const bool bList = bNonEmpty || axNames[ j ].bList;
+	const bool bOptional = axNames[ j ].bOptional;
 
 	// do we have any productions for this thing?
 	const std::vector< GrammarProduction > axNewProductions =
@@ -210,7 +204,7 @@ std::vector< ParseState > ParseRecursive(
 	std::vector< ParseState > axWorkingNewStates;
 	for( size_t i = 0; i < axProductions.size(); ++i )
 	{
-		const std::vector< std::string >& axNames =
+		const std::vector< Name >& axNames =
 			axProductions[ i ].GetExpression().GetFlattenedNames();
 
 		axNewStates.clear();

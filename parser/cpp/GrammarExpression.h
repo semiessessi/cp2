@@ -13,6 +13,14 @@ namespace CP2
 namespace Parser
 {
 
+struct Name
+{
+	std::string xName;
+	bool bList;
+	bool bOptional;
+	bool bNonEmpty;
+};
+
 class GrammarExpression
 {
 
@@ -113,8 +121,8 @@ public:
 		return mpxLeft->GetLeftmostChild();
 	}
 
-	std::vector< std::string > GetReferencedNames() const;
-	const std::vector< std::string >& GetFlattenedNames() const; // SE - NOTE: this gets hammered.
+	std::vector< Name > GetReferencedNames() const;
+	const std::vector< Name >& GetFlattenedNames() const; // SE - NOTE: this gets hammered.
 
 	std::string GetCBNF() const;
 
@@ -122,11 +130,11 @@ public:
 
 private:
 
-	void GetFlattenedNamesRecursive( std::vector< std::string >& xWorkingVector ) const;
+	void GetFlattenedNamesRecursive( std::vector< Name >& xWorkingVector ) const;
 	void GetCBNFRecursive( std::string& xWorkingString ) const;
 
 	// cache the name array...
-	mutable std::vector< std::string > maxFlattenedNames;
+	mutable std::vector< Name > maxFlattenedNames;
 
 	std::string mxSymbolName;
 	const GrammarExpression* mpxLeft;
