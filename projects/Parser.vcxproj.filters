@@ -24,6 +24,12 @@
     <ClCompile Include="..\parser\cpp\GrammarCompiler.cpp">
       <Filter>parser</Filter>
     </ClCompile>
+    <ClCompile Include="..\parser\cpp\LLK.cpp">
+      <Filter>parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\parser\cpp\GrammarExpression.cpp">
+      <Filter>parser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\parser\cpp\Parser.h">
@@ -48,6 +54,12 @@
       <Filter>parser</Filter>
     </ClInclude>
     <ClInclude Include="..\parser\cpp\GrammarCompiler.h">
+      <Filter>parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\parser\cpp\LLK.h">
+      <Filter>parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\parser\cpp\GrammarExpression.h">
       <Filter>parser</Filter>
     </ClInclude>
   </ItemGroup>
