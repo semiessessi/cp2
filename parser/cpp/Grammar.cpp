@@ -22,7 +22,11 @@ std::vector< GrammarProduction > Grammar::GetTopLevelProductions() const
 		std::vector< Name > axNames = xProduction.GetExpression().GetReferencedNames(); 
 		for( size_t j = 0; j < axNames.size(); ++j )
 		{
-			xLowerLevelProductions.insert( axNames[ j ].xName );
+			// e.g. in case of top level productions like a->ab
+			if( axNames[ j ].xName != xProduction.GetName() )
+			{
+				xLowerLevelProductions.insert( axNames[ j ].xName );
+			}
 		}
 	}
 
