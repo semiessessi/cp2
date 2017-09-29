@@ -12,6 +12,12 @@ bool IsLLK( const int k,
 	const Grammar& xGrammar,
 	const std::vector< GrammarProduction >& axProductions )
 {
+	
+	for( const GrammarProduction& xProduction : axProductions )
+	{
+
+	}
+
 	return false;
 }
 

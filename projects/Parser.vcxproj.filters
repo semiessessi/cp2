@@ -30,6 +30,9 @@
     <ClCompile Include="..\parser\cpp\GrammarExpression.cpp">
       <Filter>parser</Filter>
     </ClCompile>
+    <ClCompile Include="..\parser\cpp\NormalisedGrammar.cpp">
+      <Filter>parser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\parser\cpp\Parser.h">
@@ -60,6 +63,9 @@
       <Filter>parser</Filter>
     </ClInclude>
     <ClInclude Include="..\parser\cpp\GrammarExpression.h">
+      <Filter>parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\parser\cpp\NormalisedGrammar.h">
       <Filter>parser</Filter>
     </ClInclude>
   </ItemGroup>
