@@ -68,10 +68,12 @@ public:
 	void AddLexeme( const char* const szPrettyName, const char* const szExpression );
 	void AddLineComment( const char* const szStart );
 	void AddBlockComment( const char* const szStart, const char* const szEnd );
+	void AddQuote( const char* const szName, const char* const szStart, const char* const szEnd, const char* const szEscape );
 
 	int GetLexemeCount() const { return static_cast< int >( maxLexemeRules.size() ); }
 	int GetCommentCount() const { return static_cast< int >( maxCommentRules.size() ); }
 
+	const std::vector< Lexer::Quote >& GetQuotes() const { return maxQuoteRules; }
 	const std::vector< Lexer::Comment >& GetComments() const { return maxCommentRules; }
 	const std::vector< Lexer::Rule >& GetLexemes() const { return maxLexemeRules; }
 private:
@@ -83,6 +85,7 @@ private:
 	// removed const to allow merging
 	/*const */std::vector< GrammarProduction > maxProductions;
 
+	std::vector< Lexer::Quote > maxQuoteRules;
 	std::vector< Lexer::Comment > maxCommentRules;
 	std::vector< Lexer::Rule > maxLexemeRules;
 	std::vector< Token > maxBaseTokens;

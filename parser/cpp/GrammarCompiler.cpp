@@ -91,6 +91,7 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 
 	std::vector< GrammarProduction > axProductions;
 	std::vector< Lexer::Comment > axComments;
+	std::vector< Lexer::Quote > axQuotes;
 	std::vector< std::pair< std::string, std::string > > axLexemes;
 	// the top should be <grammar>
 	// i feel the parser stops this being hit...
@@ -122,7 +123,8 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 			continue;
 		}
 
-		// the first child should be the name
+		// the first child should be the name, unless it is a special case
+		// like comment, quote or lexeme
 		ASTNode* const pxNameNode = pxProductionAST->GetChild( 0 );
 		if( pxNameNode->GetProductionName() == "comment" )
 		{
@@ -142,6 +144,26 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 					xStart.substr( 1, xStart.length() - 2 ).c_str() ) );
 			}
 
+			continue;
+		}
+		else if( pxNameNode->GetProductionName() == "quote" )
+		{
+			ASTNode* const pxName = pxProductionAST->GetChild( 1 );
+			const std::string& xName = pxName->GetTokenValue();
+			if( iProductionChildCount == 6 )
+			{
+				ASTNode* const pxStart = pxProductionAST->GetChild( 2 );
+				const std::string& xStart = pxStart->GetTokenValue();
+				ASTNode* const pxEnd = pxProductionAST->GetChild( 3 );
+				const std::string& xEnd = pxEnd->GetTokenValue();
+				ASTNode* const pxEscape = pxProductionAST->GetChild( 4 );
+				const std::string& xEscape = pxEscape->GetTokenValue();
+				axQuotes.push_back( Lexer::Quote(
+					( std::string( "<" ) + xName + ">" ).c_str(),
+					CBNFQuoteUnescape( xStart.substr( 1, xStart.length() - 2 ) ).c_str(),
+					CBNFQuoteUnescape( xEnd.substr( 1, xEnd.length() - 2 ) ).c_str(),
+					CBNFQuoteUnescape( xEscape.substr( 1, xEscape.length() - 2 ) ).c_str() ) );
+			}
 			continue;
 		}
 		else if( pxNameNode->GetProductionName() == "lexeme" )
@@ -196,6 +218,12 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 		{
 			xReturnValue.AddLineComment( xComment.GetStart() );
 		}
+	}
+
+	for( const Lexer::Quote& xQuote : axQuotes )
+	{
+		xReturnValue.AddQuote(
+			xQuote.GetName(), xQuote.GetStart(), xQuote.GetEnd(), xQuote.GetEscape() );
 	}
 
 	for( const std::pair< std::string, std::string >& xLexeme : axLexemes )

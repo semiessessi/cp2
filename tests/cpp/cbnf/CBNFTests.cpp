@@ -44,7 +44,7 @@ void DoCBNFTests()
 	ASTNode* const pxNewAST = Parser::Parse(
 		Lexer::Lex(
 			"recursive-cbnf-test", xTest.c_str(),
-			xNewGrammar.GetLexemes(), xNewGrammar.GetComments() ), xNewGrammar );
+			xNewGrammar.GetLexemes(), xNewGrammar.GetComments(), xNewGrammar.GetQuotes() ), xNewGrammar );
 	const Parser::Grammar xFinalGrammar = Parser::CompileGrammar( pxNewAST );
 	
 	ExpectClean( "generated CBNF grammar compilation" );

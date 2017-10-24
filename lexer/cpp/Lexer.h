@@ -82,10 +82,58 @@ private:
 
 };
 
+class Quote
+{
+
+public:
+
+	Quote(
+		const char* const szName,
+		const char* const szStartMarker,
+		const char* const szEndMarker,
+		const char* const szEscapeMarker )
+	: mszName( szName )
+	, mszMarkerStart( szStartMarker )
+	, mszMarkerEnd( szEndMarker )
+	, mszEscapeMarker( szEscapeMarker )
+	{
+
+	}
+
+	const char* GetName() const { return mszName.c_str(); }
+	const char* GetStart() const { return mszMarkerStart.c_str(); }
+	const int GetStartLength() const { return static_cast< int >( mszMarkerStart.length() ); }
+	const char* GetEnd() const { return mszMarkerEnd.c_str(); }
+	const int GetEndLength() const { return static_cast< int >( mszMarkerEnd.length() ); }
+	const char* GetEscape() const { return mszEscapeMarker.c_str(); }
+	const int GetEscapeLength() const { return static_cast< int >( mszEscapeMarker.length() ); }
+
+	//int GetLength( const char* const szCursor, const char* const szFilename, const int iLine, const int iColumn ) const;
+
+	bool operator ==( const Quote& xOther ) const
+	{
+		return ( mszMarkerStart == xOther.mszMarkerStart )
+			&& ( mszMarkerEnd == xOther.mszMarkerEnd )
+			&& ( mszEscapeMarker == xOther.mszEscapeMarker );
+	}
+
+private:
+
+	const std::string mszName;
+	const std::string mszMarkerStart;
+	const std::string mszMarkerEnd;
+	const std::string mszEscapeMarker;
+
+};
+
 std::vector< Token > Lex( const char* const szFilename, const char* const szSourceCode,
-	const std::vector< Rule >& axRules, const std::vector< Comment >& axComments );
+	const std::vector< Rule >& axRules,
+	const std::vector< Comment >& axComments,
+	const std::vector< Quote >& axQuotes );
 std::vector< Token > Lex( const char* const szFilename,
-	const std::vector< Rule >& axRules, const std::vector< Comment >& axComments );
+	const std::vector< Rule >& axRules,
+	const std::vector< Comment >& axComments,
+	const std::vector< Quote >& axQuotes );
 
 }
 }

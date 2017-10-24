@@ -8,6 +8,16 @@ namespace CP2
 namespace Lexer
 {
 
+const std::vector< Quote >& CBNFQuoteRules()
+{
+	static const std::vector< Quote > lsaxQuoteRules =
+	{
+		Quote( "<string>", "\"", "\"", "\\" ),
+	};
+
+	return lsaxQuoteRules;
+}
+
 const std::vector< Comment >& CBNFCommentRules()
 {
 	static const std::vector< Comment > lsaxCommentRules =
@@ -25,9 +35,10 @@ const std::vector< Rule >& CBNFLexerRules()
 	{
 		Rule( "comment",						Token( "comment",			0001 ) ),
 		Rule( "lexeme",							Token( "lexeme",			0002 ) ),
+		Rule( "quote",							Token( "quote",				0003 ) ),
 
 		Rule( "[_a-zA-Z][_\\-a-zA-Z0-9]*",		Token( "<identifier>",		1000, true ) ),
-		Rule( "\"(?:[^\\\"\\\\]|\\\\.)*\"",		Token( "<string>",			1001, true ) ),
+		//Rule( "\"(?:[^\\\"\\\\]|\\\\.)*\"",		Token( "<string>",			1001, true ) ),
 
 		Rule( "\\=",							Token( "=",					2000 ) ),
 		Rule( "\\;",							Token( ";",					2001 ) ),
@@ -44,14 +55,14 @@ std::vector< Token > CBNFLex( const char* const szFilename )
 {
 	std::vector< Token > xTokenList;
 
-	return Lex( szFilename, CBNFLexerRules(), CBNFCommentRules() );
+	return Lex( szFilename, CBNFLexerRules(), CBNFCommentRules(), CBNFQuoteRules() );
 }
 
 std::vector< Token > CBNFLex( const char* const szFilename, const char* const szSource )
 {
 	std::vector< Token > xTokenList;
 
-	return Lex( szFilename, szSource, CBNFLexerRules(), CBNFCommentRules() );
+	return Lex( szFilename, szSource, CBNFLexerRules(), CBNFCommentRules(), CBNFQuoteRules() );
 }
 
 }

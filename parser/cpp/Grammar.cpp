@@ -91,6 +91,33 @@ std::string Grammar::GetCBNF() const
 		xReturnValue += "\r\n";
 	}
 
+	for( const Lexer::Quote& xQuote : maxQuoteRules )
+	{
+		xReturnValue += "quote ";
+		const std::string xName = xQuote.GetName();
+		xReturnValue += CBNFQuoteEscape( xName.substr( 1, xName.length() - 2 ) );
+		xReturnValue += "";
+
+		xReturnValue += " \"";
+		xReturnValue += CBNFQuoteEscape( xQuote.GetStart() );
+		xReturnValue += "\"";
+
+		xReturnValue += " \"";
+		xReturnValue += CBNFQuoteEscape( xQuote.GetEnd() );
+		xReturnValue += "\"";
+
+		xReturnValue += " \"";
+		xReturnValue += CBNFQuoteEscape( xQuote.GetEscape() );
+		xReturnValue += "\"";
+
+		xReturnValue += " ;\r\n";
+	}
+
+	if( maxQuoteRules.size() != 0 )
+	{
+		xReturnValue += "\r\n";
+	}
+
 	bool bDoneALexeme = false;
 	for( const Lexer::Rule& xLexeme : maxLexemeRules )
 	{
@@ -194,6 +221,7 @@ void Grammar::Merge( const Grammar& xOther )
 
 	MergeHelper( maxCommentRules, xOther.maxCommentRules );
 	MergeHelper( maxLexemeRules, xOther.maxLexemeRules );
+	MergeHelper( maxQuoteRules, xOther.maxQuoteRules );
 
 	RebuildTokens();
 
@@ -217,6 +245,11 @@ void Grammar::AddBlockComment( const char* const szStart, const char* const szEn
 	maxCommentRules.push_back( Lexer::Comment( szStart, szEnd ) );
 }
 
+void Grammar::AddQuote( const char* const szName, const char* const szStart, const char* const szEnd, const char* const szEscape )
+{
+	maxQuoteRules.push_back( Lexer::Quote( szName, szStart, szEnd, szEscape ) );
+}
+
 void Grammar::InferLexemes()
 {
 	// SE - NOTE: it is important that the regexes come afterwards in the list
@@ -232,6 +265,11 @@ void Grammar::InferLexemes()
 		{
 			if( xName.xName.length() > 2 )
 			{
+				// SE - TODO: ...
+				// argh! wtf was i thinking. this should be documented
+				// with constants and comments.
+				// < is a non terminal, as for the rest...
+				// its ignoring lists etc... i think?!?
 				if( ( xName.xName.front() != '<' )
 					&& ( xName.xName.front() != '?' )
 					&& ( xName.xName.front() != '!' )
@@ -242,6 +280,8 @@ void Grammar::InferLexemes()
 			}
 			else if( xName.xName.length() >= 1 )
 			{
+				// short strings can only be a single character and not a regex
+				// (SE - TODO: we hope?!)
 				xStrings.insert( xName.xName );
 			}
 		}

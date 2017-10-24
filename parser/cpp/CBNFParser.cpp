@@ -26,6 +26,10 @@ const Grammar& GetCBNFGrammar()
 			GE( "comment" ) + GE( "<string>" ) + GE( "<string>" ) + GE( ";" ) ),
 
 		GrammarProduction( "<production>",
+			GE( "quote" ) + GE( "<identifier>" )
+			+ GE( "<string>" ) + GE( "<string>" ) + GE( "<string>" ) + GE( ";" ) ),
+
+		GrammarProduction( "<production>",
 			GE( "lexeme" ) + GE( "<identifier>" ) + GE( "<string>" ) + GE( ";" ) ),
 
 		GrammarProduction( "<production>",
@@ -45,8 +49,8 @@ const Grammar& GetCBNFGrammar()
 	{
 		kxCBNFGrammar.AddLineComment( "//" );
 		kxCBNFGrammar.AddBlockComment( "/*", "*/" );
+		kxCBNFGrammar.AddQuote( "<string>", "\"", "\"", "\\" );
 		kxCBNFGrammar.AddLexeme( "<identifier>", "[_a-zA-Z][_\\-a-zA-Z0-9]*" );
-		kxCBNFGrammar.AddLexeme( "<string>", "\"(?:[^\\\"\\\\]|\\\\.)*\"" );
 	}
 
 	return kxCBNFGrammar;

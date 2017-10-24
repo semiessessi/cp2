@@ -104,28 +104,52 @@ static inline bool HandleComments(
 	return false;
 }
 
-static inline const char* FindNewCursor( const char* const szStartCursor )
+// iQuote is set to a positive or zero if it matches a quoted string
+static inline const char* FindNewCursor(
+	const char* const szStartCursor, const std::vector< Quote >& axQuotes,
+	const char* const szFilename, int& iLine, int& iColumn, int& iQuote )
 {
 	const char* szNewCursor = szStartCursor;
+	for( int i = 0; i < static_cast< int >( axQuotes.size() ); ++i )
+	{
+		const Quote& xQuote = axQuotes[ i ];
+		// are we at the start of this quote? then grab it and return it...
+		if( strncmp( szNewCursor, xQuote.GetStart(), xQuote.GetStartLength() ) == 0 )
+		{
+			iQuote = i;
+			// advance past the quote start
+			szNewCursor += xQuote.GetStartLength();
+			while( *szNewCursor )
+			{
+				if( strncmp(
+					szNewCursor, xQuote.GetEscape(), xQuote.GetEscapeLength() ) == 0 )
+				{
+					// skip the escape sequence, and its following character
+					szNewCursor += xQuote.GetEscapeLength();
+				}
+				else if( strncmp(
+					szNewCursor, xQuote.GetEnd(), xQuote.GetEndLength() ) == 0 )
+				{
+					szNewCursor += xQuote.GetEndLength();
+					return szNewCursor;
+				}
+
+				++szNewCursor;
+			}
+
+			CP2::Error( 2003, szFilename, iLine, iColumn, "Unterminated quote - found end of file before %s", xQuote.GetEnd() );
+			return szNewCursor;
+		}
+	}
+
 	while( *szNewCursor
 		&& ( *szNewCursor != ' ' )
 		&& ( *szNewCursor != '\t' )
 		&& ( *szNewCursor != '\r' )
 		&& ( *szNewCursor != '\n' ) )
 	{
-		// skip quoted stuff...
+		// skip until we hit whitespace or the end of the file...
 		++szNewCursor;
-		if( *( szNewCursor - 1 ) == '"' )
-		{
-			while( *szNewCursor &&
-				!( ( *( szNewCursor - 1 ) != '\\' )
-					&& ( *( szNewCursor ) == '"' ) ) )
-			{
-				++szNewCursor;
-			}
-			++szNewCursor;
-			return szNewCursor;
-		}
 	}
 
 	return szNewCursor;
@@ -161,6 +185,8 @@ static inline bool MatchRules(
 	{
 		const int iCachedStringLength =
 			static_cast< int >( axStrings[ i ].length() );
+		// if the rule is a string, and longer than the current match
+		// then check it
 		if( ( iCachedStringLength != 0 )
 			&& ( iCachedStringLength > iLongestLength ) )
 		{
@@ -174,11 +200,14 @@ static inline bool MatchRules(
 
 			// otherwise, we know we didn't match, don't waste time on regexes
 		}
+		// otherwise, if we exactly match, based on our guess of where the token ends
+		// then we update the current match
 		else if( std::regex_match( szCursor, szNewCursor, xMatch, axRegexes[ i ] ) )
 		{
 			UpdateLongest( static_cast< int >( i ),
 				xMatch.str( 0 ), xLongestValue, iLongestLength, iLongestRule );
 		}
+		// otherwise we try and match anywhere inside the string we are inspecting
 		else if( std::regex_search( szCursor, szNewCursor, xMatch, axRegexes[ i ] ) )
 		{
 			// make sure the match is at the start of the string...
@@ -205,7 +234,9 @@ static inline bool MatchRules(
 }
 
 static inline void HandleNextCharacter(
-	const std::vector< Comment >& axComments, const std::vector< Rule >& axRules,
+	const std::vector< Comment >& axComments,
+	const std::vector< Rule >& axRules,
+	const std::vector< Quote >& axQuotes,
 	std::vector< Token >& axTokens, const char*& szCursor,
 	std::cmatch& xMatch, const std::vector< std::basic_regex< char > >& axRegexes,
 	const std::vector< std::string >& axStrings,
@@ -231,7 +262,22 @@ static inline void HandleNextCharacter(
 			}
 
 			// work out where the end of the next token is by whitespace, ignoring quotes...
-			const char* szNewCursor = FindNewCursor( szCursor );
+			int iQuote = -1;
+			const char* szNewCursor = FindNewCursor( szCursor, axQuotes, szFilename, iLine, iColumn, iQuote );
+			if( iQuote >= 0 )
+			{
+				// SE - TODO: does the id matter?
+				const Quote& xQuote = axQuotes[ iQuote ];
+				const Token xBaseToken( xQuote.GetName(), 1337, true );
+				axTokens.push_back( Token(
+					xBaseToken,
+					szFilename, iLine, iColumn, std::string( szCursor, szNewCursor - szCursor ) ) );
+				szCursor = szNewCursor;
+				// SE - TODO: handle new lines in matches.
+				iColumn += ( szNewCursor - szCursor );
+				break;
+			}
+
 			if( MatchRules(
 				axRules, axTokens, szCursor, szNewCursor,
 				xMatch, axRegexes, axStrings,
@@ -313,7 +359,9 @@ static inline std::vector< std::string > BuildStringCache(
 }
 
 std::vector< Token > Lex( const char* const szFilename, const char* const szSourceCode,
-	const std::vector< Rule >& axRules, const std::vector< Comment >& axComments )
+	const std::vector< Rule >& axRules,
+	const std::vector< Comment >& axComments,
+	const std::vector< Quote >& axQuotes )
 {
 	std::vector< Token > axTokens;
 
@@ -334,7 +382,8 @@ std::vector< Token > Lex( const char* const szFilename, const char* const szSour
 	std::vector< std::string > axStrings( BuildStringCache( axRules ) );
 	while( *szCursor )
 	{
-		HandleNextCharacter( axComments, axRules,
+		HandleNextCharacter(
+			axComments, axRules, axQuotes,
 			axTokens, szCursor,
 			xMatch, axRegexes, axStrings,
 			szFilename, iLine, iColumn );
@@ -344,7 +393,9 @@ std::vector< Token > Lex( const char* const szFilename, const char* const szSour
 }
 
 std::vector< Token > Lex( const char* const szFilename,
-	const std::vector< Rule >& axRules, const std::vector< Comment >& axComments )
+	const std::vector< Rule >& axRules,
+	const std::vector< Comment >& axComments,
+	const std::vector< Quote >& axQuotes )
 {
 	std::vector< Token > axTokens;
 
@@ -363,7 +414,7 @@ std::vector< Token > Lex( const char* const szFilename,
 	fread( pcData, 1, iLength, pxFile );
 	fclose( pxFile );
 
-	axTokens = Lex( szFilename, pcData, axRules, axComments );
+	axTokens = Lex( szFilename, pcData, axRules, axComments, axQuotes );
 
 	delete[] pcData;
 	return axTokens;
