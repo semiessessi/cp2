@@ -331,8 +331,16 @@ static inline std::vector< std::basic_regex< char > > BuildRegexCache(
 	std::vector< std::basic_regex< char > > axRegexes;
 	for( size_t i = 0; i < axRules.size(); ++i )
 	{
-		axRegexes.push_back( std::basic_regex< char >(
-			axRules[ i ].GetExpression().c_str() ) );
+		if( !axRules[ i ].GetBaseToken().IsValued() )
+		{
+			// this regex should never match.
+			axRegexes.push_back( std::basic_regex< char >( "(?!)" ) );
+		}
+		else
+		{
+			axRegexes.push_back( std::basic_regex< char >(
+				axRules[ i ].GetExpression().c_str() ) );
+		}
 	}
 
 	return axRegexes;
