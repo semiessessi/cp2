@@ -50,7 +50,6 @@ int main( const int iArgumentCount, const char* const* const pszArguments )
 
 		// process string.
 		CP2::Scheme::Evaluate( CP2::Parser::SchemeParse( szBuffer ) ).Output();
-
 	}
 
 	return 0;

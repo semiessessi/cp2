@@ -3,6 +3,7 @@
 #include "Evaluate.h"
 
 #include "../../common/cpp/ASTNode.h"
+#include "../../common/cpp/Report.h"
 
 namespace CP2
 {
@@ -154,51 +155,94 @@ bool EvaluationResult::IsEquivalentToFalse() const
 EvaluationResult EvaluationResult::Call(
 	const std::vector< EvaluationResult >& xParameters, Environment& xEnvironment )
 {
-	if( meType == ER_PROCEDURE )
+	switch( meType )
 	{
-		if( mpxASTValue != nullptr )
+		case ER_PROCEDURE:
 		{
-			Environment xNewEnvironment( xEnvironment );
+			if( mpxASTValue != nullptr )
+			{
+				if( maxParameterNames.size() != xParameters.size() )
+				{
+					Error( 4002, "", 0, 0,
+						"Wrong number of parameters for user defined function %s, expected %d, found %d",
+						mxStringValue.c_str(),
+						static_cast< int >( maxParameterNames.size() ),
+						static_cast< int >( xParameters.size() ) );
+					return EvaluationResult();
+				}
 
-			// add parameters into the new environment
-			for( int i = 0; i < static_cast< int >( xParameters.size() ); ++i )
-			{
-				xNewEnvironment.GetVariable( maxParameterNames[ i ].c_str() ) = xParameters[ i ];
-			}
+				Environment xNewEnvironment( xEnvironment );
 
-			// evaluate with the new environment
-			return Evaluate( mpxASTValue, xNewEnvironment );
+				// add parameters into the new environment
+				for( int i = 0; i < static_cast< int >( xParameters.size() ); ++i )
+				{
+					xNewEnvironment.GetVariable( maxParameterNames[ i ].c_str() ) = xParameters[ i ];
+				}
+
+				// evaluate with the new environment
+				return Evaluate( mpxASTValue, xNewEnvironment );
+			}
+			else if( mpfnFunction0 )
+			{
+				return mpfnFunction0();
+			}
+			else if( mpfnFunction1 )
+			{
+				if( xParameters.size() == 1 )
+				{
+					return mpfnFunction1( xParameters[ 0 ] );
+				}
+				else
+				{
+					Error( 4001, "", 0, 0,
+						"Wrong number of parameters for built-in function %s, expected %d, found %d",
+						mxStringValue.c_str(), 1, static_cast< int >( xParameters.size() ) );
+				}
+			}
+			else if( mpfnFunction2 )
+			{
+				if( xParameters.size() == 2 )
+				{
+					return mpfnFunction2( xParameters[ 0 ], xParameters[ 1 ] );
+				}
+				else
+				{
+					Error( 4001, "", 0, 0,
+						"Wrong number of parameters for built-in function %s, expected %d, found %d",
+						mxStringValue.c_str(), 2, static_cast< int >( xParameters.size() ) );
+				}
+			}
+			break;
 		}
-		else if( mpfnFunction0 )
+		
+		case ER_INT:
 		{
-			return mpfnFunction0();
+			Error( 4000, "", 0, 0,
+				"Trying to call %d which is not a procedure", miIntValue );
+			break;
 		}
-		else if( mpfnFunction1 )
+
+		case ER_FLOAT:
 		{
-			if( xParameters.size() >= 1 )
-			{
-				return mpfnFunction1( xParameters[ 0 ] );
-			}
-			else
-			{
-				// SE - TODO: handle error case
-			}
+			Error( 4000, "", 0, 0,
+				"Trying to call %f which is not a procedure", mfFloatValue );
+			break;
 		}
-		else if( mpfnFunction2 )
+
+		case ER_STRING:
 		{
-			if( xParameters.size() >= 2 )
-			{
-				return mpfnFunction2( xParameters[ 0 ], xParameters[ 1 ] );
-			}
-			else
-			{
-				// SE - TODO: handle error case
-			}
+			Error( 4000, "", 0, 0,
+				"Trying to call \"%s\" which is not a procedure", mxStringValue.c_str() );
+			break;
 		}
-	}
-	else
-	{
-		// SE - TODO: handle error case
+			
+		default:
+		{
+			// SE - TODO: file + line etc.
+			Error( 4000, "", 0, 0,
+				"Trying to call something which is not a procedure" );
+			break;
+		}
 	}
 
 	return EvaluationResult();
@@ -259,6 +303,12 @@ EvaluationResult Evaluate( ASTNode* const pxASTValue, Environment& xEnvironment 
 			EvaluationResult& xVariable = xEnvironment.GetVariable(
 				pxASTValue->GetChild( 2 )->GetTokenValue().c_str() );
 			xVariable = Evaluate( pxASTValue->GetChild( 3 ), xEnvironment );
+			// write procedure name for convenience...
+			if( xVariable.GetType() == EvaluationResult::ER_PROCEDURE )
+			{
+				xVariable.SetStringValue( pxASTValue->GetChild( 2 )->GetTokenValue() );
+			}
+
 			return xVariable;
 		}
 		else if( std::string( "if" ) == pxASTValue->GetChild( 1 )->GetTokenName() )
@@ -278,7 +328,6 @@ EvaluationResult Evaluate( ASTNode* const pxASTValue, Environment& xEnvironment 
 		{
 			return EvaluationResult( pxASTValue->GetChild( 2 ) );
 		}
-		// SE - TODO: ... is this good?
 		else if( std::string( "set!" ) == pxASTValue->GetChild( 1 )->GetTokenName() )
 		{
 			if( xEnvironment.VariableIsDefined( pxASTValue->GetChild( 2 )->GetTokenValue().c_str() ) )
@@ -286,11 +335,19 @@ EvaluationResult Evaluate( ASTNode* const pxASTValue, Environment& xEnvironment 
 				EvaluationResult& xVariable = xEnvironment.GetVariable(
 					pxASTValue->GetChild( 2 )->GetTokenValue().c_str() );
 				xVariable = Evaluate( pxASTValue->GetChild( 3 ), xEnvironment );
+				// write procedure name for convenience...
+				if( xVariable.GetType() == EvaluationResult::ER_PROCEDURE )
+				{
+					xVariable.SetStringValue( pxASTValue->GetChild( 2 )->GetTokenValue() );
+				}
+
 				return xVariable;
 			}
 			else
 			{
-				// SE - TODO: complain?!?
+				Error( 4003, pxASTValue->GetFilename(), pxASTValue->GetLine(), pxASTValue->GetColumn(),
+					"Trying to set undefined variable %s",
+					pxASTValue->GetChild( 2 )->GetTokenValue().c_str() );
 				return xReturnValue;
 			}
 		}
@@ -326,9 +383,21 @@ EvaluationResult Evaluate( ASTNode* const pxASTValue, Environment& xEnvironment 
 				if( xProcedure.GetType() == EvaluationResult::ER_PROCEDURE )
 				{
 					// SE - TODO: safety here.
-
+					
 					// evaluate parameters...
 					const int iParameterCount = xProcedure.GetParameterCount();
+
+					// parens and the procedure name
+					if( pxASTValue->GetChildCount() != ( 3 + iParameterCount ) )
+					{
+						Error( 4002, pxASTValue->GetFilename(), pxASTValue->GetLine(), pxASTValue->GetColumn(),
+							"Wrong number of parameters for user defined function %s, expected %d, found %d",
+							xProcedure.GetStringValue().c_str(),
+							iParameterCount,
+							pxASTValue->GetChildCount() - 3 );
+						return EvaluationResult();
+					}
+
 					std::vector< EvaluationResult > xParameters;
 					for( int i = 0; i < iParameterCount; ++i )
 					{

@@ -137,6 +137,8 @@ public:
 	float GetFloatValue() const { return mfFloatValue; }
 	const std::string& GetStringValue() const { return mxStringValue; }
 
+	void SetStringValue( const std::string& xString ) { mxStringValue = xString; }
+
 	EvaluationResult Call(
 		const std::vector< EvaluationResult >& xParameters,
 		Environment& xEnvironment = Environment::GlobalEnvironment() );
