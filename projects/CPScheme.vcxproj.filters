@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="cpscheme">
+      <UniqueIdentifier>{bf4c02a5-3883-4379-8052-fc4034a68d75}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\cpscheme\cpp\EntryPoint.cpp">
+      <Filter>cpscheme</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cpscheme\cpp\HelpHandler.cpp">
+      <Filter>cpscheme</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cpscheme\cpp\ParameterHandlers.cpp">
+      <Filter>cpscheme</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cpscheme\cpp\CPSParse.cpp">
+      <Filter>cpscheme</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cpscheme\cpp\Environment.cpp">
+      <Filter>cpscheme</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cpscheme\cpp\Evaluate.cpp">
+      <Filter>cpscheme</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\cpscheme\cpp\CommandLineHandler.h">
+      <Filter>cpscheme</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cpscheme\cpp\SwitchHandler.h">
+      <Filter>cpscheme</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cpscheme\cpp\Parameters.h">
+      <Filter>cpscheme</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cpscheme\cpp\SwitchHandlerDecls.h">
+      <Filter>cpscheme</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cpscheme\cpp\CPSParse.h">
+      <Filter>cpscheme</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cpscheme\cpp\Environment.h">
+      <Filter>cpscheme</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cpscheme\cpp\Evaluate.h">
+      <Filter>cpscheme</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
