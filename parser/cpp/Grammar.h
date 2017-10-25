@@ -4,6 +4,7 @@
 #include "../../lexer/cpp/Lexer.h"
 
 #include "GrammarExpression.h"
+#include "LLK.h"
 
 #include <string>
 #include <unordered_map>
@@ -54,6 +55,7 @@ public:
 	: maxProductions( axProductions )
 	{
 		InferLexemes();
+		mxLLKTable = LLKParseTable::FromGrammar( *this );
 	}
 
 	const int GetProductionCount() const { return static_cast< int >( maxProductions.size() ); }
@@ -77,10 +79,21 @@ public:
 	const std::vector< Lexer::Quote >& GetQuotes() const { return maxQuoteRules; }
 	const std::vector< Lexer::Comment >& GetComments() const { return maxCommentRules; }
 	const std::vector< Lexer::Rule >& GetLexemes() const { return maxLexemeRules; }
+
+	std::unordered_set< std::string > GetTerminals() const;
+	std::unordered_set< std::string > GetNonTerminals() const;
+
+	int GetDirectLeftRecursionCount() const { return static_cast< int >( maxDirectLeftRecursions.size() ); }
+	//int GetIndirectLeftRecursionCount() const;
+
+	int GetLLK() const { return mxLLKTable.GetK(); }
+
 private:
 
 	void InferLexemes();
 	void RebuildTokens();
+
+	void EvaluateReport();
 
 	mutable std::unordered_map< std::string, std::vector< GrammarProduction > > mxProductionCache;
 	// removed const to allow merging
@@ -91,6 +104,14 @@ private:
 	std::vector< Lexer::Rule > maxLexemeRules;
 	std::vector< Token > maxBaseTokens;
 	std::unordered_set< std::string > mxTokenStrings;
+
+	// report stuff.
+	std::vector< int > maxDirectLeftRecursions;
+
+	// caches
+	mutable std::unordered_set< std::string > mxTerminals;
+	mutable std::unordered_set< std::string > mxNonTerminals;
+	mutable LLKParseTable mxLLKTable;
 
 };
 

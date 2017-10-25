@@ -23,8 +23,54 @@ SwitchHandlerInitialiser kaszSwitchHandlers[] =
 	{ "verbose",                true,   VerbosityHandler },
 };
 
+static inline void GrammarReport( const CP2::Parser::Grammar& xGrammar )
+{
+	const int iTopLevelProductionCount =
+		static_cast< int >( xGrammar.GetTopLevelProductions().size() );
+	const int iTotalProductionCount = xGrammar.GetProductionCount();
+
+	const int iTerminalCount = static_cast< int >( xGrammar.GetTerminals().size() );
+	const int iNonTerminalCount = static_cast< int >( xGrammar.GetNonTerminals().size() );
+	const int iTotalSymbols = iTerminalCount + iNonTerminalCount;
+
+	const int iDirectLeftRecrusions = xGrammar.GetDirectLeftRecursionCount();
+
+	CP2::Message( "" );
+	CP2::Message( "Grammar Report" );
+	CP2::Message( "------------------------------------------" );
+	CP2::Message( "Productions:     %d", iTotalProductionCount );
+	CP2::Message( "(top-level)      %d", iTopLevelProductionCount );
+	CP2::Message( "" );
+	CP2::Message( "Symbols:         %d", iTotalSymbols );
+	CP2::Message( "(terminal)       %d", iTerminalCount );
+	CP2::Message( "(non-terminal)   %d", iNonTerminalCount );
+	CP2::Message( "" );
+	CP2::Message( "Recursion:       %d + ???", iDirectLeftRecrusions );
+	CP2::Message( "(left)           %d + ???", iDirectLeftRecrusions );
+	CP2::Message( "  [direct]       %d", iDirectLeftRecrusions );
+	CP2::Message( "  [indirect]     ???" );
+	CP2::Message( "(right)          ???" );
+	CP2::Message( "  [direct]       ???" );
+	CP2::Message( "  [indirect]     ???" );
+	CP2::Message( "(other)          ???" );
+	CP2::Message( "" );
+
+	if( xGrammar.GetLLK() < 0 )
+	{
+		CP2::Message( "Unable to determine if this grammar is LL(k)" );
+	}
+	else
+	{
+		CP2::Message( "This grammar is LL(%d)", xGrammar.GetLLK() );
+	}
+
+	CP2::Message( "" );
+}
+
 void WriteOutput( const CP2::Parser::Grammar& xGrammar )
 {
+	GrammarReport( xGrammar );
+
 	if( gxOutputPath.empty() )
 	{
 		return;
@@ -35,6 +81,8 @@ void WriteOutput( const CP2::Parser::Grammar& xGrammar )
 	{
 		return;
 	}
+
+	// SE - TODO: normalise grammar before writing, and report on it
 
 	const std::string xString = xGrammar.GetCBNF();
 	fwrite( &xString[ 0 ], 1, xString.length(), pxFile );

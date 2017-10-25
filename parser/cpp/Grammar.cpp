@@ -250,6 +250,37 @@ void Grammar::AddQuote( const char* const szName, const char* const szStart, con
 	maxQuoteRules.push_back( Lexer::Quote( szName, szStart, szEnd, szEscape ) );
 }
 
+std::unordered_set< std::string > Grammar::GetTerminals() const
+{
+	if( mxTerminals.size() == 0 )
+	{
+		for( Lexer::Rule xLexeme : maxLexemeRules )
+		{
+			mxTerminals.emplace( xLexeme.GetBaseToken().GetName() );
+		}
+
+		for( Lexer::Quote xQuotedLexeme : maxQuoteRules )
+		{
+			mxTerminals.emplace( xQuotedLexeme.GetName() );
+		}
+	}
+
+	return mxTerminals;
+}
+
+std::unordered_set< std::string > Grammar::GetNonTerminals() const
+{
+	if( mxNonTerminals.size() == 0 )
+	{
+		for( GrammarProduction xProduction : maxProductions )
+		{
+			mxNonTerminals.emplace( xProduction.GetName() );
+		}
+	}
+
+	return mxNonTerminals;
+}
+
 void Grammar::InferLexemes()
 {
 	// SE - NOTE: it is important that the regexes come afterwards in the list
@@ -317,6 +348,21 @@ void Grammar::RebuildTokens()
 			Token( szPrettyName, iID, xOriginalToken.IsValued() ) );
 		xRule = Lexer::Rule( szRuleExpression, maxBaseTokens.back() );
 		++iID;
+	}
+}
+
+void Grammar::EvaluateReport()
+{
+	// check for direct left recursions...
+	for( int i = 0; i < GetProductionCount(); ++i )
+	{
+		const GrammarProduction& xProduction = GetProduction( i );
+		if( xProduction.GetName()
+			== xProduction.GetExpression().GetLeftmostChild().GetName() )
+		{
+			// ding ding ding!!!
+			maxDirectLeftRecursions.push_back( i );
+		}
 	}
 }
 

@@ -11,27 +11,21 @@ namespace CP2
 namespace Parser
 {
 
+bool CheckLLO( const Grammar& xGrammar, const std::vector< std::unordered_set< std::string > >& aaxFirstSets )
+{
+	//const std::vector< GrammarProduction > xTopLevelProductions
+	//	= xGrammar.GetTopLevelProductions();
+
+	//std::vector< GrammarProduction > axWorkingArea;
+	//std::vector< GrammarProduction > axCurrentGeneration;
+
+	return false;
+}
+
 void LLKParseTable::InitialiseFromGrammar( const Grammar& xGrammar )
 {
-	// build a map of terminal symbols.
-	std::unordered_set< std::string > xTerminals;
-
-	for( Lexer::Rule xLexeme : xGrammar.GetLexemes() )
-	{
-		xTerminals.emplace( xLexeme.GetBaseToken().GetName() );
-	}
-
-	for( Lexer::Quote xQuotedLexeme : xGrammar.GetQuotes() )
-	{
-		xTerminals.emplace( xQuotedLexeme.GetName() );
-	}
-
-	// ... and non-terminals
-	std::unordered_set< std::string > xNonTerminals;
-	for( GrammarProduction xProduction : xGrammar.GetProductions() )
-	{
-		xNonTerminals.emplace( xProduction.GetName() );
-	}
+	std::unordered_set< std::string > xTerminals( xGrammar.GetTerminals() );
+	std::unordered_set< std::string > xNonTerminals( xGrammar.GetNonTerminals() );
 
 	// build the first sets for each non-terminal
 	std::vector< std::unordered_set< std::string > > aaxFirstSets;
@@ -63,6 +57,8 @@ void LLKParseTable::InitialiseFromGrammar( const Grammar& xGrammar )
 			{
 				// the empty symbol can do here.
 				aaxFirstSets[ i ].emplace( std::string() );
+
+				// SE - TODO: ... but what about the next symbol?!
 			}
 
 			std::vector< GrammarProduction > axProductions =
@@ -70,13 +66,21 @@ void LLKParseTable::InitialiseFromGrammar( const Grammar& xGrammar )
 			for( GrammarProduction xProduction : axProductions )
 			{
 				// avoid recursions here ...
-				// .. and only look at productions that don't recurse our name.
+				// ... and only look at productions that don't recurse our name.
 				if( xLeftmostExpression.GetName() != xOriginalProduction.GetName() )
 				{
 					axStack.push_back( xProduction );
 				}
 			}
 		}
+	}
+
+	// SE - TODO: we don't actually have the full first table yet
+	// but this is enough to identify some LL(0) grammars
+	if( CheckLLO( xGrammar, aaxFirstSets ) )
+	{
+		miK = 0;
+		// SE - TODO: done? build the real table?
 	}
 
 	// SE - TODO: break point.

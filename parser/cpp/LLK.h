@@ -19,6 +19,14 @@ class LLKParseTable
 
 public:
 
+	LLKParseTable() : miK( -1 ) {}
+
+	LLKParseTable( const LLKParseTable& xOther )
+	: mxParseTable( xOther.mxParseTable )
+	, miK( xOther.miK )
+	{
+	}
+
 	static LLKParseTable FromGrammar( const Grammar& xGrammar )
 	{
 		LLKParseTable xReturnValue;
@@ -26,9 +34,9 @@ public:
 		return xReturnValue;
 	}
 
-private:
+	int GetK() const { return miK; }
 
-	LLKParseTable() {}
+private:
 
 	void InitialiseFromGrammar( const Grammar& xGrammar );
 
@@ -39,6 +47,7 @@ private:
 		std::string, // std::pair< std::string, std::vector< std::string > >,
 		// we map to a production rule (by index)
 		int > mxParseTable;
+	int miK;
 
 };
 
