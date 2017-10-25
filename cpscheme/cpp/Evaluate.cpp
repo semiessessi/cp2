@@ -9,6 +9,36 @@ namespace CP2
 namespace Scheme
 {
 
+void RecursiveASTPrint( ASTNode* const pxNode )
+{
+	if( pxNode == nullptr )
+	{
+		puts( "(null)" );
+	}
+	else if( pxNode->IsTerminal() )
+	{
+		if( pxNode->IsValued() )
+		{
+			printf( "%s", pxNode->GetTokenValue().c_str() );
+		}
+		else
+		{
+			printf( "%s", pxNode->GetTokenName() );
+		}
+	}
+	else
+	{
+		for( int i = 0; i < pxNode->GetChildCount(); ++i )
+		{
+			RecursiveASTPrint( pxNode->GetChild( i ) );
+			if( i < ( pxNode->GetChildCount() - 1 ) )
+			{
+				printf( " " );
+			}
+		}
+	}
+}
+
 void EvaluationResult::Output() const
 {
 	switch( meType )
@@ -28,6 +58,13 @@ void EvaluationResult::Output() const
 		case ER_STRING:
 		{
 			puts( mxStringValue.c_str() );
+			break;
+		}
+
+		case ER_AST:
+		{
+			RecursiveASTPrint( mpxASTValue );
+			puts( "" );
 			break;
 		}
 
@@ -58,6 +95,11 @@ bool EvaluationResult::IsEquivalentToFalse() const
 			return mxStringValue.empty() || ( mxStringValue == "false" );
 		}
 
+		case ER_AST:
+		{
+			return mpxASTValue == nullptr;
+		}
+
 		default:
 		{
 			break;
@@ -67,61 +109,61 @@ bool EvaluationResult::IsEquivalentToFalse() const
 	return false;
 }
 
-EvaluationResult Evaluate( const ASTNode* const mpxASTValue, Environment& xEnvironment )
+EvaluationResult Evaluate( ASTNode* const pxASTValue, Environment& xEnvironment )
 {
 	EvaluationResult xReturnValue;
 
-	if( mpxASTValue == nullptr )
+	if( pxASTValue == nullptr )
 	{
 		return xReturnValue;
 	}
 
-	if( mpxASTValue->GetChildCount() == 1 )
+	if( pxASTValue->GetChildCount() == 1 )
 	{
-		if( std::string( "<identifier>" ) == mpxASTValue->GetChild( 0 )->GetTokenName() )
+		if( std::string( "<identifier>" ) == pxASTValue->GetChild( 0 )->GetTokenName() )
 		{
 			// variable lookup
-			return xEnvironment.GetVariable( mpxASTValue->GetChild( 0 )->GetTokenValue().c_str() );
+			return xEnvironment.GetVariable( pxASTValue->GetChild( 0 )->GetTokenValue().c_str() );
 		}
-		else if( std::string( "<integer>" ) == mpxASTValue->GetTokenName() )
+		else if( std::string( "<integer>" ) == pxASTValue->GetTokenName() )
 		{
-			return EvaluationResult( atoi( mpxASTValue->GetChild( 0 )->GetTokenValue().c_str() ) );
+			return EvaluationResult( atoi( pxASTValue->GetChild( 0 )->GetTokenValue().c_str() ) );
 		}
 	}
-	else if( mpxASTValue->GetChildCount() > 1 )
+	else if( pxASTValue->GetChildCount() > 1 )
 	{
 		// we have something more.
-		if( std::string( ")" ) == mpxASTValue->GetChild( 1 )->GetTokenName() )
+		if( std::string( ")" ) == pxASTValue->GetChild( 1 )->GetTokenName() )
 		{
 			// empty list?
 		}
-		else if( std::string( "define" ) == mpxASTValue->GetChild( 1 )->GetTokenName() )
+		else if( std::string( "define" ) == pxASTValue->GetChild( 1 )->GetTokenName() )
 		{
 			EvaluationResult& xVariable = xEnvironment.GetVariable(
-				mpxASTValue->GetChild( 2 )->GetTokenValue().c_str() );
-			xVariable = Evaluate( mpxASTValue->GetChild( 3 ), xEnvironment );
+				pxASTValue->GetChild( 2 )->GetTokenValue().c_str() );
+			xVariable = Evaluate( pxASTValue->GetChild( 3 ), xEnvironment );
 			return xVariable;
 		}
-		else if( std::string( "if" ) == mpxASTValue->GetChild( 1 )->GetTokenName() )
+		else if( std::string( "if" ) == pxASTValue->GetChild( 1 )->GetTokenName() )
 		{
-			EvaluationResult xResult = Evaluate( mpxASTValue->GetChild( 2 ), xEnvironment );
+			EvaluationResult xResult = Evaluate( pxASTValue->GetChild( 2 ), xEnvironment );
 			if( xResult.IsEquivalentToFalse() )
 			{
-				return Evaluate( mpxASTValue->GetChild( 4 ), xEnvironment );
+				return Evaluate( pxASTValue->GetChild( 4 ), xEnvironment );
 			}
 			else
 			{
-				return Evaluate( mpxASTValue->GetChild( 3 ), xEnvironment );
+				return Evaluate( pxASTValue->GetChild( 3 ), xEnvironment );
 			}
 		}
 		// SE - TODO: ...
-		else if( std::string( "set!" ) == mpxASTValue->GetChild( 1 )->GetTokenName() )
+		else if( std::string( "set!" ) == pxASTValue->GetChild( 1 )->GetTokenName() )
 		{
-			if( xEnvironment.VariableIsDefined( mpxASTValue->GetChild( 2 )->GetTokenValue().c_str() ) )
+			if( xEnvironment.VariableIsDefined( pxASTValue->GetChild( 2 )->GetTokenValue().c_str() ) )
 			{
 				EvaluationResult& xVariable = xEnvironment.GetVariable(
-					mpxASTValue->GetChild( 2 )->GetTokenValue().c_str() );
-				xVariable = Evaluate( mpxASTValue->GetChild( 3 ), xEnvironment );
+					pxASTValue->GetChild( 2 )->GetTokenValue().c_str() );
+				xVariable = Evaluate( pxASTValue->GetChild( 3 ), xEnvironment );
 				return xVariable;
 			}
 			else
@@ -131,6 +173,10 @@ EvaluationResult Evaluate( const ASTNode* const mpxASTValue, Environment& xEnvir
 			}
 		}
 	}
+
+	// if nothing caught us? just return the ast :/
+
+	xReturnValue = EvaluationResult( pxASTValue );
 
 	return xReturnValue;
 }

@@ -52,6 +52,13 @@ public:
 
 	}
 
+	EvaluationResult( ASTNode* const pxNode )
+	: meType( ER_AST )
+	, mpxASTValue( pxNode )
+	{
+
+	}
+
 	EvaluationResult( const EvaluationResult& xOther )
 	: meType( xOther.meType )
 	, miIntValue( xOther.miIntValue )
@@ -76,7 +83,7 @@ private:
 };
 
 EvaluationResult Evaluate(
-	const ASTNode* const mpxASTValue,
+	ASTNode* const mpxASTValue,
 	Environment& xEnvironment = Environment::GlobalEnvironment() );
 
 }
