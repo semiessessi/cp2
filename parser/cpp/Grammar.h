@@ -59,6 +59,7 @@ public:
 	const int GetProductionCount() const { return static_cast< int >( maxProductions.size() ); }
 	const GrammarProduction& GetProduction( const int iIndex ) const { return maxProductions[ iIndex ]; }
 	std::vector< GrammarProduction > GetTopLevelProductions() const;
+	const std::vector< GrammarProduction >& GetProductions() const { return maxProductions; }
 	std::vector< GrammarProduction > GetProductions( const std::string& xName ) const;
 
 	std::string GetCBNF() const;

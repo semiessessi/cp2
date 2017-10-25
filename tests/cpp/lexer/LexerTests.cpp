@@ -11,6 +11,8 @@ namespace CP2
 namespace Tests
 {
 
+// SE - TODO: quote tests.
+
 static const std::string kxSimpleLexerInput = "abc";
 static const std::string kxSimpleSpacedLexerInput = "a b c";
 static const std::string kxDummyLexerInput = "abcbacabcbb ab bc\nababca bcacb\nabacbac abacb";
