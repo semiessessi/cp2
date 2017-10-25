@@ -289,6 +289,10 @@ EvaluationResult Evaluate( ASTNode* const pxASTValue, Environment& xEnvironment 
 		{
 			return EvaluationResult( atoi( pxASTValue->GetChild( 0 )->GetTokenValue().c_str() ) );
 		}
+		else if( std::string( "<string>" ) == pxASTValue->GetTokenName() )
+		{
+			return EvaluationResult( pxASTValue->GetChild( 0 )->GetTokenValue() );
+		}
 	}
 	else if( pxASTValue->GetChildCount() > 1 )
 	{
