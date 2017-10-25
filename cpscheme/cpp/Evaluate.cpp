@@ -365,7 +365,11 @@ EvaluationResult Evaluate( ASTNode* const pxASTValue, Environment& xEnvironment 
 			ASTNode* pxParameter = pxASTValue->GetChild( iParameterID );
 			while( std::string( pxParameter->GetTokenName() ) != ")" )
 			{
-				// SE - TODO: each one must be an identifier...
+				if( std::string( pxParameter->GetTokenName() ) != "<identifier>" )
+				{
+					Error( 4006, pxASTValue->GetFilename(), pxASTValue->GetLine(), pxASTValue->GetColumn(),
+						"Item in lambda parameter list is not an identifier" );
+				}
 				axParameters.push_back( pxParameter->GetTokenValue() );
 				++iParameterID;
 				pxParameter = pxASTValue->GetChild( iParameterID );
@@ -413,12 +417,16 @@ EvaluationResult Evaluate( ASTNode* const pxASTValue, Environment& xEnvironment 
 				}
 				else
 				{
-					// SE - TODO: handle error case
+					Error( 4004, pxASTValue->GetFilename(), pxASTValue->GetLine(), pxASTValue->GetColumn(),
+						"Trying to call non-procedure %s", xProcedureName.c_str() );
+					return EvaluationResult();
 				}
 			}
 			else
 			{
-				// SE - TODO: handle error case
+				Error( 4005, pxASTValue->GetFilename(), pxASTValue->GetLine(), pxASTValue->GetColumn(),
+					"Trying to call undefined symbol %s", xProcedureName.c_str() );
+				return EvaluationResult();
 			}
 		}
 	}

@@ -124,6 +124,10 @@ public:
 	, mfFloatValue( xOther.mfFloatValue )
 	, mxStringValue( xOther.mxStringValue )
 	, mpxASTValue( xOther.mpxASTValue )
+	, mpfnFunction0( xOther.mpfnFunction0 )
+	, mpfnFunction1( xOther.mpfnFunction1 )
+	, mpfnFunction2( xOther.mpfnFunction2 )
+	, maxParameterNames( xOther.maxParameterNames )
 	{
 
 	}
