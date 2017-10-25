@@ -24,6 +24,9 @@
     <ClCompile Include="..\cpscheme\cpp\Evaluate.cpp">
       <Filter>cpscheme</Filter>
     </ClCompile>
+    <ClCompile Include="..\cpscheme\cpp\StandardLibrary.cpp">
+      <Filter>cpscheme</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\cpscheme\cpp\CommandLineHandler.h">
@@ -45,6 +48,9 @@
       <Filter>cpscheme</Filter>
     </ClInclude>
     <ClInclude Include="..\cpscheme\cpp\Evaluate.h">
+      <Filter>cpscheme</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cpscheme\cpp\StandardLibrary.h">
       <Filter>cpscheme</Filter>
     </ClInclude>
   </ItemGroup>

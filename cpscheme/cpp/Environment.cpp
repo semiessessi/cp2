@@ -3,6 +3,7 @@
 #include "Environment.h"
 
 #include "Evaluate.h"
+#include "StandardLibrary.h"
 
 namespace CP2
 {
@@ -32,6 +33,15 @@ Environment::Environment( const Environment& xOther )
 Environment Environment::NewDefaultEnvironment()
 {
 	Environment xEnvironment;
+
+	// constants
+	xEnvironment.GetVariable( "e" ) = EvaluationResult( 2.718281828f );
+	xEnvironment.GetVariable( "pi" ) = EvaluationResult( 3.141592654f );
+
+	// functions
+	xEnvironment.GetVariable( "+" ) = EvaluationResult( "+", Addition );
+	xEnvironment.GetVariable( "-" ) = EvaluationResult( "-", Subtraction );
+	xEnvironment.GetVariable( "*" ) = EvaluationResult( "*", Multiplication );
 
 	return xEnvironment;
 }

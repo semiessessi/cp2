@@ -195,6 +195,7 @@
     <ClCompile Include="..\cpscheme\cpp\Evaluate.cpp" />
     <ClCompile Include="..\cpscheme\cpp\HelpHandler.cpp" />
     <ClCompile Include="..\cpscheme\cpp\ParameterHandlers.cpp" />
+    <ClCompile Include="..\cpscheme\cpp\StandardLibrary.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\cpscheme\cpp\CommandLineHandler.h" />
@@ -202,6 +203,7 @@
     <ClInclude Include="..\cpscheme\cpp\Environment.h" />
     <ClInclude Include="..\cpscheme\cpp\Evaluate.h" />
     <ClInclude Include="..\cpscheme\cpp\Parameters.h" />
+    <ClInclude Include="..\cpscheme\cpp\StandardLibrary.h" />
     <ClInclude Include="..\cpscheme\cpp\SwitchHandler.h" />
     <ClInclude Include="..\cpscheme\cpp\SwitchHandlerDecls.h" />
   </ItemGroup>

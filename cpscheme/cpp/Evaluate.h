@@ -28,6 +28,7 @@ public:
 		ER_FLOAT,
 		ER_STRING,
 		ER_AST,
+		ER_PROCEDURE,
 
 		ER_COUNT
 	};
@@ -41,6 +42,13 @@ public:
 	EvaluationResult( const int iInt )
 	: meType( ER_INT )
 	, miIntValue( iInt )
+	{
+
+	}
+
+	EvaluationResult( const float fFloat )
+	: meType( ER_FLOAT )
+	, mfFloatValue( fFloat )
 	{
 
 	}
@@ -59,6 +67,57 @@ public:
 
 	}
 
+	EvaluationResult(
+		const char* const szName,
+		const std::vector< std::string > axParameters,
+		ASTNode* const pxNode )
+	: meType( ER_PROCEDURE )
+	, mxStringValue( szName )
+	, mpxASTValue( pxNode )
+	, maxParameterNames( axParameters )
+	{
+
+	}
+
+	EvaluationResult(
+		const char* const szName,
+		EvaluationResult ( * const pfnFunction0 )() )
+	: meType( ER_PROCEDURE )
+	, mxStringValue( szName )
+	, mpxASTValue( nullptr )
+	, mpfnFunction0( pfnFunction0 )
+	, mpfnFunction1( nullptr )
+	, mpfnFunction2( nullptr )
+	{
+
+	}
+
+	EvaluationResult(
+		const char* const szName,
+		EvaluationResult ( * const pfnFunction1 )( EvaluationResult ) )
+	: meType( ER_PROCEDURE )
+	, mxStringValue( szName )
+	, mpxASTValue( nullptr )
+	, mpfnFunction0( nullptr )
+	, mpfnFunction1( pfnFunction1 )
+	, mpfnFunction2( nullptr )
+	{
+
+	}
+
+	EvaluationResult(
+		const char* const szName,
+		EvaluationResult ( * const pfnFunction2 )( EvaluationResult, EvaluationResult ) )
+	: meType( ER_PROCEDURE )
+	, mxStringValue( szName )
+	, mpxASTValue( nullptr )
+	, mpfnFunction0( nullptr )
+	, mpfnFunction1( nullptr )
+	, mpfnFunction2( pfnFunction2 )
+	{
+
+	}
+
 	EvaluationResult( const EvaluationResult& xOther )
 	: meType( xOther.meType )
 	, miIntValue( xOther.miIntValue )
@@ -71,7 +130,17 @@ public:
 
 	void Output() const;
 
+	Type GetType() const { return meType; }
 	bool IsEquivalentToFalse() const;
+
+	int GetIntValue() const { return miIntValue; }
+	float GetFloatValue() const { return mfFloatValue; }
+	const std::string& GetStringValue() const { return mxStringValue; }
+
+	EvaluationResult Call(
+		const std::vector< EvaluationResult >& xParameters,
+		Environment& xEnvironment = Environment::GlobalEnvironment() );
+	int GetParameterCount() const;
 
 private:
 
@@ -80,6 +149,10 @@ private:
 	float mfFloatValue;
 	std::string mxStringValue;
 	ASTNode* mpxASTValue;
+	EvaluationResult ( *mpfnFunction0 )();
+	EvaluationResult ( *mpfnFunction1 )( EvaluationResult );
+	EvaluationResult ( *mpfnFunction2 )( EvaluationResult, EvaluationResult );
+	std::vector< std::string > maxParameterNames;
 };
 
 EvaluationResult Evaluate(
