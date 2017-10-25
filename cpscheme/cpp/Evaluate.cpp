@@ -55,6 +55,12 @@ void EvaluationResult::Output() const
 			break;
 		}
 
+		case ER_FLOAT:
+		{
+			printf( "%f\n", mfFloatValue );
+			break;
+		}
+
 		case ER_STRING:
 		{
 			puts( mxStringValue.c_str() );
@@ -116,6 +122,11 @@ bool EvaluationResult::IsEquivalentToFalse() const
 			return miIntValue == 0;
 		}
 
+		case ER_FLOAT:
+		{
+			return mfFloatValue == 0.0f;
+		}
+
 		case ER_STRING:
 		{
 			return mxStringValue.empty() || ( mxStringValue == "false" );
@@ -152,7 +163,7 @@ EvaluationResult EvaluationResult::Call(
 			// add parameters into the new environment
 			for( int i = 0; i < static_cast< int >( xParameters.size() ); ++i )
 			{
-				xEnvironment.GetVariable( maxParameterNames[ i ].c_str() ) = xParameters[ i ];
+				xNewEnvironment.GetVariable( maxParameterNames[ i ].c_str() ) = xParameters[ i ];
 			}
 
 			// evaluate with the new environment
@@ -263,6 +274,11 @@ EvaluationResult Evaluate( ASTNode* const pxASTValue, Environment& xEnvironment 
 			}
 		}
 		// SE - TODO: ... is this good?
+		else if( std::string( "quote" ) == pxASTValue->GetChild( 1 )->GetTokenName() )
+		{
+			return EvaluationResult( pxASTValue->GetChild( 2 ) );
+		}
+		// SE - TODO: ... is this good?
 		else if( std::string( "set!" ) == pxASTValue->GetChild( 1 )->GetTokenName() )
 		{
 			if( xEnvironment.VariableIsDefined( pxASTValue->GetChild( 2 )->GetTokenValue().c_str() ) )
@@ -277,6 +293,27 @@ EvaluationResult Evaluate( ASTNode* const pxASTValue, Environment& xEnvironment 
 				// SE - TODO: complain?!?
 				return xReturnValue;
 			}
+		}
+		else if( std::string( "lambda" ) == pxASTValue->GetChild( 1 )->GetTokenName() )
+		{
+			// SE - TODO: some error checking here. there is a lot of missed opportunity.
+			std::vector< std::string > axParameters;
+
+			// gather the parameter names
+			int iParameterID = 3;
+			ASTNode* pxParameter = pxASTValue->GetChild( iParameterID );
+			while( std::string( pxParameter->GetTokenName() ) != ")" )
+			{
+				// SE - TODO: each one must be an identifier...
+				axParameters.push_back( pxParameter->GetTokenValue() );
+				++iParameterID;
+				pxParameter = pxASTValue->GetChild( iParameterID );
+			}
+			
+			// so finally....
+			const int iCodeID = iParameterID + 1;
+
+			return EvaluationResult( "<lambda>", axParameters, pxASTValue->GetChild( iCodeID ) );
 		}
 		else
 		{
@@ -299,7 +336,7 @@ EvaluationResult Evaluate( ASTNode* const pxASTValue, Environment& xEnvironment 
 							Evaluate( pxASTValue->GetChild( 2 + i ), xEnvironment ) );
 					}
 
-					return xProcedure.Call( xParameters );
+					return xProcedure.Call( xParameters, xEnvironment );
 				}
 				else
 				{
