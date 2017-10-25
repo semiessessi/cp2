@@ -43,7 +43,7 @@ static inline std::string SimpleUnescape( const std::string& xSource )
 	size_t uOffset = xCopy.find( '\\', 0 );
 	while( uOffset != std::string::npos )
 	{
-		xCopy.erase( uOffset );
+		xCopy.erase( uOffset, 1 );
 		++uOffset;
 		uOffset = xCopy.find( '\\', uOffset );
 	}
