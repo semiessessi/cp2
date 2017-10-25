@@ -65,6 +65,8 @@ public:
 	int GetChildCount() const { return static_cast< int >( mapxChildren.size() ); }
 	ASTNode* GetChild( const int i ) const { return mapxChildren[ i ]; }
 
+	bool IsValued() const { return mxToken.IsValued(); }
+
 private:
 
 	void DebugPrintRecursive( std::string& xWorkingString ) const;
