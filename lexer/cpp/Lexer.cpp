@@ -297,34 +297,6 @@ static inline void HandleNextCharacter(
 	}
 }
 
-//static inline bool IsRuleNotRegex( const std::string& xRule )
-//{
-//	bool bSafe = true;
-//	for( size_t i = 0; i < xRule.length(); ++i )
-//	{
-//		bSafe &= ( xRule[ i ] != '\\' )
-//			&& ( xRule[ i ] != '.' )
-//			&& ( xRule[ i ] != '(' )
-//			&& ( xRule[ i ] != '[' )
-//			&& ( xRule[ i ] != '$' )
-//			&& ( xRule[ i ] != ':' );
-//
-//		if( i > 0 )
-//		{
-//			bSafe &= ( xRule[ i ] != ')' )
-//				&& ( xRule[ i ] != ']' )
-//				&& ( xRule[ i ] != '-' )
-//				&& ( xRule[ i ] != ':' )
-//				&& ( xRule[ i ] != '+' )
-//				&& ( xRule[ i ] != '*' )
-//				&& ( xRule[ i ] != '^' )
-//				&& ( xRule[ i ] != '?' );
-//		}
-//	}
-//
-//	return bSafe;
-//}
-
 static inline std::vector< std::basic_regex< char > > BuildRegexCache(
 	const std::vector< Rule >& axRules )
 {
@@ -352,7 +324,6 @@ static inline std::vector< std::string > BuildStringCache(
 	std::vector< std::string > axStrings;
 	for( size_t i = 0; i < axRules.size(); ++i )
 	{
-		//if( IsRuleNotRegex( axRules[ i ].GetExpression() ) )
 		if( !axRules[ i ].GetBaseToken().IsValued() )
 		{
 			axStrings.push_back(
