@@ -121,8 +121,9 @@ static inline const char* FindNewCursor(
 			szNewCursor += xQuote.GetStartLength();
 			while( *szNewCursor )
 			{
-				if( strncmp(
-					szNewCursor, xQuote.GetEscape(), xQuote.GetEscapeLength() ) == 0 )
+				if( ( xQuote.GetEscapeLength() > 0 ) 
+				  && ( strncmp(
+					szNewCursor, xQuote.GetEscape(), xQuote.GetEscapeLength() ) == 0 ) )
 				{
 					// skip the escape sequence, and its following character
 					szNewCursor += xQuote.GetEscapeLength();
