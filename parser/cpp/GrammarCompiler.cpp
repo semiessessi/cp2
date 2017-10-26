@@ -85,7 +85,7 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 	if( pxAST == nullptr )
 	{
 		Warning( 4501, "<unknown>", 0, 0,
-			"Unable to compiler grammar from empty syntax tree, producing empty grammar" );
+			"Unable to compile grammar from empty syntax tree, producing empty grammar" );
 		return Grammar();
 	}
 
