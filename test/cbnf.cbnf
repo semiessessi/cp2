@@ -16,7 +16,7 @@ production			=	"quote" identifier string string string ";" ;
 
 production			=	"lexeme" identifier string ";" ;
 
-production			=	identifier "=" rule-expression ";" ;
+production			=	identifier "=" rule-expression* ";" ;
 production			=	identifier "=" "..." ";" ;
 
 rule-expression     =   string ;
