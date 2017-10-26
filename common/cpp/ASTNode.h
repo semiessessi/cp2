@@ -14,9 +14,7 @@ namespace CP2
 
 struct ParseError
 {
-	std::string szFilename;
-	int iLine;
-	int iColumn;
+	int iNumber;
 	std::string szErrorString;
 };
 
@@ -25,6 +23,25 @@ class ASTNode
 {
 	
 public:
+
+	// error node
+	ASTNode( const int iCursor,
+		const Token& xToken,
+		const std::string& xProductionName,
+		const int iErrorNumber,
+		const std::string& xErrorMessage )
+	: mxProductionName( xProductionName )
+	, mxToken( xToken )
+	, miCursor( iCursor )
+	{
+		ParseError xParseError =
+		{
+			iErrorNumber,
+			xErrorMessage,
+		};
+
+		maxErrors.push_back( xParseError );
+	}
 
 	ASTNode( const int iCursor,
 		const Token& xToken,

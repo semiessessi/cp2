@@ -5,6 +5,8 @@
 #include "../../common/cpp/ASTNode.h"
 #include "../../common/cpp/Report.h"
 
+#include <algorithm>
+
 namespace CP2
 {
 namespace Parser
@@ -43,11 +45,23 @@ static inline bool HandleListOrOptional(
 			// with the same states we just tried...
 			return true;
 		}
+
+		// check if what we got back was just errors and do the same
+		bool bErrorsOnly = true;
+		for( const ParseState& xState : axWorkingNewStates )
+		{
+			bErrorsOnly = bErrorsOnly && ( ( xState.mpxAST == nullptr )
+				|| ( xState.mpxAST->IsErrored() ) );
+		}
+
+		if( bErrorsOnly )
+		{
+			return true;
+		}
 	}
 
 	if( bList ) // if its a list, and we didn't skip out ...
 	{
-
 		// ... try and parse the same thing again, add to the list
 		--j;
 		++iCurrentListCount;
@@ -57,6 +71,7 @@ static inline bool HandleListOrOptional(
 		iCurrentListCount = 0;
 	}
 
+	// SE - TODO: this has nothing todo with the function name.
 	// cleanup the old 'new' states before forgetting them.
 	for( ParseState& xState : axNewStates )
 	{
@@ -84,9 +99,24 @@ static inline bool ContinueState( size_t& k,
 	// continue where this state left off
 	const int iCurrentCursor = axNewStates[ k ].miCursor;
 	ASTNode* const pxBaseNode = axNewStates[ k ].mpxAST;
+	// early out for error states
+	if( pxBaseNode->IsErrored() )
+	{
+		return false;
+	}
+
 	if( iCurrentCursor >= axTokens.size() )
 	{
 		// report error?
+		std::string xError = "Expected ";
+		xError += xName;
+		xError += ", but found end of file instead";
+		ParseState xNewState =
+		{
+			new ASTNode( iCurrentCursor, axTokens[ iCurrentCursor - 1 ], xName, 3001, xError ),
+			iCurrentCursor - 1
+		};
+		axWorkingNewStates.push_back( xNewState );
 		return false;
 	}
 
@@ -107,10 +137,21 @@ static inline bool ContinueState( size_t& k,
 			};
 			axWorkingNewStates.push_back( xNewState );
 		}
-		//else
-		//{
-		//	// report error?
-		//}
+		else
+		{
+			// report error
+			std::string xError = "Expected ";
+			xError += xName;
+			xError += ", but found ";
+			xError += axTokens[ iCurrentCursor ].GetName();
+			xError += " instead";
+			ParseState xNewState =
+			{
+				new ASTNode( iCurrentCursor, axTokens[ iCurrentCursor ], xName, 3002, xError ),
+				iCurrentCursor - 1
+			};
+			axWorkingNewStates.push_back( xNewState );
+		}
 
 		return false;
 	}
@@ -118,16 +159,39 @@ static inline bool ContinueState( size_t& k,
 	//
 	std::vector< ParseState > axChildStates =
 		ParseRecursive( axTokens, xGrammar, iCurrentCursor, axNewProductions );
+	bool bAllErrors = true;
 	for( ParseState& xState : axChildStates )
 	{
-		ParseState xNewState =
+		// only add error free states... unless they are all errors
+		if( ( xState.mpxAST != nullptr )
+			&& ( !xState.mpxAST->IsErrored() ) )
 		{
-			ASTNode::DuplicateAndAddChild(
-				pxBaseNode,
-				ASTNode::Duplicate( xState.mpxAST ) ),
-			xState.miCursor
-		};
-		axWorkingNewStates.push_back( xNewState );
+			ParseState xNewState =
+			{
+				ASTNode::DuplicateAndAddChild(
+					pxBaseNode,
+					ASTNode::Duplicate( xState.mpxAST ) ),
+				xState.miCursor
+			};
+			bAllErrors = false;
+			axWorkingNewStates.push_back( xNewState );
+		}
+	}
+
+	if( bAllErrors )
+	{
+		// bubble the errors upwards
+		for( ParseState& xState : axChildStates )
+		{
+			ParseState xNewState =
+			{
+				ASTNode::DuplicateAndAddChild(
+					pxBaseNode,
+					ASTNode::Duplicate( xState.mpxAST ) ),
+				xState.miCursor
+			};
+			axWorkingNewStates.push_back( xNewState );
+		}
 	}
 
 	return false;
@@ -230,7 +294,23 @@ std::vector< ParseState > ParseRecursive(
 			}
 		}
 
-		axStates.insert( axStates.end(), axNewStates.begin(), axNewStates.end() );
+		// only return states containing no errors, unless they all errored
+		bool bAnyStateSucceeded = false;
+		std::copy_if( axNewStates.begin(), axNewStates.end(),
+			std::back_inserter( axStates ), [ & ]( const ParseState& xState ) -> bool
+			{
+				const bool bCopy = ( xState.mpxAST != nullptr )
+					&& !( xState.mpxAST->IsErrored() );
+				bAnyStateSucceeded = bAnyStateSucceeded || bCopy;
+				return bCopy;
+			} );
+
+		// SE - TODO: ...
+		// no state succeded? return an error state containing our accumulated errors.
+		if( !bAnyStateSucceeded )
+		{
+			axStates.insert( axStates.end(), axNewStates.begin(), axNewStates.end() );
+		}
 	}
 
 	return axStates;
