@@ -12,6 +12,14 @@
 namespace CP2
 {
 
+struct ParseError
+{
+	std::string szFilename;
+	int iLine;
+	int iColumn;
+	std::string szErrorString;
+};
+
 class ASTNode
 : public PoolAllocated< ASTNode >
 {
@@ -66,6 +74,10 @@ public:
 	ASTNode* GetChild( const int i ) const { return mapxChildren[ i ]; }
 
 	bool IsValued() const { return mxToken.IsValued(); }
+	bool IsErrored() const { return !( maxErrors.empty() ); }
+
+	void VisitTopDownLeftmost( class ASTVisitor& xVisitor );
+	void VisitBottomUpLeftmost( class ASTVisitor& xVisitor );
 
 private:
 
@@ -78,6 +90,7 @@ private:
 	ASTNode( const ASTNode* const pxTemplate );
 
 	std::vector< ASTNode* > mapxChildren;
+	std::vector< ParseError > maxErrors;
 	std::string mxProductionName;
 	Token mxToken;
 	int miCursor;

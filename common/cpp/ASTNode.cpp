@@ -1,6 +1,7 @@
 // Copyright (c) 2017 Cranium Software
 
 #include "ASTNode.h"
+#include "ASTVisitor.h"
 
 namespace CP2
 {
@@ -20,6 +21,26 @@ ASTNode* ASTNode::DuplicateAndAddChild( const ASTNode* const pxNode, ASTNode* co
 ASTNode* ASTNode::Duplicate( const ASTNode* const pxNode )
 {
 	return new ASTNode( pxNode );
+}
+
+void ASTNode::VisitTopDownLeftmost( ASTVisitor& xVisitor )
+{
+	xVisitor.DoVisit( *this );
+
+	for( ASTNode* const pxChild : mapxChildren )
+	{
+		pxChild->VisitTopDownLeftmost( xVisitor );
+	}
+}
+
+void ASTNode::VisitBottomUpLeftmost( ASTVisitor& xVisitor )
+{
+	for( ASTNode* const pxChild : mapxChildren )
+	{
+		pxChild->VisitBottomUpLeftmost( xVisitor );
+	}
+
+	xVisitor.DoVisit( *this );
 }
 
 std::vector< ASTNode* > ASTNode::Append( const std::vector< ASTNode* >& xA, ASTNode* const pxB )
