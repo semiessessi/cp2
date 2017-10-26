@@ -1,0 +1,21 @@
+// Copyright (c) 2017 Cranium Software
+
+quote string "\"" "\"" "\\" ;
+
+lexeme identifier "[a-zA-Z!\\$%&\\*/\\:<=>\\?\\^_~][a-zA-Z!\\$%&\\*/\\:<=>\\?\\^_~\\-\\+@\\.]*" ;
+lexeme integer "\\-?[0-9]+" ;
+
+// special cases
+expression			= 	"(" "if" expression expression expression ")" ;
+expression			= 	"(" "define" identifier expression ")" ;
+expression			= 	"(" "quote" expression ")" ;
+expression			= 	"(" "set!" identifier expression ")" ;
+expression			= 	"(" "lambda" "(" identifier* ")" expression ")" ;
+
+// basic expressions
+expression			= 	"(" expression* ")" ;
+expression			= 	identifier ;
+expression			= 	integer ;
+expression			= 	"+" ;				// handle peculiar identifiers like this.
+expression			= 	"-" ;				// handle peculiar identifiers like this.
+expression			= 	"..." ;				// handle peculiar identifiers like this.
