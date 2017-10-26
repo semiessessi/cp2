@@ -383,7 +383,11 @@ EvaluationResult Evaluate( ASTNode* const pxASTValue, Environment& xEnvironment 
 		else
 		{
 			// it better be a procedure...
-			const std::string& xProcedureName = pxASTValue->GetChild( 1 )->GetTokenValue();
+			// note, this boolean logic is to handle the peculiar identifiers, which are their own tokens
+			const bool bIsPeculiar = pxASTValue->GetChild( 1 )->GetTokenValue().empty();
+			const std::string& xProcedureName = bIsPeculiar
+				? pxASTValue->GetChild( 1 )->GetTokenName()
+				: pxASTValue->GetChild( 1 )->GetTokenValue();
 			if( xEnvironment.VariableIsDefined( xProcedureName.c_str() ) )
 			{
 				EvaluationResult& xProcedure =
