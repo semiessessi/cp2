@@ -16,6 +16,7 @@ expression			= 	"(" "lambda" "(" identifier* ")" expression ")" ;
 expression			= 	"(" expression* ")" ;
 expression			= 	identifier ;
 expression			= 	integer ;
+expression			= 	string ;
 expression			= 	"+" ;				// handle peculiar identifiers like this.
 expression			= 	"-" ;				// handle peculiar identifiers like this.
 expression			= 	"..." ;				// handle peculiar identifiers like this.

@@ -35,6 +35,7 @@ const Grammar& GetSchemeGrammar()
 		GrammarProduction( "<expression>", GE( "(" ) + !GE( "<expression>" ) + GE( ")" ) ),
 		GrammarProduction( "<expression>", GE( "<identifier>" ) ),
 		GrammarProduction( "<expression>", GE( "<integer>" ) ),
+		GrammarProduction( "<expression>", GE( "<string>" ) ),
 		GrammarProduction( "<expression>", GE( "+" ) ),
 		GrammarProduction( "<expression>", GE( "-" ) ),
 		GrammarProduction( "<expression>", GE( "..." ) ),
