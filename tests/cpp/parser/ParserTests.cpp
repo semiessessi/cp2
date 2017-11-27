@@ -35,6 +35,9 @@ void DoParserTests()
 	static const Token kxAToken( "a", 1001 );
 	static const Token kxBToken( "b", 1002 );
 	static const Token kxCToken( "c", 1003 );
+	static const Token kxDToken( "d", 1004 );
+
+	static const std::vector< Token > kaxNoTokens;
 
 	static const std::vector< Token > kaxATokensShort =
 	{
@@ -47,6 +50,11 @@ void DoParserTests()
 		kxAToken, kxBToken, kxCToken,
 		kxCToken, kxBToken, kxAToken,
 		kxBToken, kxAToken, kxCToken,
+	};
+
+	static const std::vector< Token > kaxATokensShortWithD =
+	{
+		kxAToken, kxAToken, kxDToken
 	};
 
 	static std::vector< Token > kaxATokensLong = kaxATokensShort;
@@ -78,11 +86,18 @@ void DoParserTests()
 		}
 	}
 
+	// error tests.
+
+
 	// simple tests.
 	CP2_PARSER_TEST_SIMPLE_CLEAN( "a grammar, short input", kaxATokensShort, kxSimpleAGrammar );
 	CP2_PARSER_TEST_SIMPLE_CLEAN( "abc grammar, short input", kaxABCTokensShort, kxSimpleABCGrammar );
 	CP2_PARSER_TEST_SIMPLE_CLEAN( "a grammar, long input", kaxATokensLong, kxSimpleAGrammar );
 	CP2_PARSER_TEST_SIMPLE_CLEAN( "abc grammar, long input", kaxABCTokensLong, kxSimpleABCGrammar );
+
+	CP2_PARSER_TEST_SIMPLE_WARNING( "no tokens", kaxNoTokens, kxSimpleAGrammar, 3501 );
+
+	CP2_PARSER_TEST_SIMPLE_ERROR( "unexpected token", kaxATokensShortWithD, kxSimpleAGrammar, 3000 );
 }
 
 #undef GE
