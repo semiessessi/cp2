@@ -275,7 +275,7 @@ static inline void HandleNextCharacter(
 					szFilename, iLine, iColumn, std::string( szCursor, szNewCursor - szCursor ) ) );
 				szCursor = szNewCursor;
 				// SE - TODO: handle new lines in matches.
-				iColumn += ( szNewCursor - szCursor );
+				iColumn += static_cast< int >( szNewCursor - szCursor );
 				break;
 			}
 
