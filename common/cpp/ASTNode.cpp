@@ -86,6 +86,7 @@ std::vector< ASTNode* > ASTNode::DeepDuplicate( const std::vector< ASTNode* >& x
 
 ASTNode::ASTNode( const ASTNode* const pxTemplate, ASTNode* const pxChild )
 : mapxChildren( Append( DeepDuplicate( pxTemplate->mapxChildren ), pxChild ) )
+, maxErrors( pxTemplate->maxErrors )
 , mxProductionName( pxTemplate->mxProductionName )
 , mxToken( pxTemplate->mxToken )
 , miCursor( pxTemplate->miCursor )
@@ -95,6 +96,7 @@ ASTNode::ASTNode( const ASTNode* const pxTemplate, ASTNode* const pxChild )
 
 ASTNode::ASTNode( const ASTNode* const pxTemplate )
 : mapxChildren( DeepDuplicate( pxTemplate->mapxChildren ) )
+, maxErrors( pxTemplate->maxErrors )
 , mxProductionName( pxTemplate->mxProductionName )
 , mxToken( pxTemplate->mxToken )
 , miCursor( pxTemplate->miCursor )

@@ -7,6 +7,7 @@
 #include "Token.h"
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace CP2
@@ -15,7 +16,7 @@ namespace CP2
 struct ParseError
 {
 	int iNumber;
-	std::string szErrorString;
+	//std::string_view xExpected;
 };
 
 class ASTNode
@@ -27,9 +28,9 @@ public:
 	// error node
 	ASTNode( const int iCursor,
 		const Token& xToken,
-		const std::string& xProductionName,
+		const std::string_view& xProductionName,
 		const int iErrorNumber,
-		const std::string& xErrorMessage )
+		const std::string_view& xExpected )
 	: mxProductionName( xProductionName )
 	, mxToken( xToken )
 	, miCursor( iCursor )
@@ -37,7 +38,7 @@ public:
 		ParseError xParseError =
 		{
 			iErrorNumber,
-			xErrorMessage,
+			//xExpected,
 		};
 
 		maxErrors.push_back( xParseError );
@@ -45,7 +46,7 @@ public:
 
 	ASTNode( const int iCursor,
 		const Token& xToken,
-		const std::string& xProductionName,
+		const std::string_view& xProductionName,
 		const std::vector< ASTNode* >& apxChildren = std::vector< ASTNode* >() )
 	: mapxChildren( apxChildren )
 	, mxProductionName( xProductionName )
@@ -91,7 +92,24 @@ public:
 	ASTNode* GetChild( const int i ) const { return mapxChildren[ i ]; }
 
 	bool IsValued() const { return mxToken.IsValued(); }
-	bool IsErrored() const { return !( maxErrors.empty() ); }
+	bool IsErrored() const
+	{
+		// SE - TODO: this shouldn't need to be recursive (!)
+		if( !maxErrors.empty() )
+		{
+			return true;
+		}
+
+		for( const ASTNode* const pxChild : mapxChildren )
+		{
+			if( pxChild->IsErrored() )
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	void VisitTopDownLeftmost( class ASTVisitor& xVisitor );
 	void VisitBottomUpLeftmost( class ASTVisitor& xVisitor );
