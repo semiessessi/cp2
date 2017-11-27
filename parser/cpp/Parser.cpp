@@ -108,12 +108,9 @@ static inline bool ContinueState( size_t& k,
 	if( iCurrentCursor >= axTokens.size() )
 	{
 		// report error?
-		std::string xError = "Expected ";
-		xError += xName;
-		xError += ", but found end of file instead";
 		ParseState xNewState =
 		{
-			new ASTNode( iCurrentCursor, axTokens[ iCurrentCursor - 1 ], xName, 3001, xError ),
+			new ASTNode( iCurrentCursor, axTokens[ iCurrentCursor - 1 ], xName, 3001, xName ),
 			iCurrentCursor - 1
 		};
 		axWorkingNewStates.push_back( xNewState );
@@ -140,14 +137,9 @@ static inline bool ContinueState( size_t& k,
 		else
 		{
 			// report error
-			std::string xError = "Expected ";
-			xError += xName;
-			xError += ", but found ";
-			xError += axTokens[ iCurrentCursor ].GetName();
-			xError += " instead";
 			ParseState xNewState =
 			{
-				new ASTNode( iCurrentCursor, axTokens[ iCurrentCursor ], xName, 3002, xError ),
+				new ASTNode( iCurrentCursor, axTokens[ iCurrentCursor ], xName, 3002, xName ),
 				iCurrentCursor - 1
 			};
 			axWorkingNewStates.push_back( xNewState );
@@ -266,6 +258,7 @@ std::vector< ParseState > ParseRecursive(
 	// and one we write the next set of new states into
 	std::vector< ParseState > axNewStates;
 	std::vector< ParseState > axWorkingNewStates;
+	bool bAllErrors = true;
 	for( size_t i = 0; i < axProductions.size(); ++i )
 	{
 		const std::vector< Name >& axNames =
@@ -302,6 +295,7 @@ std::vector< ParseState > ParseRecursive(
 				const bool bCopy = ( xState.mpxAST != nullptr )
 					&& !( xState.mpxAST->IsErrored() );
 				bAnyStateSucceeded = bAnyStateSucceeded || bCopy;
+				bAllErrors = bAllErrors && !bCopy;
 				return bCopy;
 			} );
 
@@ -311,6 +305,16 @@ std::vector< ParseState > ParseRecursive(
 		{
 			axStates.insert( axStates.end(), axNewStates.begin(), axNewStates.end() );
 		}
+	}
+
+	if( !bAllErrors ) // remove errors if we had successes
+	{
+		axStates.erase( std::remove_if( axStates.begin(), axStates.end(),
+			[ & ]( const ParseState& xState ) -> bool
+		{
+			return ( xState.mpxAST == nullptr )
+				|| ( xState.mpxAST->IsErrored() );
+		} ), axStates.end() );
 	}
 
 	return axStates;
@@ -339,6 +343,16 @@ ASTNode* Parse( const std::vector< Token >& axTokens, const Grammar& xGrammar )
 	{
 		return nullptr;
 	}
+
+	// check if its just errors
+	if( ( axStates[ 0 ].mpxAST != nullptr )
+		&& axStates[ 0 ].mpxAST->IsErrored() )
+	{
+		// all we got was errors (!)
+		Error( 3000, szFilename, 0, 0, "Parsing was unsuccessful!" );
+		return nullptr;
+	}
+
 
 	if( axStates.size() != 1 )
 	{
