@@ -50,6 +50,12 @@ std::vector< ASTNode* > ASTNode::Append( const std::vector< ASTNode* >& xA, ASTN
 	return xReturnValue;
 }
 
+std::string ASTNode::GetErrorString() const
+{
+	std::string xReturnValue = "Unhandled parser error";
+	return xReturnValue;
+}
+
 void ASTNode::DebugPrintRecursive( std::string& xWorkingString ) const
 {
 	xWorkingString += mxProductionName;

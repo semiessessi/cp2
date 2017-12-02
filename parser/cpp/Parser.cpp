@@ -324,7 +324,11 @@ ASTNode* Parse( const std::vector< Token >& axTokens, const Grammar& xGrammar )
 {
 	const std::vector< GrammarProduction > axTopLevelProductions =
 		xGrammar.GetTopLevelProductions();
-	const char* const szFilename = axTokens.size() ? axTokens[ 0 ].GetFilename() : "<unknown-file>";
+	const char* const szFilename = axTokens.size()
+		? ( ( axTokens[ 0 ].GetFilename() != nullptr )
+			? axTokens[ 0 ].GetFilename()
+			: "<unknown-file>" )
+		: "<unknown-file>";
 	if( axTopLevelProductions.size() == 0 )
 	{
 		InternalError( 3400, szFilename, 0, 0, "Grammar has no top level productions!" );
@@ -365,7 +369,17 @@ ASTNode* Parse( const std::vector< Token >& axTokens, const Grammar& xGrammar )
 		axStates[ i ].Cleanup();
 	}
 
-	return axStates[ 0 ].mpxAST;
+	// check if parse was complete
+	ASTNode* const pxChosenTree = axStates[ 0 ].mpxAST;
+	const int iLastCursor = pxChosenTree->GetEndCursor();
+	if( ( iLastCursor + 1 ) < static_cast< int >( axTokens.size() ) )
+	{
+		Error( 3003, szFilename, pxChosenTree->GetLine(), pxChosenTree->GetColumn(),
+			"Incomplete parse. Unexpected token: %s", axTokens[ iLastCursor + 1 ].GetName() );
+		return nullptr;
+	}
+
+	return pxChosenTree;
 }
 
 }

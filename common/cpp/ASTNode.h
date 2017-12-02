@@ -78,6 +78,15 @@ public:
 	bool IsNonTerminal() const { return !IsTerminal(); }
 
 	int GetCursor() const { return miCursor; }
+	int GetEndCursor() const
+	{
+		if( mapxChildren.size() == 0 )
+		{
+			return miCursor;
+		}
+
+		return mapxChildren.back()->GetCursor();
+	}
 	const std::string& GetProductionName() const { return mxProductionName; }
 	const char* GetFilename() const { return mxToken.GetFilename(); }
 	int GetLine() const { return mxToken.GetLine(); }
@@ -113,6 +122,8 @@ public:
 
 	void VisitTopDownLeftmost( class ASTVisitor& xVisitor );
 	void VisitBottomUpLeftmost( class ASTVisitor& xVisitor );
+
+	std::string GetErrorString() const;
 
 private:
 
