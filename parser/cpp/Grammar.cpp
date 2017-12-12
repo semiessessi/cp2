@@ -1,6 +1,6 @@
 #include "Grammar.h"
 
-#include "../../../common/cpp/Escaping.h"
+#include "../../common/cpp/Escaping.h"
 
 #include <unordered_set>
 

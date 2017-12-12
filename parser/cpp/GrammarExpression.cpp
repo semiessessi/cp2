@@ -1,6 +1,6 @@
 #include "GrammarExpression.h"
 
-#include "../../../common/cpp/Escaping.h"
+#include "../../common/cpp/Escaping.h"
 
 namespace CP2
 {

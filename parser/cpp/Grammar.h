@@ -55,7 +55,7 @@ public:
 	: maxProductions( axProductions )
 	{
 		InferLexemes();
-		mxLLKTable = LLKParseTable::FromGrammar( *this );
+		//mxLLKTable = LLKParseTable::FromGrammar( *this );
 	}
 
 	const int GetProductionCount() const { return static_cast< int >( maxProductions.size() ); }
@@ -86,7 +86,7 @@ public:
 	int GetDirectLeftRecursionCount() const { return static_cast< int >( maxDirectLeftRecursions.size() ); }
 	//int GetIndirectLeftRecursionCount() const;
 
-	int GetLLK() const { return mxLLKTable.GetK(); }
+	//int GetLLK() const { return mxLLKTable.GetK(); }
 
 private:
 
@@ -111,7 +111,7 @@ private:
 	// caches
 	mutable std::unordered_set< std::string > mxTerminals;
 	mutable std::unordered_set< std::string > mxNonTerminals;
-	mutable LLKParseTable mxLLKTable;
+	//mutable LLKParseTable mxLLKTable;
 
 };
 

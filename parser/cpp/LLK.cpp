@@ -11,6 +11,8 @@ namespace CP2
 namespace Parser
 {
 
+#if 0
+    
 bool CheckLLO( const Grammar& xGrammar, const std::vector< std::unordered_set< std::string > >& aaxFirstSets )
 {
 	//const std::vector< GrammarProduction > xTopLevelProductions
@@ -100,6 +102,8 @@ bool IsLLK( const int k,
 	return false;
 }
 
-};
+#endif
+    
+}
 
-};
+}

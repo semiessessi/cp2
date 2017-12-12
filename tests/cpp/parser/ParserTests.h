@@ -29,7 +29,7 @@ do { \
 	Message( "Running simple parser test \"" name "\" on %d input tokens...", input.size() ); \
 	ResetMessageReports(); \
 	StartProfiling( name ); \
-	ASTNode* const pxAST = Parser::Parse( input, grammar ); \
+	Parser::Parse( input, grammar ); \
 	EndProfiling( name ); \
 	ExpectSingleError( name, code ); \
 	ResetMessageReports(); \
@@ -40,7 +40,7 @@ do { \
 	Message( "Running simple parser test \"" name "\" on %d input tokens...", input.size() ); \
 	ResetMessageReports(); \
 	StartProfiling( name ); \
-	ASTNode* const pxAST = Parser::Parse( input, grammar ); \
+	Parser::Parse( input, grammar ); \
 	EndProfiling( name ); \
 	ExpectSingleWarning( name, code ); \
 	ResetMessageReports(); \

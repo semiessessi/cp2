@@ -32,7 +32,7 @@ int Comment::GetLength( const char* const szCursor, const char* const szFilename
 		if( szEnd == nullptr )
 		{
 			// consider the whole remainder to be comment, but warn the user
-			CP2::Warning( 2501, szFilename, iLine, iColumn, "Unterminated comment - found end of file before %s", mszMarkerEnd );
+			CP2::Warning( 2501, szFilename, iLine, iColumn, "Unterminated comment - found end of file before %s", mszMarkerEnd.c_str() );
 			return static_cast< int >( strlen( szCursor ) );
 		}
 
@@ -387,7 +387,7 @@ std::vector< Token > Lex( const char* const szFilename,
 	}
 
 	fseek( pxFile, 0, SEEK_END );
-	const int iLength = ftell( pxFile );
+	const int iLength = static_cast< int >( ftell( pxFile ) );
 	rewind( pxFile );
 	char* const pcData = new char[ iLength + 1 ];
 	pcData[ iLength ] = 0;

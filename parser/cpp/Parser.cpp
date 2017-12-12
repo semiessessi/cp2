@@ -35,7 +35,7 @@ static inline bool HandleListOrOptional(
 	std::vector< ParseState >& axNewStates )
 {
 	// if its optional in anyway ...
-	const bool bNotOptional = bNonEmpty && ( iCurrentListCount == 0 );
+	//const bool bNotOptional = bNonEmpty && ( iCurrentListCount == 0 );
 	if( bOptional || bList )
 	{
 		// ... and we failed to parse anything

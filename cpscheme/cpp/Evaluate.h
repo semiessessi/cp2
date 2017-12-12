@@ -4,6 +4,7 @@
 #define CPS_EVALUATE_H
 
 #include <string>
+#include <vector>
 
 #include "Environment.h"
 

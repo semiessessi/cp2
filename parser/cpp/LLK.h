@@ -11,6 +11,8 @@ namespace CP2
 namespace Parser
 {
 
+#if 0
+    
 class Grammar;
 class GrammarProduction;
 
@@ -53,8 +55,10 @@ private:
 
 bool IsLLK( const int k, const Grammar& xGrammar, const std::vector< GrammarProduction >& xProductions );
 
-};
+#endif
+    
+}
 
-};
+}
 
 #endif

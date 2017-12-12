@@ -43,7 +43,7 @@ GrammarExpression CompileExpression( ASTNode* const pxRuleExpression )
 		}
 
 		Error( 4002, pxSymbolNode->GetFilename(), pxSymbolNode->GetLine(), pxSymbolNode->GetColumn(),
-			"Unexpected %s in production rule expression", pxSymbolNode->GetProductionName() );
+			"Unexpected %s in production rule expression", pxSymbolNode->GetProductionName().c_str() );
 	}
 	else if( pxRuleExpression->GetChildCount() == 2 )
 	{
@@ -52,7 +52,7 @@ GrammarExpression CompileExpression( ASTNode* const pxRuleExpression )
 		if( pxSymbolNode->GetProductionName() != "<identifier>" )
 		{
 			Error( 4002, pxSymbolNode->GetFilename(), pxSymbolNode->GetLine(), pxSymbolNode->GetColumn(),
-				"Unexpected %s in production rule expression", pxSymbolNode->GetProductionName() );
+				"Unexpected %s in production rule expression", pxSymbolNode->GetProductionName().c_str() );
 			return GrammarExpression( "" );
 		}
 
@@ -73,7 +73,7 @@ GrammarExpression CompileExpression( ASTNode* const pxRuleExpression )
 		{
 			Error( 4003, pxFancyNode->GetFilename(), pxFancyNode->GetLine(), pxFancyNode->GetColumn(),
 				"Unexpected %s, expected production rule operator '*', '+' or '?'",
-				pxSymbolNode->GetProductionName() );
+				pxSymbolNode->GetProductionName().c_str() );
 		}
 	}
 
@@ -98,7 +98,7 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 	if( pxAST->GetProductionName() != "<grammar>" )
 	{
 		Error( 4000, pxAST->GetFilename(), pxAST->GetLine(), pxAST->GetColumn(),
-			"Expected <grammar> but found %s instead", pxAST->GetProductionName() );
+			"Expected <grammar> but found %s instead", pxAST->GetProductionName().c_str() );
 		return Grammar( axProductions );
 	}
 
@@ -119,7 +119,7 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 		if( iProductionChildCount <= 1 )
 		{
 			Error( 4001, pxAST->GetFilename(), pxAST->GetLine(), pxAST->GetColumn(),
-				"Unexpectedly short production found: %s", pxProductionAST->GetTokenValue() );
+				"Unexpectedly short production found: %s", pxProductionAST->GetTokenValue().c_str() );
 			continue;
 		}
 
@@ -186,7 +186,7 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 		if( iProductionChildCount <= 3 )
 		{
 			Error( 4001, pxAST->GetFilename(), pxAST->GetLine(), pxAST->GetColumn(),
-				"Unexpectedly short production found: %s", pxProductionAST->GetTokenValue() );
+				"Unexpectedly short production found: %s", pxProductionAST->GetTokenValue().c_str() );
 			continue;
 		}
 

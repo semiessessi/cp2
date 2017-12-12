@@ -1,0 +1,286 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		165CD3FC1FDF6BE400881E8C /* CBNFLexer.h in Headers */ = {isa = PBXBuildFile; fileRef = 165CD3F61FDF6BE400881E8C /* CBNFLexer.h */; };
+		165CD3FD1FDF6BE400881E8C /* CP2Lexer.h in Headers */ = {isa = PBXBuildFile; fileRef = 165CD3F71FDF6BE400881E8C /* CP2Lexer.h */; };
+		165CD3FE1FDF6BE400881E8C /* Lexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 165CD3F81FDF6BE400881E8C /* Lexer.cpp */; };
+		165CD3FF1FDF6BE400881E8C /* Lexer.h in Headers */ = {isa = PBXBuildFile; fileRef = 165CD3F91FDF6BE400881E8C /* Lexer.h */; };
+		165CD4001FDF6BE400881E8C /* CBNFLexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 165CD3FA1FDF6BE400881E8C /* CBNFLexer.cpp */; };
+		165CD4011FDF6BE400881E8C /* CP2Lexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 165CD3FB1FDF6BE400881E8C /* CP2Lexer.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		165CD3F61FDF6BE400881E8C /* CBNFLexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CBNFLexer.h; path = ../lexer/cpp/CBNFLexer.h; sourceTree = "<group>"; };
+		165CD3F71FDF6BE400881E8C /* CP2Lexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CP2Lexer.h; path = ../lexer/cpp/CP2Lexer.h; sourceTree = "<group>"; };
+		165CD3F81FDF6BE400881E8C /* Lexer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Lexer.cpp; path = ../lexer/cpp/Lexer.cpp; sourceTree = "<group>"; };
+		165CD3F91FDF6BE400881E8C /* Lexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Lexer.h; path = ../lexer/cpp/Lexer.h; sourceTree = "<group>"; };
+		165CD3FA1FDF6BE400881E8C /* CBNFLexer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CBNFLexer.cpp; path = ../lexer/cpp/CBNFLexer.cpp; sourceTree = "<group>"; };
+		165CD3FB1FDF6BE400881E8C /* CP2Lexer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CP2Lexer.cpp; path = ../lexer/cpp/CP2Lexer.cpp; sourceTree = "<group>"; };
+		16DC58051FDF6BA100E7EF44 /* libLexer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLexer.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		16DC58021FDF6BA100E7EF44 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		16DC57FC1FDF6BA100E7EF44 = {
+			isa = PBXGroup;
+			children = (
+				165CD3FA1FDF6BE400881E8C /* CBNFLexer.cpp */,
+				165CD3F61FDF6BE400881E8C /* CBNFLexer.h */,
+				165CD3FB1FDF6BE400881E8C /* CP2Lexer.cpp */,
+				165CD3F71FDF6BE400881E8C /* CP2Lexer.h */,
+				165CD3F81FDF6BE400881E8C /* Lexer.cpp */,
+				165CD3F91FDF6BE400881E8C /* Lexer.h */,
+				16DC58061FDF6BA100E7EF44 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		16DC58061FDF6BA100E7EF44 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				16DC58051FDF6BA100E7EF44 /* libLexer.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		16DC58031FDF6BA100E7EF44 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				165CD3FF1FDF6BE400881E8C /* Lexer.h in Headers */,
+				165CD3FC1FDF6BE400881E8C /* CBNFLexer.h in Headers */,
+				165CD3FD1FDF6BE400881E8C /* CP2Lexer.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		16DC58041FDF6BA100E7EF44 /* Lexer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 16DC58091FDF6BA100E7EF44 /* Build configuration list for PBXNativeTarget "Lexer" */;
+			buildPhases = (
+				16DC58011FDF6BA100E7EF44 /* Sources */,
+				16DC58021FDF6BA100E7EF44 /* Frameworks */,
+				16DC58031FDF6BA100E7EF44 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Lexer;
+			productName = Lexer;
+			productReference = 16DC58051FDF6BA100E7EF44 /* libLexer.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		16DC57FD1FDF6BA100E7EF44 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0910;
+				ORGANIZATIONNAME = "Semi Essessi";
+				TargetAttributes = {
+					16DC58041FDF6BA100E7EF44 = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 16DC58001FDF6BA100E7EF44 /* Build configuration list for PBXProject "Lexer" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 16DC57FC1FDF6BA100E7EF44;
+			productRefGroup = 16DC58061FDF6BA100E7EF44 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				16DC58041FDF6BA100E7EF44 /* Lexer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		16DC58011FDF6BA100E7EF44 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				165CD3FE1FDF6BE400881E8C /* Lexer.cpp in Sources */,
+				165CD4011FDF6BE400881E8C /* CP2Lexer.cpp in Sources */,
+				165CD4001FDF6BE400881E8C /* CBNFLexer.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		16DC58071FDF6BA100E7EF44 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		16DC58081FDF6BA100E7EF44 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		16DC580A1FDF6BA100E7EF44 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 438D8WWSVF;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		16DC580B1FDF6BA100E7EF44 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 438D8WWSVF;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		16DC58001FDF6BA100E7EF44 /* Build configuration list for PBXProject "Lexer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				16DC58071FDF6BA100E7EF44 /* Debug */,
+				16DC58081FDF6BA100E7EF44 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		16DC58091FDF6BA100E7EF44 /* Build configuration list for PBXNativeTarget "Lexer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				16DC580A1FDF6BA100E7EF44 /* Debug */,
+				16DC580B1FDF6BA100E7EF44 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 16DC57FD1FDF6BA100E7EF44 /* Project object */;
+}

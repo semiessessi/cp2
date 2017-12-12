@@ -55,6 +55,7 @@ static inline void GrammarReport( const CP2::Parser::Grammar& xGrammar )
 	CP2::Message( "(other)          ???" );
 	CP2::Message( "" );
 
+#if 0
 	if( xGrammar.GetLLK() < 0 )
 	{
 		CP2::Message( "Unable to determine if this grammar is LL(k)" );
@@ -63,6 +64,7 @@ static inline void GrammarReport( const CP2::Parser::Grammar& xGrammar )
 	{
 		CP2::Message( "This grammar is LL(%d)", xGrammar.GetLLK() );
 	}
+#endif
 
 	CP2::Message( "" );
 }
