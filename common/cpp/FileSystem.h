@@ -5,6 +5,7 @@ namespace CP2
 {
 
 void EnsurePath( const char* const szPath );
+void WriteTextFile( const char* const szPath, const char* const szText );
 
 }
 

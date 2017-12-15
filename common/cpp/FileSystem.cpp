@@ -8,6 +8,9 @@
 
 #endif
 
+#include <cstdio>
+#include <cstring>
+
 namespace CP2
 {
 
@@ -19,6 +22,18 @@ void EnsurePath( const char* const szPath )
 #else
 
 #endif
+}
+
+void WriteTextFile( const char* const szPath, const char* const szText )
+{
+	FILE* const pxFile = fopen( szPath, "wb" );
+	if( pxFile == nullptr )
+	{
+		return;
+	}
+
+	const size_t uLength = strlen( szText );
+	fwrite( szText, 1, uLength, pxFile );
 }
 
 }
