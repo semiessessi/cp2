@@ -85,7 +85,7 @@ public:
 			return miCursor;
 		}
 
-		return mapxChildren.back()->GetCursor();
+		return mapxChildren.back()->GetEndCursor();
 	}
 	const std::string& GetProductionName() const { return mxProductionName; }
 	const char* GetFilename() const { return mxToken.GetFilename(); }
