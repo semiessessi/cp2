@@ -35,5 +35,8 @@
     <ClInclude Include="..\cbnf\cpp\VSIntegration.h">
       <Filter>cbnf</Filter>
     </ClInclude>
+    <ClInclude Include="..\cbnf\cpp\VSProjectTypeData.h">
+      <Filter>cbnf</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
