@@ -24,16 +24,20 @@ void EnsurePath( const char* const szPath )
 #endif
 }
 
-void WriteTextFile( const char* const szPath, const char* const szText )
+void WriteBinaryFile( const char* const szPath, const void* const pData, const size_t uLength )
 {
 	FILE* const pxFile = fopen( szPath, "wb" );
-	if( pxFile == nullptr )
+	if ( pxFile == nullptr )
 	{
 		return;
 	}
 
-	const size_t uLength = strlen( szText );
-	fwrite( szText, 1, uLength, pxFile );
+	fwrite( pData, 1, uLength, pxFile );
+}
+
+void WriteTextFile( const char* const szPath, const char* const szText )
+{
+	WriteBinaryFile( szPath, szText, strlen( szText ) );
 }
 
 }
