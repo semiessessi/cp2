@@ -374,6 +374,7 @@ ASTNode* Parse( const std::vector< Token >& axTokens, const Grammar& xGrammar )
 	const int iLastCursor = pxChosenTree->GetEndCursor();
 	if( ( iLastCursor + 1 ) < static_cast< int >( axTokens.size() ) )
 	{
+		// SE - NOTE: line and column here should be from the last node...
 		Error( 3003, szFilename, pxChosenTree->GetLine(), pxChosenTree->GetColumn(),
 			"Incomplete parse. Unexpected token: %s", axTokens[ iLastCursor + 1 ].GetName() );
 		return nullptr;
