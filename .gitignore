@@ -9,3 +9,4 @@ projects/Win32/
 Win32/
 *.user
 test/*.exe
+test/test/
