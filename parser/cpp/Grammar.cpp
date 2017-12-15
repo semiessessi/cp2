@@ -76,7 +76,15 @@ std::string Grammar::GetCBNF() const
 	{
 		xReturnValue += "language \"";
 		xReturnValue += mszName;
-		xReturnValue += "\" ;\r\n";
+		// SE - TODO: this feels messy, its done in the name setter as well...
+		std::string szTestName = mszName;
+		std::transform( szTestName.begin(), szTestName.end(), szTestName.begin(), ::tolower );
+		if( !mszShortName.empty() && ( mszShortName != szTestName ) )
+		{
+			xReturnValue += "\" ";
+			xReturnValue += mszShortName;
+		}
+		xReturnValue += "\" ;\r\n\r\n";
 	}
 
 	for( const Lexer::Comment& xComment : maxCommentRules )

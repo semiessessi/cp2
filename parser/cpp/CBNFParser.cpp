@@ -22,6 +22,8 @@ const Grammar& GetCBNFGrammar()
 
 		GrammarProduction( "<production>",
 			GE( "language" ) + GE( "<string>" ) + GE( ";" ) ),
+		GrammarProduction( "<production>",
+			GE( "language" ) + GE( "<string>" ) + GE( "<string>" ) + GE( ";" ) ),
 
 		GrammarProduction( "<production>",
 			GE( "comment" ) + GE( "<string>" ) + GE( ";" ) ),

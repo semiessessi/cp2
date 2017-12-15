@@ -111,7 +111,7 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 	}
 
 	std::string szName = "NamelessLanguage";
-
+	std::string szShortName;
 	for( int i = 0; i < iChildCount; ++i )
 	{
 		ASTNode* const pxProductionAST = pxAST->GetChild( i );
@@ -135,6 +135,13 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 				ASTNode* const pxName = pxProductionAST->GetChild( 1 );
 				std::string xValue = pxName->GetTokenValue();
 				szName = xValue.substr( 1, xValue.length() - 2 );
+			}
+
+			if ( pxProductionAST->GetChildCount() > 3 )
+			{
+				ASTNode* const pxName = pxProductionAST->GetChild( 2 );
+				std::string xValue = pxName->GetTokenValue();
+				szShortName = xValue.substr( 1, xValue.length() - 2 );
 			}
 			continue;
 		}
@@ -221,7 +228,10 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 	Grammar xReturnValue( axProductions );
 
 	xReturnValue.SetName( szName.c_str() );
-
+	if( !szShortName.empty() )
+	{
+		xReturnValue.SetShortName( szShortName.c_str() );
+	}
 
 	for( const Lexer::Comment& xComment : axComments )
 	{

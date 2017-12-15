@@ -6,6 +6,7 @@
 #include "GrammarExpression.h"
 #include "LLK.h"
 
+#include <algorithm>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -74,8 +75,19 @@ public:
 	void AddBlockComment( const char* const szStart, const char* const szEnd );
 	void AddQuote( const char* const szName, const char* const szStart, const char* const szEnd, const char* const szEscape );
 
-	void SetName( const char* const szName ) { mszName = szName; }
+	void SetShortName( const char* const szName ) { mszShortName = szName; }
+	void SetName( const char* const szName )
+	{
+		mszName = szName;
+		if( mszShortName.empty() )
+		{
+			mszShortName = mszName;
+			std::transform( mszShortName.begin(), mszShortName.end(), mszShortName.begin(), ::tolower );
+		}
+	}
+
 	const std::string& GetName() const { return mszName; }
+	const std::string& GetShortName() const { return mszShortName; }
 
 	int GetLexemeCount() const { return static_cast< int >( maxLexemeRules.size() ); }
 	int GetCommentCount() const { return static_cast< int >( maxCommentRules.size() ); }
@@ -113,6 +125,7 @@ private:
 	std::vector< int > maxDirectLeftRecursions;
 
 	std::string mszName;
+	std::string mszShortName;
 
 	// caches
 	mutable std::unordered_set< std::string > mxTerminals;
