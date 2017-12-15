@@ -74,7 +74,7 @@ std::string Grammar::GetCBNF() const
 
 	if( mszName != "NamelessLanguage" )
 	{
-		xReturnValue += xReturnValue += "language \"";
+		xReturnValue += "language \"";
 		xReturnValue += mszName;
 		xReturnValue += "\" ;\r\n";
 	}
