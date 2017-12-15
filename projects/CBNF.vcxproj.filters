@@ -15,6 +15,9 @@
     <ClCompile Include="..\cbnf\cpp\ParameterHandlers.cpp">
       <Filter>cbnf</Filter>
     </ClCompile>
+    <ClCompile Include="..\cbnf\cpp\VSIntegration.cpp">
+      <Filter>cbnf</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\cbnf\cpp\CommandLineHandler.h">
@@ -27,6 +30,9 @@
       <Filter>cbnf</Filter>
     </ClInclude>
     <ClInclude Include="..\cbnf\cpp\SwitchHandlerDecls.h">
+      <Filter>cbnf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cbnf\cpp\VSIntegration.h">
       <Filter>cbnf</Filter>
     </ClInclude>
   </ItemGroup>

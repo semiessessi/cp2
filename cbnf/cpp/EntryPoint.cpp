@@ -4,8 +4,10 @@
 #include "Parameters.h"
 #include "SwitchHandler.h"
 #include "SwitchHandlerDecls.h"
+#include "VSIntegration.h"
 
 #include "../../common/cpp/ASTNode.h"
+#include "../../common/cpp/FileSystem.h"
 #include "../../common/cpp/Report.h"
 #include "../../lexer/cpp/CBNFLexer.h"
 #include "../../parser/cpp/CBNFParser.h"
@@ -21,6 +23,8 @@ SwitchHandlerInitialiser kaszSwitchHandlers[] =
 	{ "help",                   false,  HelpHandler },
 	{ "output",					true,   OutputHandler },
 	{ "verbose",                true,   VerbosityHandler },
+	{ "cpp",					false,  CPPHandler },
+	{ "vsix",					false,  VSIXHandler },
 };
 
 static inline void GrammarReport( const CP2::Parser::Grammar& xGrammar )
@@ -78,7 +82,10 @@ void WriteOutput( const CP2::Parser::Grammar& xGrammar )
 		return;
 	}
 
-	FILE* const pxFile = fopen( gxOutputPath.c_str(), "wb" );
+	CP2::EnsurePath( gxOutputPath.c_str() );
+
+	const std::string xFullPath = gxOutputPath + "/Grammar.cbnf";
+	FILE* const pxFile = fopen( xFullPath.c_str(), "wb" );
 	if( pxFile == nullptr )
 	{
 		return;
@@ -157,6 +164,12 @@ int main( const int iArgumentCount, const char* const* const pszArguments )
 	}
 
 	WriteOutput( xCompleteGrammar );
+
+	if( gbVSIXOutput && ( CP2::GetErrorCount() == 0 ) )
+	{
+		CP2::Message( "Writing VSIX solution..." );
+		CP2::CreateIntegrationInPath( gxOutputPath.c_str(), xCompleteGrammar );
+	}
 
 	CP2::Message( "Completed - %d errors and %d warnings", CP2::GetErrorCount(), CP2::GetWarningCount() );
 

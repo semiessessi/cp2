@@ -202,12 +202,14 @@
     <ClCompile Include="..\cbnf\cpp\EntryPoint.cpp" />
     <ClCompile Include="..\cbnf\cpp\HelpHandler.cpp" />
     <ClCompile Include="..\cbnf\cpp\ParameterHandlers.cpp" />
+    <ClCompile Include="..\cbnf\cpp\VSIntegration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\cbnf\cpp\CommandLineHandler.h" />
     <ClInclude Include="..\cbnf\cpp\Parameters.h" />
     <ClInclude Include="..\cbnf\cpp\SwitchHandler.h" />
     <ClInclude Include="..\cbnf\cpp\SwitchHandlerDecls.h" />
+    <ClInclude Include="..\cbnf\cpp\VSIntegration.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
