@@ -105,17 +105,25 @@ static void WriteSolution( const char* const szPath, const char* const szName )
 static void WriteCSProjectTemplate(
 	const char* const szPath,
 	const char* const szName,
-	const char* const szGUID )
+	const char* const szGUID,
+	const char* const szShortname )
 {
 	// write out the cs project file...
 	std::string szOutput = kaszVSProjectTemplateData[ 0 ];
 
 	szOutput += szGUID;
-	szOutput += kaszVSProjectData[ 1 ];
-	for ( size_t i = 2; i < sizeof( kaszVSProjectData ) / sizeof( kaszVSProjectData[ 0 ] ); ++i )
+	szOutput += kaszVSProjectTemplateData[ 1 ];
+	for ( size_t i = 2; i < sizeof( kaszVSProjectTemplateData ) / sizeof( kaszVSProjectTemplateData[ 0 ] ); ++i )
 	{
-		szOutput += szName;
-		szOutput += kaszVSProjectData[ i ];
+		if( ( i == 5 ) || ( i == 7 ) )
+		{
+			szOutput += szShortname;
+		}
+		else
+		{
+			szOutput += szName;
+		}
+		szOutput += kaszVSProjectTemplateData[ i ];
 	}
 
 	std::string szFinalPath( szPath );
@@ -157,17 +165,26 @@ static void WriteCSProjectType(
 	WriteTextFile( szFinalPath.c_str(), szOutput.c_str() );
 }
 
-static void WriteCSharpProjects( const char* const szPath, const char* const szName )
+static void WriteCSharpProjects(
+	const char* const szPath, const char* const szName, const char* const szShortname )
 {
 	// write project template
 	WriteCSProjectTemplate(
 		( std::string( szPath ) + "/ProjectTemplate" ).c_str(),
-		szName, GetProjectGuid( 0 ).c_str() );
+		szName, GetProjectGuid( 0 ).c_str(), szShortname );
 
 	// write project type
 	WriteCSProjectType(
 		( std::string( szPath ) + "/ProjectType" ).c_str(),
 		szName, GetProjectGuid( 1 ).c_str() );
+}
+
+static void WriteTemplateFiles( const char* const szPath, const Parser::Grammar& xGrammar )
+{
+	const std::string szContentFilePath =
+		( std::string( szPath ) + "/Untitled." ) + xGrammar.GetShortName();
+	// SE - TODO: be fancy and use the grammar to comment this properly...
+	WriteTextFile( szContentFilePath.c_str(), "this is a placeholder for the default file in a new project\r\n" );
 }
 
 void CreateIntegrationInPath(
@@ -180,7 +197,9 @@ void CreateIntegrationInPath(
 
 	WriteSolution( szNewPath.c_str(), xGrammar.GetName().c_str() );
 
-	WriteCSharpProjects( szNewPath.c_str(), xGrammar.GetName().c_str() );
+	WriteCSharpProjects( szNewPath.c_str(), xGrammar.GetName().c_str(), xGrammar.GetShortName().c_str() );
+
+	WriteTemplateFiles( ( std::string( szPath ) + "/ProjectTemplate" ).c_str(), xGrammar );
 
 }
 

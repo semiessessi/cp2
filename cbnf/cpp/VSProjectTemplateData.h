@@ -76,13 +76,17 @@ static const char* kaszVSProjectTemplateData[] =
 	"  <ItemGroup>\r\n"
 	"    <None Include=\"",
 	// language name
-	".wsproj\">\r\n"
+	".",
+	// short name
+	"proj\">\r\n"
 	"      <SubType>Designer</SubType>\r\n"
 	"    </None>\r\n"
 	"    <None Include=\"",
 	// language name
 	".ico\" />\r\n"
-	"    <None Include=\"Start.js\" />\r\n"
+	"    <None Include=\"Untitled.",
+	// short name
+	"\" />\r\n"
 	"  </ItemGroup>\r\n"
 	"  <ItemGroup>\r\n"
 	"    <VSTemplate Include=\"",
