@@ -104,9 +104,10 @@ void CreateIntegrationInPath(
 	const Parser::Grammar& xGrammar,
 	const VSIntegrationParameters& xParameters )
 {
-	EnsurePath( szPath );
+	std::string szNewPath = std::string( szPath ) + "/VSIX";
+	EnsurePath( szNewPath.c_str() );
 
-	WriteSolution( szPath, xGrammar.GetName().c_str() );
+	WriteSolution( szNewPath.c_str(), xGrammar.GetName().c_str() );
 
 	//WriteCSharpProjects( szPath, szName ); // ...
 

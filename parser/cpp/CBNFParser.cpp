@@ -21,6 +21,9 @@ const Grammar& GetCBNFGrammar()
 		GrammarProduction( "<grammar>", !GE( "<production>" ) ),
 
 		GrammarProduction( "<production>",
+			GE( "language" ) + GE( "<string>" ) + GE( ";" ) ),
+
+		GrammarProduction( "<production>",
 			GE( "comment" ) + GE( "<string>" ) + GE( ";" ) ),
 		GrammarProduction( "<production>",
 			GE( "comment" ) + GE( "<string>" ) + GE( "<string>" ) + GE( ";" ) ),
@@ -51,6 +54,7 @@ const Grammar& GetCBNFGrammar()
 		kxCBNFGrammar.AddBlockComment( "/*", "*/" );
 		kxCBNFGrammar.AddQuote( "<string>", "\"", "\"", "\\" );
 		kxCBNFGrammar.AddLexeme( "<identifier>", "[_a-zA-Z][_\\-a-zA-Z0-9]*" );
+		kxCBNFGrammar.SetName( "CBNF" );
 	}
 
 	return kxCBNFGrammar;

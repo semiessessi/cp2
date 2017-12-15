@@ -110,6 +110,8 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 		return Grammar( axProductions );
 	}
 
+	std::string szName = "NamelessLanguage";
+
 	for( int i = 0; i < iChildCount; ++i )
 	{
 		ASTNode* const pxProductionAST = pxAST->GetChild( i );
@@ -124,9 +126,19 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 		}
 
 		// the first child should be the name, unless it is a special case
-		// like comment, quote or lexeme
+		// like language, comment, quote or lexeme
 		ASTNode* const pxNameNode = pxProductionAST->GetChild( 0 );
-		if( pxNameNode->GetProductionName() == "comment" )
+		if( pxNameNode->GetProductionName() == "language" )
+		{
+			if( szName == "NamelessLanguage" )
+			{
+				ASTNode* const pxName = pxProductionAST->GetChild( 1 );
+				std::string xValue = pxName->GetTokenValue();
+				szName = xValue.substr( 1, xValue.length() - 2 );
+			}
+			continue;
+		}
+		else if( pxNameNode->GetProductionName() == "comment" )
 		{
 			ASTNode* const pxFirst = pxProductionAST->GetChild( 1 );
 			const std::string& xStart = pxFirst->GetTokenValue();
@@ -207,6 +219,9 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 	}
 	
 	Grammar xReturnValue( axProductions );
+
+	xReturnValue.SetName( szName.c_str() );
+
 
 	for( const Lexer::Comment& xComment : axComments )
 	{

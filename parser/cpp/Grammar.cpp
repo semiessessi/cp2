@@ -72,6 +72,13 @@ std::string Grammar::GetCBNF() const
 {
 	std::string xReturnValue;
 
+	if( mszName != "NamelessLanguage" )
+	{
+		xReturnValue += xReturnValue += "language \"";
+		xReturnValue += mszName;
+		xReturnValue += "\" ;\r\n";
+	}
+
 	for( const Lexer::Comment& xComment : maxCommentRules )
 	{
 		xReturnValue += "comment \"";
@@ -224,6 +231,11 @@ void Grammar::Merge( const Grammar& xOther )
 	MergeHelper( maxQuoteRules, xOther.maxQuoteRules );
 
 	RebuildTokens();
+
+	if( mszName == "NamelessLanguage" )
+	{
+		SetName( xOther.GetName().c_str() );
+	}
 
 }
 void Grammar::AddLexeme( const char* const szPrettyName, const char* const szExpression )
