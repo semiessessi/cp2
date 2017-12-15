@@ -184,7 +184,9 @@ static void WriteTemplateFiles( const char* const szPath, const Parser::Grammar&
 	const std::string szContentFilePath =
 		( std::string( szPath ) + "/Untitled." ) + xGrammar.GetShortName();
 	// SE - TODO: be fancy and use the grammar to comment this properly...
-	WriteTextFile( szContentFilePath.c_str(), "this is a placeholder for the default file in a new project\r\n" );
+	WriteTextFile( szContentFilePath.c_str(),
+		xGrammar.CommentText( "this is a placeholder for the default file in a new project" ).c_str() );
+
 }
 
 void CreateIntegrationInPath(

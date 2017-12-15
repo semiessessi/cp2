@@ -104,6 +104,8 @@ public:
 
 	//int GetLLK() const { return mxLLKTable.GetK(); }
 
+	std::string CommentText( const char* const szSource ) const;
+
 private:
 
 	void InferLexemes();

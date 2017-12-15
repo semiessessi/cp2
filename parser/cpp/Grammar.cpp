@@ -301,6 +301,26 @@ std::unordered_set< std::string > Grammar::GetNonTerminals() const
 	return mxNonTerminals;
 }
 
+std::string Grammar::CommentText( const char* const szSource ) const
+{
+	// do we have any block comments?
+	for( const Lexer::Comment& xComment : maxCommentRules )
+	{
+		if( xComment.GetEnd() != nullptr )
+		{
+			return ( std::string( xComment.GetStart() )
+				+ szSource ) + xComment.GetEnd();
+		}
+	}
+
+	if( maxCommentRules.size() != 0 )
+	{
+		// SE - TODO: line comment every line
+	}
+
+	return szSource;
+}
+
 void Grammar::InferLexemes()
 {
 	// SE - NOTE: it is important that the regexes come afterwards in the list
