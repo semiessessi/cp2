@@ -53,6 +53,7 @@ public:
 	Grammar(
 		const std::vector< GrammarProduction >& axProductions = std::vector< GrammarProduction >() )
 	: maxProductions( axProductions )
+	, mszName( "NamelessLanguage" )
 	{
 		InferLexemes();
 		//mxLLKTable = LLKParseTable::FromGrammar( *this );
@@ -72,6 +73,9 @@ public:
 	void AddLineComment( const char* const szStart );
 	void AddBlockComment( const char* const szStart, const char* const szEnd );
 	void AddQuote( const char* const szName, const char* const szStart, const char* const szEnd, const char* const szEscape );
+
+	void SetName( const char* const szName ) { mszName = szName; }
+	const std::string& GetName() const { return mszName; }
 
 	int GetLexemeCount() const { return static_cast< int >( maxLexemeRules.size() ); }
 	int GetCommentCount() const { return static_cast< int >( maxCommentRules.size() ); }
@@ -107,6 +111,8 @@ private:
 
 	// report stuff.
 	std::vector< int > maxDirectLeftRecursions;
+
+	std::string mszName;
 
 	// caches
 	mutable std::unordered_set< std::string > mxTerminals;
