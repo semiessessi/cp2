@@ -239,6 +239,65 @@ static void WriteTemplateFiles( const char* const szPath, const Parser::Grammar&
 	WriteTextFile( szFinalPath.c_str(), szOutput.c_str() );
 }
 
+static void WriteProjectTypeFiles( const char* const szPath, const Parser::Grammar& xGrammar )
+{
+	std::string szFinalPath( szPath );
+	szFinalPath += "/packages.config";
+
+	// packages config
+	WriteTextFile( szFinalPath.c_str(),
+		"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+		"<packages>\n"
+		"  <package id=\"Microsoft.Composition\" version=\"1.0.30\" targetFramework=\"net46\" />\n"
+		"  <package id=\"Microsoft.Tpl.Dataflow\" version=\"4.5.24\" targetFramework=\"net46\" />\n"
+		"  <package id=\"Microsoft.VisualStudio.Composition\" version=\"15.0.71\" targetFramework=\"net46\" />\n"
+		"  <package id=\"Microsoft.VisualStudio.ProjectSystem\" version=\"15.0.743\" targetFramework=\"net46\" />\n"
+		"  <package id=\"Microsoft.VisualStudio.ProjectSystem.Analyzers\" version=\"15.0.743\" targetFramework=\"net46\" developmentDependency=\"true\" />\n"
+		"  <package id=\"Microsoft.VisualStudio.ProjectSystem.SDK\" version=\"15.0.743\" targetFramework=\"net46\" />\n"
+		"  <package id=\"Microsoft.VisualStudio.ProjectSystem.SDK.Tools\" version=\"15.0.743\" targetFramework=\"net46\" developmentDependency=\"true\" />\n"
+		"  <package id=\"Microsoft.VisualStudio.SDK.VsixSuppression\" version=\"14.1.32\" targetFramework=\"net46\" />\n"
+		"  <package id=\"Microsoft.VisualStudio.Threading\" version=\"15.0.240\" targetFramework=\"net46\" />\n"
+		"  <package id=\"Microsoft.VisualStudio.Threading.Analyzers\" version=\"15.0.240\" targetFramework=\"net46\" developmentDependency=\"true\" />\n"
+		"  <package id=\"Microsoft.VisualStudio.Validation\" version=\"15.0.82\" targetFramework=\"net46\" />\n"
+		"  <package id=\"System.Collections.Immutable\" version=\"1.3.1\" targetFramework=\"net46\" />\n"
+		"</packages>" );
+
+	szFinalPath = szPath;
+	szFinalPath += "/ProjectProperties.cs";
+
+	// project properties class
+	WriteTextFile( szFinalPath.c_str(),
+		( ( std::string( "namespace " ) + xGrammar.GetName() + "\r\n" ) + kszVSProjectPropertiesCS ).c_str() );
+
+	szFinalPath = szPath;
+	szFinalPath += "/MyConfiguredProject.cs";
+
+	// a project class
+	WriteTextFile( szFinalPath.c_str(),
+		( ( std::string( "namespace " ) + xGrammar.GetName() + "\r\n" ) + kszVSConfiguredProjectCS ).c_str() );
+
+	szFinalPath = szPath;
+	szFinalPath += "/MyUnconfiguredProject.cs";
+
+	std::string szOutput = kaszVSUnconfiguredProjectCS[ 0 ];
+	for ( size_t i = 1; i < sizeof( kaszVSUnconfiguredProjectCS ) / sizeof( kaszVSUnconfiguredProjectCS[ 0 ] ); ++i )
+	{
+		if ( i == 2 )
+		{
+			szOutput += xGrammar.GetShortName();
+		}
+		else
+		{
+			szOutput += xGrammar.GetName();
+		}
+
+		szOutput += kaszVSUnconfiguredProjectCS[ i ];
+	}
+	// another project class
+	WriteTextFile( szFinalPath.c_str(),
+		( ( std::string( "namespace " ) + xGrammar.GetName() + "\r\n" ) + szOutput ).c_str() );
+}
+
 void CreateIntegrationInPath(
 	const char* const szPath,
 	const Parser::Grammar& xGrammar,
@@ -252,7 +311,7 @@ void CreateIntegrationInPath(
 	WriteCSharpProjects( szNewPath.c_str(), xGrammar.GetName().c_str(), xGrammar.GetShortName().c_str() );
 
 	WriteTemplateFiles( ( std::string( szNewPath ) + "/ProjectTemplate" ).c_str(), xGrammar );
-
+	WriteProjectTypeFiles( ( std::string( szNewPath ) + "/ProjectType" ).c_str(), xGrammar );
 }
 
 }
