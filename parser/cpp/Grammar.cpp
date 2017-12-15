@@ -308,8 +308,8 @@ std::string Grammar::CommentText( const char* const szSource ) const
 	{
 		if( xComment.GetEnd() != nullptr )
 		{
-			return ( std::string( xComment.GetStart() )
-				+ szSource ) + xComment.GetEnd();
+			return ( std::string( xComment.GetStart() ) + std::string( " " )
+				+ szSource ) + std::string( " " ) + xComment.GetEnd();
 		}
 	}
 

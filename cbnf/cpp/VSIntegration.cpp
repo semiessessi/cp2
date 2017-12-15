@@ -2,6 +2,7 @@
 
 #include "VSIntegration.h"
 
+#include "DefaultVSIconData.h"
 #include "VSProjectTemplateData.h"
 #include "VSProjectTypeData.h"
 
@@ -183,10 +184,59 @@ static void WriteTemplateFiles( const char* const szPath, const Parser::Grammar&
 {
 	const std::string szContentFilePath =
 		( std::string( szPath ) + "/Untitled." ) + xGrammar.GetShortName();
-	// SE - TODO: be fancy and use the grammar to comment this properly...
 	WriteTextFile( szContentFilePath.c_str(),
 		xGrammar.CommentText( "this is a placeholder for the default file in a new project" ).c_str() );
 
+	const std::string szIconFilePath =
+		( std::string( szPath ) + "/" ) + xGrammar.GetName() + ".ico";
+	WriteBinaryFile( szIconFilePath.c_str(), kaucDefaultVSIconData, kuDefaultVSIconDataSize );
+
+	// write out the actual template for visual studio
+	std::string szOutput = kaszVSTemplateFileData[ 0 ];
+	for ( size_t i = 1; i < sizeof( kaszVSTemplateFileData ) / sizeof( kaszVSTemplateFileData[ 0 ] ); ++i )
+	{
+		if ( i > 6 )
+		{
+			szOutput += xGrammar.GetShortName();
+		}
+		else
+		{
+			szOutput += xGrammar.GetName();
+		}
+
+		szOutput += kaszVSTemplateFileData[ i ];
+	}
+
+	std::string szFinalPath( szPath );
+	szFinalPath += "/";
+	szFinalPath += xGrammar.GetName();
+	szFinalPath += ".vstemplate";
+
+	WriteTextFile( szFinalPath.c_str(), szOutput.c_str() );
+
+	// write out the default project file
+	szOutput = kaszVSDefaultProjectData[ 0 ];
+	for ( size_t i = 1; i < sizeof( kaszVSDefaultProjectData ) / sizeof( kaszVSDefaultProjectData[ 0 ] ); ++i )
+	{
+		if ( i == 3 )
+		{
+			szOutput += xGrammar.GetShortName();
+		}
+		else
+		{
+			szOutput += xGrammar.GetName();
+		}
+
+		szOutput += kaszVSDefaultProjectData[ i ];
+	}
+
+	szFinalPath = szPath;
+	szFinalPath += "/";
+	szFinalPath += xGrammar.GetName();
+	szFinalPath += ".";
+	szFinalPath += xGrammar.GetShortName() + "proj";
+
+	WriteTextFile( szFinalPath.c_str(), szOutput.c_str() );
 }
 
 void CreateIntegrationInPath(
@@ -201,7 +251,7 @@ void CreateIntegrationInPath(
 
 	WriteCSharpProjects( szNewPath.c_str(), xGrammar.GetName().c_str(), xGrammar.GetShortName().c_str() );
 
-	WriteTemplateFiles( ( std::string( szPath ) + "/ProjectTemplate" ).c_str(), xGrammar );
+	WriteTemplateFiles( ( std::string( szNewPath ) + "/ProjectTemplate" ).c_str(), xGrammar );
 
 }
 

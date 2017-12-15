@@ -107,6 +107,76 @@ static const char* kaszVSProjectTemplateData[] =
 	"</Project>"
 };
 
+
+static const char* kaszVSTemplateFileData[] =
+{
+	"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
+	"<VSTemplate Version=\"3.0.0\" Type=\"Project\" xmlns=\"http://schemas.microsoft.com/developer/vstemplate/2005\" xmlns:sdk=\"http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010\">\r\n"
+	"  <TemplateData>\r\n"
+	"    <Name>",
+	// language name
+	" Project</Name>\r\n"
+	"    <Description>A template for creating a ",
+	// language name
+	" project.</Description>\r\n"
+	"    <Icon>",
+	// language name
+	".ico</Icon>\r\n"
+	"    <ProjectType>",
+	// language name
+	"</ProjectType>\r\n"
+	"    <RequiredFrameworkVersion>4.5.2</RequiredFrameworkVersion>\r\n"
+	"    <SortOrder>1</SortOrder>\r\n"
+	"    <TemplateID>{553e568b-a23f-4ff7-a1c6-b7b6debef284}</TemplateID>\r\n"
+	"    <CreateNewFolder>true</CreateNewFolder>\r\n"
+	"    <DefaultName>",
+	// language name
+	"</DefaultName>\r\n"
+	"    <ProvideDefaultName>true</ProvideDefaultName>\r\n"
+	"    <CreateInPlace>true</CreateInPlace>\r\n"
+	"  </TemplateData>\r\n"
+	"  <TemplateContent>\r\n"
+	"    <Project File=\"",
+	// language name
+	".",
+	// short name
+	"proj\" ReplaceParameters=\"true\">\r\n"
+	"      <!-- \r\n"
+	"      These are the items which will show up when a new project is created using the custom project system.\r\n"
+	"      Items referenced in here must also be referenced in the project file.\r\n"
+	"      -->\r\n"
+	"      <ProjectItem OpenInEditor=\"true\">Untitled.",
+	// short name
+	"</ProjectItem>\r\n"
+	"    </Project>\r\n"
+	"  </TemplateContent>\r\n"
+	"</VSTemplate>"
+};
+
+static const char* kaszVSDefaultProjectData[] =
+{
+	"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
+	"<Project ToolsVersion=\"4.0\" DefaultTargets=\"Build\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">\r\n"
+	"  <PropertyGroup Label=\"Globals\">\r\n"
+	"    <CustomProjectExtensionsPath>$(LocalAppData)\\CustomProjectSystems\\",
+	// language name
+	"\\</CustomProjectExtensionsPath>\r\n"
+	"  </PropertyGroup>\r\n"
+	"\r\n"
+	"  <Import Project=\"$(CustomProjectExtensionsPath)",
+	// language name
+	".props\" />\r\n"
+	"  <ItemGroup>\r\n"
+	"    <Script Include=\"**\\*.",
+	// short name
+	"\" />\r\n"
+	"  </ItemGroup>\r\n"
+	"  <Import Project=\"$(CustomProjectExtensionsPath)",
+	// language name
+	".targets\" />\r\n"
+	"</Project>\r\n"
+};
+
 }
 
 #endif

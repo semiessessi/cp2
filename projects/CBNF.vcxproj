@@ -206,6 +206,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\cbnf\cpp\CommandLineHandler.h" />
+    <ClInclude Include="..\cbnf\cpp\DefaultVSIconData.h" />
     <ClInclude Include="..\cbnf\cpp\Parameters.h" />
     <ClInclude Include="..\cbnf\cpp\SwitchHandler.h" />
     <ClInclude Include="..\cbnf\cpp\SwitchHandlerDecls.h" />
