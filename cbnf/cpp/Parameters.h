@@ -8,4 +8,10 @@
 extern int giVerbosity;
 extern std::string gxOutputPath;
 
+// output types
+extern bool gbCPPOutput;
+extern bool gbVSIXOutput;
+
+// warning stuff
+
 #endif
