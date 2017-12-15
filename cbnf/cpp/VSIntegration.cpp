@@ -185,7 +185,7 @@ static void WriteTemplateFiles( const char* const szPath, const Parser::Grammar&
 	const std::string szContentFilePath =
 		( std::string( szPath ) + "/Untitled." ) + xGrammar.GetShortName();
 	WriteTextFile( szContentFilePath.c_str(),
-		xGrammar.CommentText( "this is a placeholder for the default file in a new project" ).c_str() );
+		( xGrammar.CommentText( "this is a placeholder for the default file in a new project" ) + "\r\n" ).c_str() );
 
 	const std::string szIconFilePath =
 		( std::string( szPath ) + "/" ) + xGrammar.GetName() + ".ico";
