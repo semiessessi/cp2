@@ -18,6 +18,9 @@
     <ClCompile Include="..\common\cpp\Profiling.cpp">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="..\common\cpp\FileSystem.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\cpp\ASTNode.h">
@@ -39,6 +42,9 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="..\common\cpp\Profiling.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\cpp\FileSystem.h">
       <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>
