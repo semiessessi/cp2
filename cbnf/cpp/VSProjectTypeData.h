@@ -168,7 +168,9 @@ static const char* const kaszVSProjectData[] =
 	"    <ProjectReference Include=\"..\\ProjectTemplate\\",
 	// language name
 	".ProjectTemplate.csproj\">\n"
-	"      <Project>{651ebed8-058e-4104-a3b5-2e06330822f2}</Project>\n"
+	"      <Project>{",
+	// project template project guid
+	"}</Project>\n"
 	"      <Name>",
 	// language name
 	".ProjectTemplate</Name>\n"

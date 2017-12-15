@@ -2,6 +2,7 @@
 
 #include "VSIntegration.h"
 
+#include "VSProjectTemplateData.h"
 #include "VSProjectTypeData.h"
 
 #include "../../common/cpp/FileSystem.h"
@@ -101,15 +102,17 @@ static void WriteSolution( const char* const szPath, const char* const szName )
 	WriteTextFile( szFinalPath.c_str(), szOutput.c_str() );
 }
 
-static void WriteCSProjectType(
+static void WriteCSProjectTemplate(
 	const char* const szPath,
 	const char* const szName,
 	const char* const szGUID )
 {
-	std::string szOutput = kaszVSProjectData[ 0 ];
+	// write out the cs project file...
+	std::string szOutput = kaszVSProjectTemplateData[ 0 ];
+
 	szOutput += szGUID;
 	szOutput += kaszVSProjectData[ 1 ];
-	for( size_t i = 2; i < sizeof( kaszVSProjectData ) / sizeof( kaszVSProjectData[ 0 ] ); ++i )
+	for ( size_t i = 2; i < sizeof( kaszVSProjectData ) / sizeof( kaszVSProjectData[ 0 ] ); ++i )
 	{
 		szOutput += szName;
 		szOutput += kaszVSProjectData[ i ];
@@ -118,16 +121,48 @@ static void WriteCSProjectType(
 	std::string szFinalPath( szPath );
 	szFinalPath += "/";
 	szFinalPath += szName;
+	szFinalPath += ".ProjectTemplate.csproj";
+
+	WriteTextFile( szFinalPath.c_str(), szOutput.c_str() );
+}
+
+static void WriteCSProjectType(
+	const char* const szPath,
+	const char* const szName,
+	const char* const szGUID )
+{
+	// write out the cs project file...
+	std::string szOutput = kaszVSProjectData[ 0 ];
+	szOutput += szGUID;
+	szOutput += kaszVSProjectData[ 1 ];
+	for( size_t i = 2; i < sizeof( kaszVSProjectData ) / sizeof( kaszVSProjectData[ 0 ] ); ++i )
+	{
+		if ( i == 5 )
+		{
+			szOutput += GetProjectGuid( 0 );
+		}
+		else
+		{
+			szOutput += szName;
+		}
+
+		szOutput += kaszVSProjectData[ i ];
+	}
+
+	std::string szFinalPath( szPath );
+	szFinalPath += "/";
+	szFinalPath += szName;
 	szFinalPath += ".ProjectType.csproj";
+
 	WriteTextFile( szFinalPath.c_str(), szOutput.c_str() );
 }
 
 static void WriteCSharpProjects( const char* const szPath, const char* const szName )
 {
 	// write project template
-	//WriteCSProjectTemplate(
-	//	( std::string( szPath ) + "/ProjectTemplate" ).c_str(),
-	//	szName, GetProjectGuid( 0 ).c_str() );
+	WriteCSProjectTemplate(
+		( std::string( szPath ) + "/ProjectTemplate" ).c_str(),
+		szName, GetProjectGuid( 0 ).c_str() );
 
 	// write project type
 	WriteCSProjectType(
