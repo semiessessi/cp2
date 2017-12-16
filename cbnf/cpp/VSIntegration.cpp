@@ -266,11 +266,22 @@ static void WriteProjectTypeRulesFiles( const char* const szPath, const Parser::
 	}
 
 	// special cases...
-
 	std::string szFinalPath = szPath;
+	szFinalPath += "/source.xaml";
+
+	std::string szOutput = kaszVSSourceXamlData[ 0 ];
+	for ( size_t i = 1; i < sizeof( kaszVSSourceXamlData ) / sizeof( kaszVSSourceXamlData[ 0 ] ); ++i )
+	{
+		szOutput += xGrammar.GetName();
+		szOutput += kaszVSSourceXamlData[ i ];
+	}
+
+	WriteTextFile( szFinalPath.c_str(), szOutput.c_str() );
+
+	szFinalPath = szPath;
 	szFinalPath += "/source.browseobject.xaml";
 
-	std::string szOutput = kaszVSSourceBrowseObjectXaml[ 0 ];
+	szOutput = kaszVSSourceBrowseObjectXaml[ 0 ];
 	for ( size_t i = 1; i < sizeof( kaszVSSourceBrowseObjectXaml ) / sizeof( kaszVSSourceBrowseObjectXaml[ 0 ] ); ++i )
 	{
 		szOutput += xGrammar.GetName();

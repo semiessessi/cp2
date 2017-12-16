@@ -243,6 +243,41 @@ static const char* const kaszVSSourceBrowseObjectXaml[] =
 	"</Rule>\r\n"
 };
 
+static const char* kaszVSSourceXamlData[] =
+{
+	"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
+	"<!--Copyright, Microsoft Corporation, All rights reserved.-->\r\n"
+	"<Rule\r\n"
+	"\tName=\"",
+	// language name
+	"\"\r\n"
+	"\tDisplayName=\"",
+	// language name
+	" Source\"\r\n"
+	"\tPageTemplate=\"tool\"\r\n"
+	"\tDescription=\"",
+	// language name
+	" source file\"\r\n"
+	"\txmlns=\"http://schemas.microsoft.com/build/2009/properties\">\r\n"
+	"    <Rule.DataSource>\r\n"
+	"        <DataSource Persistence=\"ProjectFile\" Label=\"Configuration\" ItemType=\"",
+	// language name
+	"\" HasConfigurationCondition=\"false\" />\r\n"
+	"    </Rule.DataSource>\r\n"
+	"\r\n"
+	"    <BoolProperty Name=\"Visible\" Visible=\"false\" />\r\n"
+	"    <StringProperty Name=\"DependentUpon\" Visible=\"false\" />\r\n"
+	"    <StringProperty Name=\"Link\" Visible=\"false\" />\r\n"
+	"    <EnumProperty Name=\"SubType\" Visible=\"false\">\r\n"
+	"        <EnumValue Name=\"Designer\" />\r\n"
+	"        <EnumValue Name=\"Component\" />\r\n"
+	"        <EnumValue Name=\"Control\" />\r\n"
+	"        <EnumValue Name=\"Form\" />\r\n"
+	"        <EnumValue Name=\"Code\" />\r\n"
+	"    </EnumProperty>\r\n"
+	"</Rule>\r\n"
+};
+
 static const char* kaszVSourceDebuggerXamlData[] =
 {
 	"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
