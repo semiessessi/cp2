@@ -213,6 +213,7 @@
     <ClInclude Include="..\cbnf\cpp\VSIntegration.h" />
     <ClInclude Include="..\cbnf\cpp\VSProjectTemplateData.h" />
     <ClInclude Include="..\cbnf\cpp\VSProjectTypeData.h" />
+    <ClInclude Include="..\cbnf\cpp\VSProjectTypeRulesData.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

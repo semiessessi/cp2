@@ -240,6 +240,78 @@ static void WriteTemplateFiles( const char* const szPath, const Parser::Grammar&
 	WriteTextFile( szFinalPath.c_str(), szOutput.c_str() );
 }
 
+static void WriteProjectTypeRulesFiles( const char* const szPath, const Parser::Grammar& xGrammar )
+{
+	static const struct
+	{
+		const char* szPathSuffix;
+		const char* szData;
+	} kaxSimpleData[] =
+	{
+		{ "/none.xaml", kszVSNoneXaml },
+		{ "/general.xaml" , kszVSGeneralXaml },
+		{ "/general_file.xaml" , kszVSGeneralFileXaml },
+		{ "/folder.xaml" , kszVSFolderXaml },
+		{ "/general.browseobject.xaml" , kszVSGeneralBrowseObjectXaml },
+		{ "/debugger_general.xaml" , kszVSDebuggerGeneralXaml },
+		{ "/scc.xaml" , kszVSSCCXaml },
+	};
+
+	for ( size_t i = 0; i < ( sizeof( kaxSimpleData ) / sizeof( kaxSimpleData[ 0 ] ) ); ++i )
+	{
+		std::string szFinalPath( szPath );
+		szFinalPath += kaxSimpleData[ i ].szPathSuffix;
+
+		WriteTextFile( szFinalPath.c_str(), kaxSimpleData[ i ].szData );
+	}
+
+	// special cases...
+
+	std::string szFinalPath = szPath;
+	szFinalPath += "/source.browseobject.xaml";
+
+	std::string szOutput = kaszVSSourceBrowseObjectXaml[ 0 ];
+	for ( size_t i = 1; i < sizeof( kaszVSSourceBrowseObjectXaml ) / sizeof( kaszVSSourceBrowseObjectXaml[ 0 ] ); ++i )
+	{
+		szOutput += xGrammar.GetName();
+		szOutput += kaszVSSourceBrowseObjectXaml[ i ];
+	}
+
+	WriteTextFile( szFinalPath.c_str(), szOutput.c_str() );
+
+	szFinalPath = szPath;
+	szFinalPath += "/SourceDebugger.xaml";
+
+	szOutput = kaszVSourceDebuggerXamlData[ 0 ];
+	for ( size_t i = 1; i < sizeof( kaszVSourceDebuggerXamlData ) / sizeof( kaszVSourceDebuggerXamlData[ 0 ] ); ++i )
+	{
+		szOutput += xGrammar.GetName();
+		szOutput += kaszVSourceDebuggerXamlData[ i ];
+	}
+
+	WriteTextFile( szFinalPath.c_str(), szOutput.c_str() );
+
+	szFinalPath = szPath;
+	szFinalPath += "/ProjectItemsSchema.xaml";
+
+	szOutput = kaszVSProjectItemsSchema[ 0 ];
+	for ( size_t i = 1; i < sizeof( kaszVSProjectItemsSchema ) / sizeof( kaszVSProjectItemsSchema[ 0 ] ); ++i )
+	{
+		if ( i == 6 )
+		{
+			szOutput += xGrammar.GetShortName();
+		}
+		else
+		{
+			szOutput += xGrammar.GetName();
+		}
+
+		szOutput += kaszVSProjectItemsSchema[ i ];
+	}
+
+	WriteTextFile( szFinalPath.c_str(), szOutput.c_str() );
+}
+
 static void WriteProjectTypeFiles( const char* const szPath, const Parser::Grammar& xGrammar )
 {
 	EnsurePath( ( std::string( szPath ) + "/BuildSystem" ).c_str() );
@@ -265,7 +337,7 @@ static void WriteProjectTypeFiles( const char* const szPath, const Parser::Gramm
 		"  <package id=\"Microsoft.VisualStudio.Threading\" version=\"15.0.240\" targetFramework=\"net46\" />\r\n"
 		"  <package id=\"Microsoft.VisualStudio.Threading.Analyzers\" version=\"15.0.240\" targetFramework=\"net46\" developmentDependency=\"true\" />\r\n"
 		"  <package id=\"Microsoft.VisualStudio.Validation\" version=\"15.0.82\" targetFramework=\"net46\" />\r\n"
-		"  <package id=\"System.Collections.Immutable\" version=\"1.3.1\" targetFramework=\"net46\" />\r\n"
+		"  <package id=\"System.Collections.Immutable\" version=\"1.4.0\" targetFramework=\"net46\" />\r\n"
 		"</packages>" );
 
 	szFinalPath = szPath;
@@ -342,7 +414,7 @@ static void WriteProjectTypeFiles( const char* const szPath, const Parser::Gramm
 
 	// some package class thingy
 	szFinalPath = szPath;
-	szFinalPath += "/VSPackage.cs";
+	szFinalPath += "/VsPackage.cs";
 
 	szOutput = kaszVSPackageCSData[ 0 ];
 	szOutput += "package-guid"; // SE - TODO: ...
@@ -409,6 +481,8 @@ static void WriteProjectTypeFiles( const char* const szPath, const Parser::Gramm
 	}
 
 	WriteTextFile( szFinalPath.c_str(), szOutput.c_str() );
+
+	WriteProjectTypeRulesFiles( ( std::string( szPath ) + "/BuildSystem/Rules" ).c_str(), xGrammar );
 }
 
 void CreateIntegrationInPath(

@@ -44,5 +44,8 @@
     <ClInclude Include="..\cbnf\cpp\DefaultVSIconData.h">
       <Filter>cbnf</Filter>
     </ClInclude>
+    <ClInclude Include="..\cbnf\cpp\VSProjectTypeRulesData.h">
+      <Filter>cbnf</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
