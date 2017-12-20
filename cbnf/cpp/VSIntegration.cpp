@@ -8,6 +8,7 @@
 #include "VSProjectTypeRulesData.h"
 
 #include "../../common/cpp/FileSystem.h"
+#include "../../common/cpp/Hash.h"
 #include "../../parser/cpp/Grammar.h"
 
 #include <string>
@@ -30,6 +31,16 @@ kaxProjectData[] =
 static std::string GetProjectGuid( const size_t i )
 {
 	return std::string( "12345678-ABCD-1337-0000-B00B1E50123" ) + std::to_string( i );
+}
+
+static std::string GetProjectTypeGuid( const Parser::Grammar& xGrammar )
+{
+	return HashToGUID( GetHash( xGrammar.GetName() ) );
+}
+
+static std::string GetPackageGuid( const Parser::Grammar& xGrammar )
+{
+	return HashToGUID( GetHash( xGrammar.GetShortName() + xGrammar.GetName() ) );
 }
 
 static void WriteSolution( const char* const szPath, const char* const szName )
@@ -451,9 +462,9 @@ static void WriteProjectTypeFiles( const char* const szPath, const Parser::Gramm
 	szOutput += xGrammar.GetName();
 	szOutput += "\r\n";
 	szOutput += kaszVSPackageCSData[ 0 ];
-	szOutput += "package-guid"; // SE - TODO: ...
+	szOutput += GetPackageGuid( xGrammar );
 	szOutput += kaszVSPackageCSData[ 1 ];
-	szOutput += "project-type-guid"; // SE - TODO: ...
+	szOutput += GetProjectTypeGuid( xGrammar );
 	szOutput += kaszVSPackageCSData[ 2 ];
 	szOutput += xGrammar.GetShortName();
 	szOutput += kaszVSPackageCSData[ 3 ];

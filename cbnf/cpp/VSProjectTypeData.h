@@ -79,11 +79,8 @@ static const char* const kaszVSProjectData[] =
 	"    </Reference>\r\n"
 	"    <Reference Include=\"Microsoft.CSharp\" />\r\n"
 	"    <Reference Include=\"Microsoft.VisualStudio.ComponentModelHost\" />\r\n"
-	"    <Reference Include=\"Microsoft.VisualStudio.Composition, Version=15.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL\">\r\n"
-	"      <HintPath>..\\..\\packages\\Microsoft.VisualStudio.Composition.15.3.38\\lib\\net45\\Microsoft.VisualStudio.Composition.dll</HintPath>\r\n"
-	"    </Reference>\r\n"
-	"    <Reference Include=\"Microsoft.VisualStudio.Composition.Configuration, Version=15.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL\">\r\n"
-	"      <HintPath>..\\..\\packages\\Microsoft.VisualStudio.Composition.15.3.38\\lib\\net45\\Microsoft.VisualStudio.Composition.Configuration.dll</HintPath>\r\n"
+	"    <Reference Include=\"Microsoft.VisualStudio.Composition, Version=15.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL\">\r\n"
+	"      <HintPath>..\\..\\packages\\Microsoft.VisualStudio.Composition.15.5.23\\lib\\net45\\Microsoft.VisualStudio.Composition.dll</HintPath>\r\n"
 	"    </Reference>\r\n"
 	"    <Reference Include=\"Microsoft.VisualStudio.Designer.Interfaces, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a\" />\r\n"
 	"    <Reference Include=\"Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a\" />\r\n"
@@ -876,7 +873,7 @@ static const char* kaszVSPackageManifestData[] =
 	"  </Assets>\r\n"
 	"  <Prerequisites>\r\n"
 	"    <Prerequisite Id=\"Microsoft.VisualStudio.Component.CoreEditor\" Version=\"[15.0,16.0)\" DisplayName=\"Visual Studio core editor\" />\r\n"
-	"  </Prerequisites>\r\n"
+	"  </Prerequisites>\r\n</PackageManifest>\r\n"
 };
 
 static const char* kaszVSAssemblyInfoCSData[] =
@@ -939,7 +936,9 @@ static const char* kaszDebuggerSourceCS[] =
 	"    using Microsoft.VisualStudio.ProjectSystem.Properties;\r\n"
 	"    using Microsoft.VisualStudio.ProjectSystem.VS.Debug;\r\n"
 	"\r\n"
-	"    [ExportDebugger(SourceDebugger.SchemaName)]\r\n"
+	"    [ExportDebugger(",
+	// language name
+	"SourceDebugger.SchemaName)]\r\n"
 	"    [AppliesTo(MyUnconfiguredProject.UniqueCapability)]\r\n"
 	"    public class SourceDebuggerLaunchProvider : DebugLaunchProviderBase\r\n"
 	"    {\r\n"
@@ -973,7 +972,9 @@ static const char* kaszDebuggerSourceCS[] =
 	"            var settings = new DebugLaunchSettings(launchOptions);\r\n"
 	"\r\n"
 	"            // The properties that are available via DebuggerProperties are determined by the property XAML files in your project.\r\n"
-	"            var debuggerProperties = await this.ProjectProperties.GetSourceDebuggerPropertiesAsync();\r\n"
+	"            var debuggerProperties = await this.ProjectProperties.Get",
+	// language name
+	"SourceDebuggerPropertiesAsync();\r\n"
 	"            settings.CurrentDirectory = await debuggerProperties.RunWorkingDirectory.GetEvaluatedValueAtEndAsync();\r\n"
 	"\r\n"
 	"            string scriptCommand = await debuggerProperties.RunCommand.GetEvaluatedValueAtEndAsync();\r\n"
