@@ -21,6 +21,9 @@
     <ClCompile Include="..\common\cpp\FileSystem.cpp">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="..\common\cpp\Hash.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\cpp\ASTNode.h">
@@ -45,6 +48,9 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="..\common\cpp\FileSystem.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\cpp\Hash.h">
       <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>

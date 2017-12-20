@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\common\cpp\ASTNode.cpp" />
     <ClCompile Include="..\common\cpp\FileSystem.cpp" />
+    <ClCompile Include="..\common\cpp\Hash.cpp" />
     <ClCompile Include="..\common\cpp\Profiling.cpp" />
     <ClCompile Include="..\common\cpp\Report.cpp" />
     <ClCompile Include="..\common\cpp\Token.cpp" />
@@ -30,6 +31,7 @@
     <ClInclude Include="..\common\cpp\ASTVisitor.h" />
     <ClInclude Include="..\common\cpp\Escaping.h" />
     <ClInclude Include="..\common\cpp\FileSystem.h" />
+    <ClInclude Include="..\common\cpp\Hash.h" />
     <ClInclude Include="..\common\cpp\Pool.h" />
     <ClInclude Include="..\common\cpp\Profiling.h" />
     <ClInclude Include="..\common\cpp\Report.h" />
