@@ -1019,7 +1019,7 @@ static const char* const kszVSPropsFile =
 	"    <DebuggerFlavor>SourceDebugger</DebuggerFlavor>\r\n"
 	"    <RunCommand>$(WinDir)\\System32\\cscript.exe</RunCommand>\r\n"
 	"    <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>\r\n"
-	"    <StartItem>Start.js</StartItem>\r\n"
+	"    <StartItem></StartItem>\r\n"
 	"  </PropertyGroup>\r\n"
 	"</Project>\r\n";
 
