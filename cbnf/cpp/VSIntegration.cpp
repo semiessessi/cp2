@@ -341,9 +341,9 @@ static void WriteProjectTypeFiles( const char* const szPath, const Parser::Gramm
 		"  <package id=\"Microsoft.Tpl.Dataflow\" version=\"4.5.24\" targetFramework=\"net46\" />\r\n"
 		"  <package id=\"Microsoft.VisualStudio.Composition\" version=\"15.0.71\" targetFramework=\"net46\" />\r\n"
 		"  <package id=\"Microsoft.VisualStudio.ProjectSystem\" version=\"15.0.743\" targetFramework=\"net46\" />\r\n"
-		"  <package id=\"Microsoft.VisualStudio.ProjectSystem.Analyzers\" version=\"15.0.743\" targetFramework=\"net46\" developmentDependency=\"true\" />\r\n"
-		"  <package id=\"Microsoft.VisualStudio.ProjectSystem.SDK\" version=\"15.0.743\" targetFramework=\"net46\" />\r\n"
-		"  <package id=\"Microsoft.VisualStudio.ProjectSystem.SDK.Tools\" version=\"15.0.743\" targetFramework=\"net46\" developmentDependency=\"true\" />\r\n"
+		"  <package id=\"Microsoft.VisualStudio.ProjectSystem.Analyzers\" version=\"15.3.224\" targetFramework=\"net46\" developmentDependency=\"true\" />\r\n"
+		"  <package id=\"Microsoft.VisualStudio.ProjectSystem.SDK\" version=\"15.3.224\" targetFramework=\"net46\" />\r\n"
+		"  <package id=\"Microsoft.VisualStudio.ProjectSystem.SDK.Tools\" version=\"15.3.224\" targetFramework=\"net46\" developmentDependency=\"true\" />\r\n"
 		"  <package id=\"Microsoft.VisualStudio.SDK.VsixSuppression\" version=\"14.1.32\" targetFramework=\"net46\" />\r\n"
 		"  <package id=\"Microsoft.VisualStudio.Threading\" version=\"15.0.240\" targetFramework=\"net46\" />\r\n"
 		"  <package id=\"Microsoft.VisualStudio.Threading.Analyzers\" version=\"15.0.240\" targetFramework=\"net46\" developmentDependency=\"true\" />\r\n"
@@ -505,7 +505,40 @@ static void WriteProjectTypeFiles( const char* const szPath, const Parser::Gramm
 
 	WriteTextFile( szFinalPath.c_str(), szOutput.c_str() );
 
+	// deployed build system files...
+
+	szFinalPath = szPath;
+	szFinalPath += "/BuildSystem/DeployedBuildSystem/";
+	szFinalPath += xGrammar.GetName();
+	szFinalPath += ".props";
+
+	WriteTextFile( szFinalPath.c_str(), kszVSPropsFile );
+
+	szFinalPath = szPath;
+	szFinalPath += "/BuildSystem/DeployedBuildSystem/";
+	szFinalPath += xGrammar.GetName();
+	szFinalPath += ".targets";
+
+	szOutput = kaszVSTargetsFile[ 0 ];
+	for ( size_t i = 1; i < sizeof( kaszVSTargetsFile ) / sizeof( kaszVSTargetsFile[ 0 ] ); ++i )
+	{
+		szOutput += xGrammar.GetName();
+		szOutput += kaszVSTargetsFile[ i ];
+	}
+
+	WriteTextFile( szFinalPath.c_str(), szOutput.c_str() );
+
 	WriteProjectTypeRulesFiles( ( std::string( szPath ) + "/BuildSystem/Rules" ).c_str(), xGrammar );
+
+	// SE - TODO: what about non windows?
+#ifdef _WIN32
+	if( system( ( ( std::string( "sn -k " ) + szPath ) + "/Key.snk" ).c_str() ) != 0 )
+	{
+		// SE - TODO: a warning
+	}
+#else
+	// SE - TODO: a warning for mac/linux?
+#endif
 }
 
 void CreateIntegrationInPath(
