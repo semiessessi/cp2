@@ -479,6 +479,18 @@ static void WriteProjectTypeFiles( const char* const szPath, const Parser::Gramm
 
 	WriteTextFile( szFinalPath.c_str(), szOutput.c_str() );
 
+	// some debugger provider...
+	szOutput = "namespace ";
+	for ( size_t i = 0; i < sizeof( kaszDebuggerSourceCS ) / sizeof( kaszDebuggerSourceCS[ 0 ] ); ++i )
+	{
+		szOutput += xGrammar.GetName();
+		szOutput += kaszDebuggerSourceCS[ i ];
+	}
+
+	szFinalPath = szPath;
+	szFinalPath += "/SourceDebuggerLaunchProvider.cs";
+	WriteTextFile( szFinalPath.c_str(), szOutput.c_str() );
+
 	// some assembly info cs
 
 	szFinalPath = szPath;
