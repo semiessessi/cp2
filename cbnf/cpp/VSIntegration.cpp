@@ -337,17 +337,17 @@ static void WriteProjectTypeFiles( const char* const szPath, const Parser::Gramm
 	WriteTextFile( szFinalPath.c_str(),
 		"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
 		"<packages>\r\n"
-		"  <package id=\"Microsoft.Composition\" version=\"1.0.30\" targetFramework=\"net46\" />\r\n"
+		"  <package id=\"Microsoft.Composition\" version=\"1.0.31\" targetFramework=\"net46\" />\r\n"
 		"  <package id=\"Microsoft.Tpl.Dataflow\" version=\"4.5.24\" targetFramework=\"net46\" />\r\n"
-		"  <package id=\"Microsoft.VisualStudio.Composition\" version=\"15.0.71\" targetFramework=\"net46\" />\r\n"
-		"  <package id=\"Microsoft.VisualStudio.ProjectSystem\" version=\"15.0.743\" targetFramework=\"net46\" />\r\n"
+		"  <package id=\"Microsoft.VisualStudio.Composition\" version=\"15.5.23\" targetFramework=\"net46\" />\r\n"
+		"  <package id=\"Microsoft.VisualStudio.ProjectSystem\" version=\"15.3.224\" targetFramework=\"net46\" />\r\n"
 		"  <package id=\"Microsoft.VisualStudio.ProjectSystem.Analyzers\" version=\"15.3.224\" targetFramework=\"net46\" developmentDependency=\"true\" />\r\n"
 		"  <package id=\"Microsoft.VisualStudio.ProjectSystem.SDK\" version=\"15.3.224\" targetFramework=\"net46\" />\r\n"
 		"  <package id=\"Microsoft.VisualStudio.ProjectSystem.SDK.Tools\" version=\"15.3.224\" targetFramework=\"net46\" developmentDependency=\"true\" />\r\n"
-		"  <package id=\"Microsoft.VisualStudio.SDK.VsixSuppression\" version=\"14.1.32\" targetFramework=\"net46\" />\r\n"
-		"  <package id=\"Microsoft.VisualStudio.Threading\" version=\"15.0.240\" targetFramework=\"net46\" />\r\n"
-		"  <package id=\"Microsoft.VisualStudio.Threading.Analyzers\" version=\"15.0.240\" targetFramework=\"net46\" developmentDependency=\"true\" />\r\n"
-		"  <package id=\"Microsoft.VisualStudio.Validation\" version=\"15.0.82\" targetFramework=\"net46\" />\r\n"
+		"  <package id=\"Microsoft.VisualStudio.SDK.VsixSuppression\" version=\"14.1.33\" targetFramework=\"net46\" />\r\n"
+		"  <package id=\"Microsoft.VisualStudio.Threading\" version=\"15.5.24\" targetFramework=\"net46\" />\r\n"
+		"  <package id=\"Microsoft.VisualStudio.Threading.Analyzers\" version=\"15.5.24\" targetFramework=\"net46\" developmentDependency=\"true\" />\r\n"
+		"  <package id=\"Microsoft.VisualStudio.Validation\" version=\"15.3.32\" targetFramework=\"net46\" />\r\n"
 		"  <package id=\"System.Collections.Immutable\" version=\"1.4.0\" targetFramework=\"net46\" />\r\n"
 		"</packages>" );
 
@@ -366,7 +366,7 @@ static void WriteProjectTypeFiles( const char* const szPath, const Parser::Gramm
 		"      </dependentAssembly>\r\n"
 		"      <dependentAssembly>\r\n"
 		"        <assemblyIdentity name=\"System.Collections.Immutable\" publicKeyToken=\"b03f5f7f11d50a3a\" culture=\"neutral\" />\r\n"
-		"        <bindingRedirect oldVersion=\"0.0.0.0-1.3.1.0\" newVersion=\"1.3.1.0\" />\r\n"
+		"        <bindingRedirect oldVersion=\"0.0.0.0-1.2.2.0\" newVersion=\"1.2.2.0\" />\r\n"
 		"      </dependentAssembly>\r\n"
 		"      <dependentAssembly>\r\n"
 		"        <assemblyIdentity name=\"Microsoft.Build.Utilities.Core\" publicKeyToken=\"b03f5f7f11d50a3a\" culture=\"neutral\" />\r\n"
@@ -378,11 +378,31 @@ static void WriteProjectTypeFiles( const char* const szPath, const Parser::Gramm
 		"      </dependentAssembly>\r\n"
 		"      <dependentAssembly>\r\n"
 		"        <assemblyIdentity name=\"System.Composition.AttributedModel\" publicKeyToken=\"b03f5f7f11d50a3a\" culture=\"neutral\" />\r\n"
-		"        <bindingRedirect oldVersion=\"0.0.0.0-1.0.30.0\" newVersion=\"1.0.30.0\" />\r\n"
+		"        <bindingRedirect oldVersion=\"0.0.0.0-1.0.32.0\" newVersion=\"1.0.32.0\" />\r\n"
 		"      </dependentAssembly>\r\n"
 		"      <dependentAssembly>\r\n"
 		"        <assemblyIdentity name=\"System.Composition.Runtime\" publicKeyToken=\"b03f5f7f11d50a3a\" culture=\"neutral\" />\r\n"
-		"        <bindingRedirect oldVersion=\"0.0.0.0-1.0.30.0\" newVersion=\"1.0.30.0\" />\r\n"
+		"        <bindingRedirect oldVersion=\"0.0.0.0-1.0.32.0\" newVersion=\"1.0.32.0\" />\r\n"
+		"      </dependentAssembly>\r\n"
+		"      <dependentAssembly>\r\n"
+		"        <assemblyIdentity name=\"Microsoft.VisualStudio.Validation\" publicKeyToken=\"b03f5f7f11d50a3a\" culture=\"neutral\" />\r\n"
+		"        <bindingRedirect oldVersion=\"0.0.0.0-15.3.0.0\" newVersion=\"15.3.0.0\" />\r\n"
+		"      </dependentAssembly>\r\n"
+		"      <dependentAssembly>\r\n"
+		"        <assemblyIdentity name=\"Microsoft.VisualStudio.Composition\" publicKeyToken=\"b03f5f7f11d50a3a\" culture=\"neutral\" />\r\n"
+		"        <bindingRedirect oldVersion=\"0.0.0.0-15.5.0.0\" newVersion=\"15.5.0.0\" />\r\n"
+		"      </dependentAssembly>\r\n"
+		"      <dependentAssembly>\r\n"
+		"        <assemblyIdentity name=\"Microsoft.VisualStudio.Threading\" publicKeyToken=\"b03f5f7f11d50a3a\" culture=\"neutral\" />\r\n"
+		"        <bindingRedirect oldVersion=\"0.0.0.0-15.5.0.0\" newVersion=\"15.5.0.0\" />\r\n"
+		"      </dependentAssembly>\r\n"
+		"      <dependentAssembly>\r\n"
+		"        <assemblyIdentity name=\"System.Threading.Tasks.Dataflow\" publicKeyToken=\"b03f5f7f11d50a3a\" culture=\"neutral\" />\r\n"
+		"        <bindingRedirect oldVersion=\"0.0.0.0-4.6.2.0\" newVersion=\"4.6.2.0\" />\r\n"
+		"      </dependentAssembly>\r\n"
+		"      <dependentAssembly>\r\n"
+		"        <assemblyIdentity name=\"System.Diagnostics.DiagnosticSource\" publicKeyToken=\"cc7b13ffcd2ddd51\" culture=\"neutral\" />\r\n"
+		"        <bindingRedirect oldVersion=\"0.0.0.0-4.0.1.0\" newVersion=\"4.0.1.0\" />\r\n"
 		"      </dependentAssembly>\r\n"
 		"    </assemblyBinding>\r\n"
 		"  </runtime>\r\n"
@@ -427,7 +447,10 @@ static void WriteProjectTypeFiles( const char* const szPath, const Parser::Gramm
 	szFinalPath = szPath;
 	szFinalPath += "/VsPackage.cs";
 
-	szOutput = kaszVSPackageCSData[ 0 ];
+	szOutput = "namespace ";
+	szOutput += xGrammar.GetName();
+	szOutput += "\r\n";
+	szOutput += kaszVSPackageCSData[ 0 ];
 	szOutput += "package-guid"; // SE - TODO: ...
 	szOutput += kaszVSPackageCSData[ 1 ];
 	szOutput += "project-type-guid"; // SE - TODO: ...
@@ -555,6 +578,8 @@ void CreateIntegrationInPath(
 
 	WriteTemplateFiles( ( std::string( szNewPath ) + "/ProjectTemplate" ).c_str(), xGrammar );
 	WriteProjectTypeFiles( ( std::string( szNewPath ) + "/ProjectType" ).c_str(), xGrammar );
+
+	// SE - TODO: explain to user about needing to run Update-Package -Reinstall in package manager console.
 }
 
 }
