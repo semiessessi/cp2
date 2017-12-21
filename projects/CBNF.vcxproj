@@ -203,6 +203,9 @@
     <ClCompile Include="..\cbnf\cpp\HelpHandler.cpp" />
     <ClCompile Include="..\cbnf\cpp\ParameterHandlers.cpp" />
     <ClCompile Include="..\cbnf\cpp\VSIntegration.cpp" />
+    <ClCompile Include="..\cbnf\cpp\VSIntegrationCSProjects.cpp" />
+    <ClCompile Include="..\cbnf\cpp\VSIntegrationProjectType.cpp" />
+    <ClCompile Include="..\cbnf\cpp\VSIntegrationSolution.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\cbnf\cpp\CommandLineHandler.h" />

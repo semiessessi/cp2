@@ -18,6 +18,15 @@
     <ClCompile Include="..\cbnf\cpp\VSIntegration.cpp">
       <Filter>cbnf</Filter>
     </ClCompile>
+    <ClCompile Include="..\cbnf\cpp\VSIntegrationSolution.cpp">
+      <Filter>cbnf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cbnf\cpp\VSIntegrationCSProjects.cpp">
+      <Filter>cbnf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cbnf\cpp\VSIntegrationProjectType.cpp">
+      <Filter>cbnf</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\cbnf\cpp\CommandLineHandler.h">
