@@ -230,7 +230,7 @@ static void WriteTemplateFiles( const char* const szPath, const Parser::Grammar&
 	szOutput = kaszVSDefaultProjectData[ 0 ];
 	for ( size_t i = 1; i < sizeof( kaszVSDefaultProjectData ) / sizeof( kaszVSDefaultProjectData[ 0 ] ); ++i )
 	{
-		if ( i == 3 )
+		if ( i == 4 )
 		{
 			szOutput += xGrammar.GetShortName();
 		}

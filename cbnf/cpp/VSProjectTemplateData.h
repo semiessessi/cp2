@@ -167,7 +167,9 @@ static const char* kaszVSDefaultProjectData[] =
 	// language name
 	".props\" />\r\n"
 	"  <ItemGroup>\r\n"
-	"    <Script Include=\"**\\*.",
+	"    <",
+	// language name
+	" Include=\"**\\*.",
 	// short name
 	"\" />\r\n"
 	"  </ItemGroup>\r\n"
