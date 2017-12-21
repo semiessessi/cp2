@@ -205,9 +205,9 @@ static void WriteTemplateFiles( const char* const szPath, const Parser::Grammar&
 
 	// write out the actual template for visual studio
 	std::string szOutput = kaszVSTemplateFileData[ 0 ];
-	for ( size_t i = 1; i < sizeof( kaszVSTemplateFileData ) / sizeof( kaszVSTemplateFileData[ 0 ] ); ++i )
+	for( size_t i = 1; i < sizeof( kaszVSTemplateFileData ) / sizeof( kaszVSTemplateFileData[ 0 ] ); ++i )
 	{
-		if ( i > 6 )
+		if( i > 6 )
 		{
 			szOutput += xGrammar.GetShortName();
 		}
@@ -228,9 +228,9 @@ static void WriteTemplateFiles( const char* const szPath, const Parser::Grammar&
 
 	// write out the default project file
 	szOutput = kaszVSDefaultProjectData[ 0 ];
-	for ( size_t i = 1; i < sizeof( kaszVSDefaultProjectData ) / sizeof( kaszVSDefaultProjectData[ 0 ] ); ++i )
+	for( size_t i = 1; i < sizeof( kaszVSDefaultProjectData ) / sizeof( kaszVSDefaultProjectData[ 0 ] ); ++i )
 	{
-		if ( i == 4 )
+		if( i == 4 )
 		{
 			szOutput += xGrammar.GetShortName();
 		}
@@ -268,7 +268,7 @@ static void WriteProjectTypeRulesFiles( const char* const szPath, const Parser::
 		{ "/scc.xaml" , kszVSSCCXaml },
 	};
 
-	for ( size_t i = 0; i < ( sizeof( kaxSimpleData ) / sizeof( kaxSimpleData[ 0 ] ) ); ++i )
+	for( size_t i = 0; i < ( sizeof( kaxSimpleData ) / sizeof( kaxSimpleData[ 0 ] ) ); ++i )
 	{
 		std::string szFinalPath( szPath );
 		szFinalPath += kaxSimpleData[ i ].szPathSuffix;
@@ -281,7 +281,7 @@ static void WriteProjectTypeRulesFiles( const char* const szPath, const Parser::
 	szFinalPath += "/source.xaml";
 
 	std::string szOutput = kaszVSSourceXamlData[ 0 ];
-	for ( size_t i = 1; i < sizeof( kaszVSSourceXamlData ) / sizeof( kaszVSSourceXamlData[ 0 ] ); ++i )
+	for( size_t i = 1; i < sizeof( kaszVSSourceXamlData ) / sizeof( kaszVSSourceXamlData[ 0 ] ); ++i )
 	{
 		szOutput += xGrammar.GetName();
 		szOutput += kaszVSSourceXamlData[ i ];
@@ -293,7 +293,7 @@ static void WriteProjectTypeRulesFiles( const char* const szPath, const Parser::
 	szFinalPath += "/source.browseobject.xaml";
 
 	szOutput = kaszVSSourceBrowseObjectXaml[ 0 ];
-	for ( size_t i = 1; i < sizeof( kaszVSSourceBrowseObjectXaml ) / sizeof( kaszVSSourceBrowseObjectXaml[ 0 ] ); ++i )
+	for( size_t i = 1; i < sizeof( kaszVSSourceBrowseObjectXaml ) / sizeof( kaszVSSourceBrowseObjectXaml[ 0 ] ); ++i )
 	{
 		szOutput += xGrammar.GetName();
 		szOutput += kaszVSSourceBrowseObjectXaml[ i ];
@@ -305,7 +305,7 @@ static void WriteProjectTypeRulesFiles( const char* const szPath, const Parser::
 	szFinalPath += "/SourceDebugger.xaml";
 
 	szOutput = kaszVSourceDebuggerXamlData[ 0 ];
-	for ( size_t i = 1; i < sizeof( kaszVSourceDebuggerXamlData ) / sizeof( kaszVSourceDebuggerXamlData[ 0 ] ); ++i )
+	for( size_t i = 1; i < sizeof( kaszVSourceDebuggerXamlData ) / sizeof( kaszVSourceDebuggerXamlData[ 0 ] ); ++i )
 	{
 		szOutput += xGrammar.GetName();
 		szOutput += kaszVSourceDebuggerXamlData[ i ];
@@ -317,7 +317,7 @@ static void WriteProjectTypeRulesFiles( const char* const szPath, const Parser::
 	szFinalPath += "/ProjectItemsSchema.xaml";
 
 	szOutput = kaszVSProjectItemsSchema[ 0 ];
-	for ( size_t i = 1; i < sizeof( kaszVSProjectItemsSchema ) / sizeof( kaszVSProjectItemsSchema[ 0 ] ); ++i )
+	for( size_t i = 1; i < sizeof( kaszVSProjectItemsSchema ) / sizeof( kaszVSProjectItemsSchema[ 0 ] ); ++i )
 	{
 		if ( i == 6 )
 		{
