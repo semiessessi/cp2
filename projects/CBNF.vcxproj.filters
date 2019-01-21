@@ -56,5 +56,8 @@
     <ClInclude Include="..\cbnf\cpp\VSProjectTypeRulesData.h">
       <Filter>cbnf</Filter>
     </ClInclude>
+    <ClInclude Include="..\cbnf\cpp\VSProjectClassifierData.h">
+      <Filter>cbnf</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

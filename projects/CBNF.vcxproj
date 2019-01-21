@@ -214,6 +214,7 @@
     <ClInclude Include="..\cbnf\cpp\SwitchHandler.h" />
     <ClInclude Include="..\cbnf\cpp\SwitchHandlerDecls.h" />
     <ClInclude Include="..\cbnf\cpp\VSIntegration.h" />
+    <ClInclude Include="..\cbnf\cpp\VSProjectClassifierData.h" />
     <ClInclude Include="..\cbnf\cpp\VSProjectTemplateData.h" />
     <ClInclude Include="..\cbnf\cpp\VSProjectTypeData.h" />
     <ClInclude Include="..\cbnf\cpp\VSProjectTypeRulesData.h" />
