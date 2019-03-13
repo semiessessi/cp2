@@ -18,7 +18,10 @@ const Grammar& GetCBNFGrammar()
 {
 	static Grammar kxCBNFGrammar(
 	{
-		GrammarProduction( "<grammar>", !GE( "<production>" ) ),
+		GrammarProduction( "<grammar>", !GE( "<statement>" ) ),
+
+        GrammarProduction( "<statement>", GE( "<production>" ) ),
+        GrammarProduction( "<statement>", GE( "keywords" ) + GE( "<terminal-list>" ) ),
 
 		GrammarProduction( "<production>",
 			GE( "language" ) + GE( "<string>" ) + GE( ";" ) ),
@@ -48,6 +51,11 @@ const Grammar& GetCBNFGrammar()
 		GrammarProduction( "<rule-expression>", GE( "<identifier>" ) + GE( "*" ) ),
 		GrammarProduction( "<rule-expression>", GE( "<identifier>" ) + GE( "+" ) ),
 		GrammarProduction( "<rule-expression>", GE( "<identifier>" ) + GE( "?" ) ),
+
+        // for non-production statements...
+        GrammarProduction( "<terminal-list>", GE( "{" ) + !GE( "<terminal>" ) + GE( "}" ) ),
+        GrammarProduction( "<terminal>", GE( "<string>" ) ),
+        GrammarProduction( "<terminal>", GE( "<identifier>" ) ),
 	});
 
 	if( kxCBNFGrammar.GetCommentCount() == 0 )

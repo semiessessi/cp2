@@ -1,0 +1,21 @@
+// Copyright (c) 2017-2019 Cranium Software
+
+// SE - TODO: refactor these to somewhere not part of productions
+production          =   "comment" string ";" ;
+production          =   "comment" string string ";" ;
+
+// SE - TODO: refactor these to somewhere not part of productions
+production          =   "quote" identifier string string string ";" ;
+
+// SE - TODO: refactor these to somewhere not part of productions
+production          =   "lexeme" identifier string ";" ;
+
+// actual production rules...
+production          =   identifier "=" rule-expression* ";" ;
+production          =   identifier "=" "..." ";" ;
+
+rule-expression     =   string ;
+rule-expression     =   identifier ;
+rule-expression     =   identifier "*" ;
+rule-expression     =   identifier "?" ;
+rule-expression     =   identifier "+" ;

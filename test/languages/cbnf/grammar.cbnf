@@ -1,0 +1,23 @@
+// Copyright (c) 2017-2019 Cranium Software
+
+// provide the name of the language as metadata
+language "CBNF" ;
+
+// allow C and C++ style comments
+comment "//" ;
+comment "/*" "*/" ;
+
+quote string "\"" "\"" "\\" ;
+
+lexeme identifier "[_a-zA-Z][_\\-a-zA-Z0-9]*" ;
+
+grammar             =   statement* ;
+
+statement           =   production ;                // a production of the grammar, e.g. this one.
+statement           =   "keywords" terminal-list ;  // for marking symbols as keywords for syntax highlighting
+
+
+terminal-list       =   "{" terminal* "}" ;
+terminal            =   identifier ;
+terminal            =   string ;
+

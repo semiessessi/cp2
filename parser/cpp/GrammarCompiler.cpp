@@ -114,115 +114,122 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 	std::string szShortName;
 	for( int i = 0; i < iChildCount; ++i )
 	{
-		ASTNode* const pxProductionAST = pxAST->GetChild( i );
-		const int iProductionChildCount = pxProductionAST->GetChildCount();
+		ASTNode* const pxStatementAST = pxAST->GetChild( i );
+		const int iStatementChildCount = pxStatementAST->GetChildCount();
 
 		// i feel the parser stops this being hit...
-		if( iProductionChildCount <= 1 )
+		if( iStatementChildCount <= 0 )
 		{
 			Error( 4001, pxAST->GetFilename(), pxAST->GetLine(), pxAST->GetColumn(),
-				"Unexpectedly short production found: %s", pxProductionAST->GetTokenValue().c_str() );
+				"Unexpectedly short statement found: %s", pxStatementAST->GetTokenValue().c_str() );
 			continue;
 		}
 
 		// the first child should be the name, unless it is a special case
 		// like language, comment, quote or lexeme
-		ASTNode* const pxNameNode = pxProductionAST->GetChild( 0 );
-		if( pxNameNode->GetProductionName() == "language" )
-		{
-			if( szName == "NamelessLanguage" )
-			{
-				ASTNode* const pxName = pxProductionAST->GetChild( 1 );
-				std::string xValue = pxName->GetTokenValue();
-				szName = xValue.substr( 1, xValue.length() - 2 );
-			}
+        ASTNode* const pxPotentialProduction = pxStatementAST->GetChild( 0 );
+        // SE - TODO: these things need to be in data in some map...
+        if( pxPotentialProduction->GetProductionName() == "<production>" )
+        {
+            ASTNode* const pxNameNode = pxPotentialProduction->GetChild( 0 );
+            if( pxNameNode->GetProductionName() == "language" )
+            {
+                if( szName == "NamelessLanguage" )
+                {
+                    ASTNode* const pxName = pxPotentialProduction->GetChild( 1 );
+                    std::string xValue = pxName->GetTokenValue();
+                    szName = xValue.substr( 1, xValue.length() - 2 );
+                }
 
-			if ( pxProductionAST->GetChildCount() > 3 )
-			{
-				ASTNode* const pxName = pxProductionAST->GetChild( 2 );
-				std::string xValue = pxName->GetTokenValue();
-				szShortName = xValue.substr( 1, xValue.length() - 2 );
-			}
-			continue;
-		}
-		else if( pxNameNode->GetProductionName() == "comment" )
-		{
-			ASTNode* const pxFirst = pxProductionAST->GetChild( 1 );
-			const std::string& xStart = pxFirst->GetTokenValue();
-			if( iProductionChildCount == 4 )
-			{
-				ASTNode* const pxLast = pxProductionAST->GetChild( 2 );
-				const std::string& xEnd = pxLast->GetTokenValue();
-				axComments.push_back( Lexer::Comment(
-					xStart.substr( 1, xStart.length() - 2 ).c_str(),
-					xEnd.substr( 1, xEnd.length() - 2 ).c_str() ) );
-			}
-			else
-			{
-				axComments.push_back( Lexer::Comment(
-					xStart.substr( 1, xStart.length() - 2 ).c_str() ) );
-			}
+                if( pxPotentialProduction->GetChildCount() > 3 )
+                {
+                    ASTNode* const pxName = pxPotentialProduction->GetChild( 2 );
+                    std::string xValue = pxName->GetTokenValue();
+                    szShortName = xValue.substr( 1, xValue.length() - 2 );
+                }
+                continue;
+            }
+            else if( pxNameNode->GetProductionName() == "comment" )
+            {
+                ASTNode* const pxFirst = pxPotentialProduction->GetChild( 1 );
+                const std::string& xStart = pxFirst->GetTokenValue();
+                if( iStatementChildCount == 4 )
+                {
+                    ASTNode* const pxLast = pxPotentialProduction->GetChild( 2 );
+                    const std::string& xEnd = pxLast->GetTokenValue();
+                    axComments.push_back( Lexer::Comment(
+                        xStart.substr( 1, xStart.length() - 2 ).c_str(),
+                        xEnd.substr( 1, xEnd.length() - 2 ).c_str() ) );
+                }
+                else
+                {
+                    axComments.push_back( Lexer::Comment(
+                        xStart.substr( 1, xStart.length() - 2 ).c_str() ) );
+                }
 
-			continue;
-		}
-		else if( pxNameNode->GetProductionName() == "quote" )
-		{
-			ASTNode* const pxName = pxProductionAST->GetChild( 1 );
-			const std::string& xName = pxName->GetTokenValue();
-			if( iProductionChildCount == 6 )
-			{
-				ASTNode* const pxStart = pxProductionAST->GetChild( 2 );
-				const std::string& xStart = pxStart->GetTokenValue();
-				ASTNode* const pxEnd = pxProductionAST->GetChild( 3 );
-				const std::string& xEnd = pxEnd->GetTokenValue();
-				ASTNode* const pxEscape = pxProductionAST->GetChild( 4 );
-				const std::string& xEscape = pxEscape->GetTokenValue();
-				axQuotes.push_back( Lexer::Quote(
-					( std::string( "<" ) + xName + ">" ).c_str(),
-					CBNFQuoteUnescape( xStart.substr( 1, xStart.length() - 2 ) ).c_str(),
-					CBNFQuoteUnescape( xEnd.substr( 1, xEnd.length() - 2 ) ).c_str(),
-					CBNFQuoteUnescape( xEscape.substr( 1, xEscape.length() - 2 ) ).c_str() ) );
-			}
-			continue;
-		}
-		else if( pxNameNode->GetProductionName() == "lexeme" )
-		{
-			if( iProductionChildCount == 4 )
-			{
-				ASTNode* const pxName = pxProductionAST->GetChild( 1 );
-				ASTNode* const pxExpression = pxProductionAST->GetChild( 2 );
-				const std::string& xExpression = pxExpression->GetTokenValue();
-				axLexemes.push_back(
-				{
-					pxName->GetTokenValue(),
-					CBNFQuoteUnescape( xExpression.substr( 1, xExpression.length() - 2 ) )
-				} );
-			}
-			continue;
-		}
+                continue;
+            }
+            else if( pxNameNode->GetProductionName() == "quote" )
+            {
+                ASTNode* const pxName = pxPotentialProduction->GetChild( 1 );
+                const std::string& xName = pxName->GetTokenValue();
+                if( iStatementChildCount == 6 )
+                {
+                    ASTNode* const pxStart = pxPotentialProduction->GetChild( 2 );
+                    const std::string& xStart = pxStart->GetTokenValue();
+                    ASTNode* const pxEnd = pxPotentialProduction->GetChild( 3 );
+                    const std::string& xEnd = pxEnd->GetTokenValue();
+                    ASTNode* const pxEscape = pxPotentialProduction->GetChild( 4 );
+                    const std::string& xEscape = pxEscape->GetTokenValue();
+                    axQuotes.push_back( Lexer::Quote(
+                        ( std::string( "<" ) + xName + ">" ).c_str(),
+                        CBNFQuoteUnescape( xStart.substr( 1, xStart.length() - 2 ) ).c_str(),
+                        CBNFQuoteUnescape( xEnd.substr( 1, xEnd.length() - 2 ) ).c_str(),
+                        CBNFQuoteUnescape( xEscape.substr( 1, xEscape.length() - 2 ) ).c_str() ) );
+                }
+                continue;
+            }
+            else if( pxNameNode->GetProductionName() == "lexeme" )
+            {
+                if( iStatementChildCount == 4 )
+                {
+                    ASTNode* const pxName = pxPotentialProduction->GetChild( 1 );
+                    ASTNode* const pxExpression = pxPotentialProduction->GetChild( 2 );
+                    const std::string& xExpression = pxExpression->GetTokenValue();
+                    axLexemes.push_back(
+                        {
+                            pxName->GetTokenValue(),
+                            CBNFQuoteUnescape( xExpression.substr( 1, xExpression.length() - 2 ) )
+                        } );
+                }
+                continue;
+            }
 
-		// i feel the parser stops this being hit...
-		if( iProductionChildCount <= 3 )
-		{
-			Error( 4001, pxAST->GetFilename(), pxAST->GetLine(), pxAST->GetColumn(),
-				"Unexpectedly short production found: %s", pxProductionAST->GetTokenValue().c_str() );
-			continue;
-		}
+            /*
+            // i feel the parser stops this being hit...
+            if( iStatementChildCount <= 3 )
+            {
+                Error( 4001, pxAST->GetFilename(), pxAST->GetLine(), pxAST->GetColumn(),
+                    "Unexpectedly short production found: %s", pxStatementAST->GetTokenValue().c_str() );
+                continue;
+            }
+            */
 
-		// then = (should we check?)
-		// then the expression followed by the ;
-		// build the first expression bit, then concatenate the rest
-		ASTNode* pxWorkingChild = pxProductionAST->GetChild( 2 );
-		GrammarExpression xExpression( CompileExpression( pxWorkingChild ) );
-		for( int j = 3; j < ( iProductionChildCount - 1 ); ++j )
-		{
-			pxWorkingChild = pxProductionAST->GetChild( j );
-			xExpression = xExpression + CompileExpression( pxWorkingChild );
-		}
+            // then = (should we check?)
+            // then the expression followed by the ;
+            // build the first expression bit, then concatenate the rest
+            ASTNode* pxWorkingChild = pxPotentialProduction->GetChild( 2 );
+            GrammarExpression xExpression( CompileExpression( pxWorkingChild ) );
+            for( int j = 3; j < ( iStatementChildCount - 1 ); ++j )
+            {
+                pxWorkingChild = pxPotentialProduction->GetChild( j );
+                xExpression = xExpression + CompileExpression( pxWorkingChild );
+            }
 
-		axProductions.push_back(
-			GrammarProduction(
-				std::string( "<" ) + pxNameNode->GetTokenValue() + ">", xExpression ) );
+            axProductions.push_back(
+                GrammarProduction(
+                    std::string( "<" ) + pxNameNode->GetTokenValue() + ">", xExpression ) );
+        }
 	}
 	
 	Grammar xReturnValue( axProductions );
