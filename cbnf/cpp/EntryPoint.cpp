@@ -33,6 +33,11 @@ static inline void GrammarReport( const CP2::Parser::Grammar& xGrammar )
 		static_cast< int >( xGrammar.GetTopLevelProductions().size() );
 	const int iTotalProductionCount = xGrammar.GetProductionCount();
 
+    const int iTerminalsMarkedAsKeywords = xGrammar.GetKeywordCount();
+    const int iQuotes = static_cast< int >( xGrammar.GetQuotes().size() );
+    const int iComments = xGrammar.GetCommentCount();
+    const int iTotalSyntaxThings = iTerminalsMarkedAsKeywords + iQuotes + iComments;
+
 	const int iTerminalCount = static_cast< int >( xGrammar.GetTerminals().size() );
 	const int iNonTerminalCount = static_cast< int >( xGrammar.GetNonTerminals().size() );
 	const int iTotalSymbols = iTerminalCount + iNonTerminalCount;
@@ -48,6 +53,12 @@ static inline void GrammarReport( const CP2::Parser::Grammar& xGrammar )
 	CP2::Message( "Symbols:         %d", iTotalSymbols );
 	CP2::Message( "(terminal)       %d", iTerminalCount );
 	CP2::Message( "(non-terminal)   %d", iNonTerminalCount );
+    CP2::Message( "(non-terminal)   %d", iNonTerminalCount );
+    CP2::Message( "" );
+    CP2::Message( "Syntax:          %d", iTotalSyntaxThings );
+    CP2::Message( "(comments)       %d", iComments );
+    CP2::Message( "(quotes)         %d", iQuotes );
+    CP2::Message( "(keywords)       %d", iTerminalsMarkedAsKeywords );
 	CP2::Message( "" );
 	CP2::Message( "Recursion:       %d + ???", iDirectLeftRecrusions );
 	CP2::Message( "(left)           %d + ???", iDirectLeftRecrusions );

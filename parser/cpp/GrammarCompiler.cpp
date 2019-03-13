@@ -129,6 +129,7 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 		// the first child should be the name, unless it is a special case
 		// like language, comment, quote or lexeme
         ASTNode* const pxPotentialProduction = pxStatementAST->GetChild( 0 );
+        const int iProductionChildCount = pxPotentialProduction->GetChildCount();
         // SE - TODO: these things need to be in data in some map...
         if( pxPotentialProduction->GetProductionName() == "keywords" )
         {
@@ -138,6 +139,7 @@ Grammar CompileGrammar( ASTNode* const pxAST )
             {
                 axKeywords.push_back( pxKeywordList->GetChild( j )->GetTokenValue() );
             }
+            continue;
         }
         else if( pxPotentialProduction->GetProductionName() == "<production>" )
         {
@@ -151,7 +153,7 @@ Grammar CompileGrammar( ASTNode* const pxAST )
                     szName = xValue.substr( 1, xValue.length() - 2 );
                 }
 
-                if( pxPotentialProduction->GetChildCount() > 3 )
+                if( iProductionChildCount > 3 )
                 {
                     ASTNode* const pxName = pxPotentialProduction->GetChild( 2 );
                     std::string xValue = pxName->GetTokenValue();
@@ -163,7 +165,7 @@ Grammar CompileGrammar( ASTNode* const pxAST )
             {
                 ASTNode* const pxFirst = pxPotentialProduction->GetChild( 1 );
                 const std::string& xStart = pxFirst->GetTokenValue();
-                if( iStatementChildCount == 4 )
+                if( iProductionChildCount == 4 )
                 {
                     ASTNode* const pxLast = pxPotentialProduction->GetChild( 2 );
                     const std::string& xEnd = pxLast->GetTokenValue();
@@ -183,7 +185,7 @@ Grammar CompileGrammar( ASTNode* const pxAST )
             {
                 ASTNode* const pxName = pxPotentialProduction->GetChild( 1 );
                 const std::string& xName = pxName->GetTokenValue();
-                if( iStatementChildCount == 6 )
+                if( iProductionChildCount == 6 )
                 {
                     ASTNode* const pxStart = pxPotentialProduction->GetChild( 2 );
                     const std::string& xStart = pxStart->GetTokenValue();
@@ -201,7 +203,7 @@ Grammar CompileGrammar( ASTNode* const pxAST )
             }
             else if( pxNameNode->GetProductionName() == "lexeme" )
             {
-                if( iStatementChildCount == 4 )
+                if( iProductionChildCount == 4 )
                 {
                     ASTNode* const pxName = pxPotentialProduction->GetChild( 1 );
                     ASTNode* const pxExpression = pxPotentialProduction->GetChild( 2 );
