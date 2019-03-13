@@ -74,6 +74,7 @@ public:
 	void AddLineComment( const char* const szStart );
 	void AddBlockComment( const char* const szStart, const char* const szEnd );
 	void AddQuote( const char* const szName, const char* const szStart, const char* const szEnd, const char* const szEscape );
+    void AddKeyword( const char* const szName ) { maxKeywords.push_back( szName ); }
 
 	void SetShortName( const char* const szName ) { mszShortName = szName; }
 	void SetName( const char* const szName )
@@ -91,10 +92,12 @@ public:
 
 	int GetLexemeCount() const { return static_cast< int >( maxLexemeRules.size() ); }
 	int GetCommentCount() const { return static_cast< int >( maxCommentRules.size() ); }
+    int GetKeywordCount() const { return static_cast< int >( maxKeywords.size() ); }
 
 	const std::vector< Lexer::Quote >& GetQuotes() const { return maxQuoteRules; }
 	const std::vector< Lexer::Comment >& GetComments() const { return maxCommentRules; }
 	const std::vector< Lexer::Rule >& GetLexemes() const { return maxLexemeRules; }
+    const std::vector< std::string >& GetKeywords() const { return maxKeywords; }
 
 	std::unordered_set< std::string > GetTerminals() const;
 	std::unordered_set< std::string > GetNonTerminals() const;
@@ -120,6 +123,7 @@ private:
 	std::vector< Lexer::Quote > maxQuoteRules;
 	std::vector< Lexer::Comment > maxCommentRules;
 	std::vector< Lexer::Rule > maxLexemeRules;
+    std::vector< std::string > maxKeywords;
 	std::vector< Token > maxBaseTokens;
 	std::unordered_set< std::string > mxTokenStrings;
 

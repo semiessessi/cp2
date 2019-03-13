@@ -93,6 +93,7 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 	std::vector< Lexer::Comment > axComments;
 	std::vector< Lexer::Quote > axQuotes;
 	std::vector< std::pair< std::string, std::string > > axLexemes;
+    std::vector< std::string > axKeywords;
 	// the top should be <grammar>
 	// i feel the parser stops this being hit...
 	if( pxAST->GetProductionName() != "<grammar>" )
@@ -129,7 +130,16 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 		// like language, comment, quote or lexeme
         ASTNode* const pxPotentialProduction = pxStatementAST->GetChild( 0 );
         // SE - TODO: these things need to be in data in some map...
-        if( pxPotentialProduction->GetProductionName() == "<production>" )
+        if( pxPotentialProduction->GetProductionName() == "keywords" )
+        {
+            ASTNode* const pxKeywordList = pxStatementAST->GetChild( 1 );
+            const int iKeywordCount = pxKeywordList->GetChildCount() - 2;
+            for( int j = 1; j < ( iKeywordCount + 1 ); ++j )
+            {
+                axKeywords.push_back( pxKeywordList->GetChild( j )->GetTokenValue() );
+            }
+        }
+        else if( pxPotentialProduction->GetProductionName() == "<production>" )
         {
             ASTNode* const pxNameNode = pxPotentialProduction->GetChild( 0 );
             if( pxNameNode->GetProductionName() == "language" )
@@ -264,6 +274,11 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 			( std::string( "<" ) + xLexeme.first + ">" ).c_str(),
 			xLexeme.second.c_str() );
 	}
+
+    for( const std::string& xKeyword : axKeywords )
+    {
+        xReturnValue.AddKeyword( xKeyword.c_str() );
+    }
 
 	return xReturnValue;
 }
