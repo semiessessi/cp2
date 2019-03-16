@@ -75,6 +75,11 @@ public:
 	void AddBlockComment( const char* const szStart, const char* const szEnd );
 	void AddQuote( const char* const szName, const char* const szStart, const char* const szEnd, const char* const szEscape );
     void AddKeyword( const char* const szName ) { maxKeywords.push_back( szName ); }
+    void AddIdentifier( const char* const szName ) { maxIdentifiers.push_back( szName ); }
+    void AddOperator( const char* const szName ) { maxOperators.push_back( szName ); }
+    void AddTerminator( const char* const szName ) { maxTerminators.push_back( szName ); }
+    void AddSeparator( const char* const szName ) { maxSeparators.push_back( szName ); }
+    void AddString( const char* const szName ) { maxStrings.push_back( szName ); }
 
 	void SetShortName( const char* const szName ) { mszShortName = szName; }
 	void SetName( const char* const szName )
@@ -98,6 +103,11 @@ public:
 	const std::vector< Lexer::Comment >& GetComments() const { return maxCommentRules; }
 	const std::vector< Lexer::Rule >& GetLexemes() const { return maxLexemeRules; }
     const std::vector< std::string >& GetKeywords() const { return maxKeywords; }
+    const std::vector< std::string >& GetIdentifiers() const { return maxIdentifiers; }
+    const std::vector< std::string >& GetOperators() const { return maxOperators; }
+    const std::vector< std::string >& GetTerminators() const { return maxTerminators; }
+    const std::vector< std::string >& GetSeparators() const { return maxSeparators; }
+    const std::vector< std::string >& GetStrings() const { return maxStrings; }
 
 	std::unordered_set< std::string > GetTerminals() const;
 	std::unordered_set< std::string > GetNonTerminals() const;
@@ -123,7 +133,14 @@ private:
 	std::vector< Lexer::Quote > maxQuoteRules;
 	std::vector< Lexer::Comment > maxCommentRules;
 	std::vector< Lexer::Rule > maxLexemeRules;
+
     std::vector< std::string > maxKeywords;
+    std::vector< std::string > maxIdentifiers;
+    std::vector< std::string > maxOperators;
+    std::vector< std::string > maxTerminators;
+    std::vector< std::string > maxSeparators;
+    std::vector< std::string > maxStrings;
+
 	std::vector< Token > maxBaseTokens;
 	std::unordered_set< std::string > mxTokenStrings;
 

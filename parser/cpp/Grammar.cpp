@@ -238,6 +238,11 @@ void Grammar::Merge( const Grammar& xOther )
 	MergeHelper( maxLexemeRules, xOther.maxLexemeRules );
 	MergeHelper( maxQuoteRules, xOther.maxQuoteRules );
     MergeHelper( maxKeywords, xOther.maxKeywords );
+    MergeHelper( maxIdentifiers, xOther.maxIdentifiers );
+    MergeHelper( maxOperators, xOther.maxOperators );
+    MergeHelper( maxTerminators, xOther.maxTerminators );
+    MergeHelper( maxSeparators, xOther.maxSeparators );
+    MergeHelper( maxStrings, xOther.maxStrings );
 
 	RebuildTokens();
 

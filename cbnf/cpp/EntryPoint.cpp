@@ -185,4 +185,5 @@ int main( const int iArgumentCount, const char* const* const pszArguments )
 	CP2::Message( "Completed - %d errors and %d warnings", CP2::GetErrorCount(), CP2::GetWarningCount() );
 
 	return 0;
+
 }
