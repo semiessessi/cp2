@@ -21,7 +21,13 @@ const Grammar& GetCBNFGrammar()
 		GrammarProduction( "<grammar>", !GE( "<statement>" ) ),
 
         GrammarProduction( "<statement>", GE( "<production>" ) ),
+
         GrammarProduction( "<statement>", GE( "keywords" ) + GE( "<terminal-list>" ) ),
+        GrammarProduction( "<statement>", GE( "identifiers" ) + GE( "<terminal-list>" ) ),
+        GrammarProduction( "<statement>", GE( "operators" ) + GE( "<terminal-list>" ) ),
+        GrammarProduction( "<statement>", GE( "terminators" ) + GE( "<terminal-list>" ) ),
+        GrammarProduction( "<statement>", GE( "separators" ) + GE( "<terminal-list>" ) ),
+        GrammarProduction( "<statement>", GE( "strings" ) + GE( "<terminal-list>" ) ),
 
 		GrammarProduction( "<production>",
 			GE( "language" ) + GE( "<string>" ) + GE( ";" ) ),

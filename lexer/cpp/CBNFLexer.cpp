@@ -33,11 +33,16 @@ const std::vector< Rule >& CBNFLexerRules()
 {
 	static const std::vector< Rule > lsaxLexerRules =
 	{
-		Rule( "comment",						Token( "comment",			0001 ) ),
-		Rule( "lexeme",							Token( "lexeme",			0002 ) ),
-		Rule( "quote",							Token( "quote",				0003 ) ),
-		Rule( "language",						Token( "language",			0004 ) ),
-        Rule( "keywords",						Token( "keywords",			0005 ) ),
+		Rule( "comment",						Token( "comment",			1 ) ),
+		Rule( "lexeme",							Token( "lexeme",			2 ) ),
+		Rule( "quote",							Token( "quote",				3 ) ),
+		Rule( "language",						Token( "language",			4 ) ),
+        Rule( "keywords",						Token( "keywords",			5 ) ),
+        Rule( "identifiers",					Token( "identifiers",		6 ) ),
+        Rule( "operators",						Token( "operators",			7 ) ),
+        Rule( "terminators",					Token( "terminators",		8 ) ),
+        Rule( "separators",						Token( "separators",		9 ) ),
+        Rule( "strings",						Token( "strings",			10 ) ),
 
 		Rule( "[_a-zA-Z][_\\-a-zA-Z0-9]*",		Token( "<identifier>",		1000, true ) ),
 		//Rule( "\"(?:[^\\\"\\\\]|\\\\.)*\"",		Token( "<string>",			1001, true ) ),

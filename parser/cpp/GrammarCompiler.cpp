@@ -94,6 +94,12 @@ Grammar CompileGrammar( ASTNode* const pxAST )
 	std::vector< Lexer::Quote > axQuotes;
 	std::vector< std::pair< std::string, std::string > > axLexemes;
     std::vector< std::string > axKeywords;
+    std::vector< std::string > axIdentifiers;
+    std::vector< std::string > axOperators;
+    std::vector< std::string > axTerminators;
+    std::vector< std::string > axSeparators;
+    std::vector< std::string > axStrings;
+
 	// the top should be <grammar>
 	// i feel the parser stops this being hit...
 	if( pxAST->GetProductionName() != "<grammar>" )
@@ -133,11 +139,61 @@ Grammar CompileGrammar( ASTNode* const pxAST )
         // SE - TODO: these things need to be in data in some map...
         if( pxPotentialProduction->GetProductionName() == "keywords" )
         {
-            ASTNode* const pxKeywordList = pxStatementAST->GetChild( 1 );
-            const int iKeywordCount = pxKeywordList->GetChildCount() - 2;
-            for( int j = 1; j < ( iKeywordCount + 1 ); ++j )
+            ASTNode* const pxTerminalList = pxStatementAST->GetChild( 1 );
+            const int iTerminalCount = pxTerminalList->GetChildCount() - 2;
+            for( int j = 1; j < ( iTerminalCount + 1 ); ++j )
             {
-                axKeywords.push_back( pxKeywordList->GetChild( j )->GetTokenValue() );
+                axKeywords.push_back( pxTerminalList->GetChild( j )->GetTokenValue() );
+            }
+            continue;
+        }
+        else if( pxPotentialProduction->GetProductionName() == "identifiers" )
+        {
+            ASTNode* const pxTerminalList = pxStatementAST->GetChild( 1 );
+            const int iTerminalCount = pxTerminalList->GetChildCount() - 2;
+            for( int j = 1; j < ( iTerminalCount + 1 ); ++j )
+            {
+                axIdentifiers.push_back( pxTerminalList->GetChild( j )->GetTokenValue() );
+            }
+            continue;
+        }
+        else if( pxPotentialProduction->GetProductionName() == "operators" )
+        {
+            ASTNode* const pxTerminalList = pxStatementAST->GetChild( 1 );
+            const int iTerminalCount = pxTerminalList->GetChildCount() - 2;
+            for( int j = 1; j < ( iTerminalCount + 1 ); ++j )
+            {
+                axOperators.push_back( pxTerminalList->GetChild( j )->GetTokenValue() );
+            }
+            continue;
+        }
+        else if( pxPotentialProduction->GetProductionName() == "terminators" )
+        {
+            ASTNode* const pxTerminalList = pxStatementAST->GetChild( 1 );
+            const int iTerminalCount = pxTerminalList->GetChildCount() - 2;
+            for( int j = 1; j < ( iTerminalCount + 1 ); ++j )
+            {
+                axTerminators.push_back( pxTerminalList->GetChild( j )->GetTokenValue() );
+            }
+            continue;
+        }
+        else if( pxPotentialProduction->GetProductionName() == "separators" )
+        {
+            ASTNode* const pxTerminalList = pxStatementAST->GetChild( 1 );
+            const int iTerminalCount = pxTerminalList->GetChildCount() - 2;
+            for( int j = 1; j < ( iTerminalCount + 1 ); ++j )
+            {
+                axSeparators.push_back( pxTerminalList->GetChild( j )->GetTokenValue() );
+            }
+            continue;
+        }
+        else if( pxPotentialProduction->GetProductionName() == "strings" )
+        {
+            ASTNode* const pxTerminalList = pxStatementAST->GetChild( 1 );
+            const int iTerminalCount = pxTerminalList->GetChildCount() - 2;
+            for( int j = 1; j < ( iTerminalCount + 1 ); ++j )
+            {
+                axStrings.push_back( pxTerminalList->GetChild( j )->GetTokenValue() );
             }
             continue;
         }
@@ -280,6 +336,31 @@ Grammar CompileGrammar( ASTNode* const pxAST )
     for( const std::string& xKeyword : axKeywords )
     {
         xReturnValue.AddKeyword( xKeyword.c_str() );
+    }
+
+    for( const std::string& xIdentifier : axIdentifiers )
+    {
+        xReturnValue.AddIdentifier( xIdentifier.c_str() );
+    }
+
+    for( const std::string& xOperator : axOperators )
+    {
+        xReturnValue.AddOperator( xOperator.c_str() );
+    }
+
+    for( const std::string& xTerminator : axTerminators )
+    {
+        xReturnValue.AddTerminator( xTerminator.c_str() );
+    }
+
+    for( const std::string& xSeparator : axSeparators )
+    {
+        xReturnValue.AddSeparator( xSeparator.c_str() );
+    }
+
+    for( const std::string& xString : axStrings )
+    {
+        xReturnValue.AddString( xString.c_str() );
     }
 
 	return xReturnValue;

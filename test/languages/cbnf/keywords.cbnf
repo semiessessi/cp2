@@ -7,3 +7,26 @@ keywords
     "quote"
     "lexeme"
 }
+
+identifiers
+{
+    identifier
+}
+
+operators
+{
+    "="
+    "{"
+    "}"
+}
+
+terminators
+{
+    ";"
+}
+
+strings
+{
+    string
+}
+

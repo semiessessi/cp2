@@ -15,9 +15,12 @@ grammar             =   statement* ;
 
 statement           =   production ;                // a production of the grammar, e.g. this one.
 statement           =   "keywords" terminal-list ;  // for marking symbols as keywords for syntax highlighting
-
+statement           =   "identifiers" terminal-list ;
+statement           =   "operators" terminal-list ;
+statement           =   "separators" terminal-list ;
+statement           =   "terminators" terminal-list ;
+statement           =   "strings" terminal-list ;
 
 terminal-list       =   "{" terminal* "}" ;
 terminal            =   identifier ;
 terminal            =   string ;
-

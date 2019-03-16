@@ -98,6 +98,11 @@ public:
 	int GetLexemeCount() const { return static_cast< int >( maxLexemeRules.size() ); }
 	int GetCommentCount() const { return static_cast< int >( maxCommentRules.size() ); }
     int GetKeywordCount() const { return static_cast< int >( maxKeywords.size() ); }
+    int GetIdentifierCount() const { return static_cast< int >( maxIdentifiers.size() ); }
+    int GetOperatorCount() const { return static_cast< int >( maxOperators.size() ); }
+    int GetTerminatorCount() const { return static_cast< int >( maxTerminators.size() ); }
+    int GetSeparatorCount() const { return static_cast< int >( maxSeparators.size() ); }
+    int GetStringCount() const { return static_cast< int >( maxStrings.size() ); }
 
 	const std::vector< Lexer::Quote >& GetQuotes() const { return maxQuoteRules; }
 	const std::vector< Lexer::Comment >& GetComments() const { return maxCommentRules; }
