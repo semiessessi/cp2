@@ -59,7 +59,6 @@ static inline void GrammarReport( const CP2::Parser::Grammar& xGrammar )
 	CP2::Message( "Symbols:         %d", iTotalSymbols );
 	CP2::Message( "(terminal)       %d", iTerminalCount );
 	CP2::Message( "(non-terminal)   %d", iNonTerminalCount );
-    CP2::Message( "(non-terminal)   %d", iNonTerminalCount );
     CP2::Message( "" );
     CP2::Message( "Syntax:          %d", iTotalSyntaxThings );
     CP2::Message( "(comments)       %d", iComments );

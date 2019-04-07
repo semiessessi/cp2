@@ -3,6 +3,11 @@
 keywords
 {
     "keywords"
+    "identifiers"
+    "operators"
+    "seperators"
+    "terminators"
+    "strings"
     "comment"
     "quote"
     "lexeme"
