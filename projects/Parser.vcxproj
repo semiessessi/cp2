@@ -24,6 +24,7 @@
     <ClCompile Include="..\parser\cpp\Grammar.cpp" />
     <ClCompile Include="..\parser\cpp\GrammarCompiler.cpp" />
     <ClCompile Include="..\parser\cpp\GrammarExpression.cpp" />
+    <ClCompile Include="..\parser\cpp\GrammarProduction.cpp" />
     <ClCompile Include="..\parser\cpp\LLK.cpp" />
     <ClCompile Include="..\parser\cpp\NormalisedGrammar.cpp" />
     <ClCompile Include="..\parser\cpp\Parser.cpp" />
@@ -37,6 +38,7 @@
     <ClInclude Include="..\parser\cpp\Grammar.h" />
     <ClInclude Include="..\parser\cpp\GrammarCompiler.h" />
     <ClInclude Include="..\parser\cpp\GrammarExpression.h" />
+    <ClInclude Include="..\parser\cpp\GrammarProduction.h" />
     <ClInclude Include="..\parser\cpp\LLK.h" />
     <ClInclude Include="..\parser\cpp\NormalisedGrammar.h" />
     <ClInclude Include="..\parser\cpp\Parser.h" />

@@ -49,6 +49,7 @@ std::vector< GrammarProduction > Grammar::GetProductions( const std::string& xNa
 	if( it == mxProductionCache.end() )
 	{
 		std::vector< GrammarProduction > axProductions;
+        std::vector< GrammarProduction > axRefactoredProductions;
 
 		std::unordered_set< std::string > xLowerLevelProductions;
 		const int iProductionCount = GetProductionCount();
@@ -61,6 +62,10 @@ std::vector< GrammarProduction > Grammar::GetProductions( const std::string& xNa
 				axProductions.push_back( xProduction );
 			}
 		}
+
+        // refactor the productions so that recursion avoidance is possible.
+        // this kind of ruins the idea of getting what we put in tho.
+
 
 		mxProductionCache[ xName ] = axProductions;
 	}
