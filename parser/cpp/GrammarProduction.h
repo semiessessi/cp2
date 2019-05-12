@@ -22,33 +22,27 @@ class GrammarProduction
 
 public:
 
-    GrammarProduction( const GrammarProduction& xProduction )
-    : mxSymbolName( xProduction.mxSymbolName )
-    , mxExpression( xProduction.mxExpression )
-    , mbIsSubstitutedRecusion( xProduction.mbIsSubstitutedRecusion )
-    {
-
-    }
-
-    GrammarProduction( const std::string& xSymbolName, const GrammarExpression& xExpression )
-    : mxSymbolName( xSymbolName )
-    , mxExpression( xExpression )
-    , mbIsSubstitutedRecusion( false )
-    {
-
-    }
+    GrammarProduction( const GrammarProduction& xProduction );
+    GrammarProduction( const std::string& xSymbolName, const GrammarExpression& xExpression );
 
     const std::string& GetName() const { return mxSymbolName; }
     const GrammarExpression& GetExpression() const { return mxExpression; }
 
     bool IsSubstitution() const { return mbIsSubstitutedRecusion; }
+    bool IsLeftRecursive() const { return mbIsLeftRecursive; }
+    static GrammarProduction CreateLeftmostSubstitution(
+        const GrammarProduction& xProduction,
+        const GrammarExpression& xSubstitution );
 
 private:
+
+    static bool IsLeftRecursive( const std::string& xString, const GrammarExpression& xExpression );
 
     std::string mxSymbolName;
     GrammarExpression mxExpression;
 
     bool mbIsSubstitutedRecusion;
+    bool mbIsLeftRecursive;
 
 };
 

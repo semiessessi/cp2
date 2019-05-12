@@ -37,7 +37,7 @@ public:
 
 	}
 
-	GrammarExpression( const GrammarExpression* const pxLeft, const GrammarExpression* const pxRight )
+	GrammarExpression( /*const */GrammarExpression* const pxLeft, /*const */GrammarExpression* const pxRight )
 	: mxSymbolName()
 	, mpxLeft( pxLeft )
 	, mpxRight( pxRight )
@@ -121,6 +121,9 @@ public:
 		return mpxLeft->GetLeftmostChild();
 	}
 
+    void SubstituteLeftmostChild(
+        const GrammarExpression& xSubstitution );
+
 	std::vector< Name > GetReferencedNames() const;
 	const std::vector< Name >& GetFlattenedNames() const; // SE - NOTE: this gets hammered.
 
@@ -133,12 +136,30 @@ private:
 	void GetFlattenedNamesRecursive( std::vector< Name >& xWorkingVector ) const;
 	void GetCBNFRecursive( std::string& xWorkingString ) const;
 
+
+    GrammarExpression*& GetLeftmostToReplace()
+    {
+        if( mpxLeft == nullptr )
+        {
+            // SE - TODO: should never happen.
+            static GrammarExpression* sxJustInCase = nullptr;
+            return sxJustInCase;
+        }
+
+        if( mpxLeft->mpxLeft == nullptr )
+        {
+            return mpxLeft;
+        }
+
+        return mpxLeft->GetLeftmostToReplace();
+    }
+
 	// cache the name array...
 	mutable std::vector< Name > maxFlattenedNames;
 
 	std::string mxSymbolName;
-	const GrammarExpression* mpxLeft;
-	const GrammarExpression* mpxRight;
+	/*const */GrammarExpression* mpxLeft;
+	/*const */GrammarExpression* mpxRight;
 	bool mbList;
 	bool mbOptional;
 	bool mbNonEmpty;

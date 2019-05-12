@@ -7,6 +7,15 @@ namespace CP2
 namespace Parser
 {
 
+void GrammarExpression::SubstituteLeftmostChild(
+    const GrammarExpression& xSubstitution )
+{
+    GrammarExpression*& pxChildToReplace = GetLeftmostToReplace();
+    GrammarExpression* const pxOriginalChildReference = pxChildToReplace;
+    pxChildToReplace = new GrammarExpression( xSubstitution );
+    delete pxOriginalChildReference;
+}
+
 std::vector< Name > GrammarExpression::GetReferencedNames() const
 {
 	std::vector< Name > axNames;

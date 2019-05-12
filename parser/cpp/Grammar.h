@@ -38,7 +38,9 @@ public:
 	const GrammarProduction& GetProduction( const int iIndex ) const { return maxProductions[ iIndex ]; }
 	std::vector< GrammarProduction > GetTopLevelProductions() const;
 	const std::vector< GrammarProduction >& GetProductions() const { return maxProductions; }
-	std::vector< GrammarProduction > GetProductions( const std::string& xName ) const;
+
+    std::vector< GrammarProduction > GetOriginalProductions( const std::string& xName ) const;
+	std::vector< GrammarProduction > GetProductionsForParsing( const std::string& xName ) const;
 
 	std::string GetCBNF() const;
 
@@ -106,7 +108,8 @@ private:
 	void EvaluateReport();
 
 	mutable std::unordered_map< std::string, std::vector< GrammarProduction > > mxProductionCache;
-	// removed const to allow merging
+    mutable std::unordered_map< std::string, std::vector< GrammarProduction > > mxRefactoredProductionCache;
+    // removed const to allow merging
 	/*const */std::vector< GrammarProduction > maxProductions;
 
 	std::vector< Lexer::Quote > maxQuoteRules;

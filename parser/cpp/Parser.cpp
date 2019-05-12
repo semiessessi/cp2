@@ -212,7 +212,7 @@ static inline bool ParseName(
 
 	// do we have any productions for this thing?
 	const std::vector< GrammarProduction > axNewProductions =
-		xGrammar.GetProductions( xName );
+		xGrammar.GetProductionsForParsing( xName );
 
 	// handle catch all ...
 	if( HandleCatchAll( axNewProductions ) )
