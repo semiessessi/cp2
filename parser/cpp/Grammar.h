@@ -107,6 +107,11 @@ private:
 
 	void EvaluateReport();
 
+    static void CreateStringForList(
+        const std::string& xListName,
+        const std::vector< std::string >& axList,
+        std::string& xWorkingString );
+
 	mutable std::unordered_map< std::string, std::vector< GrammarProduction > > mxProductionCache;
     mutable std::unordered_map< std::string, std::vector< GrammarProduction > > mxRefactoredProductionCache;
     // removed const to allow merging

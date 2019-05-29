@@ -202,6 +202,13 @@ std::string Grammar::GetCBNF() const
 		xReturnValue += "\r\n";
 	}
 
+    CreateStringForList( "keywords", maxKeywords, xReturnValue );
+    CreateStringForList( "identifiers", maxIdentifiers, xReturnValue );
+    CreateStringForList( "operators", maxOperators, xReturnValue );
+    CreateStringForList( "terminators", maxTerminators, xReturnValue );
+    CreateStringForList( "separators", maxSeparators, xReturnValue );
+    CreateStringForList( "strings", maxStrings, xReturnValue );
+
 	// make some effort to make this pretty...
 	int iMaxProductionNameLength = 8;
 	for( const GrammarProduction& xProduction : maxProductions )
@@ -459,6 +466,31 @@ void Grammar::EvaluateReport()
 			maxDirectLeftRecursions.push_back( i );
 		}
 	}
+}
+
+void Grammar::CreateStringForList(
+    const std::string& xListName,
+    const std::vector< std::string >& axList,
+    std::string& xWorkingString )
+{
+    if( axList.size() == 0 )
+    {
+        return;
+    }
+
+    xWorkingString += xListName;
+    xWorkingString += "\r\n";
+    xWorkingString += "{\r\n";
+
+    for( const std::string& xString : axList )
+    {
+        xWorkingString += "    ";
+        xWorkingString += xString;
+        xWorkingString += "\r\n";
+    }
+
+    xWorkingString += "}\r\n\r\n";
+
 }
 
 }
