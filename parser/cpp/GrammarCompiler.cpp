@@ -288,7 +288,7 @@ Grammar CompileGrammar( ASTNode* const pxAST )
             // build the first expression bit, then concatenate the rest
             ASTNode* pxWorkingChild = pxPotentialProduction->GetChild( 2 );
             GrammarExpression xExpression( CompileExpression( pxWorkingChild ) );
-            for( int j = 3; j < ( iStatementChildCount - 1 ); ++j )
+            for( int j = 3; j < ( iProductionChildCount - 1 ); ++j )
             {
                 pxWorkingChild = pxPotentialProduction->GetChild( j );
                 xExpression = xExpression + CompileExpression( pxWorkingChild );
