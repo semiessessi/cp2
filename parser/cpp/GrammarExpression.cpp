@@ -13,6 +13,7 @@ void GrammarExpression::SubstituteLeftmostChild(
     GrammarExpression*& pxChildToReplace = GetLeftmostToReplace();
     GrammarExpression* const pxOriginalChildReference = pxChildToReplace;
     pxChildToReplace = new GrammarExpression( xSubstitution );
+    pxChildToReplace->mbSubstitution = true;
     delete pxOriginalChildReference;
 }
 
@@ -75,7 +76,11 @@ void GrammarExpression::GetFlattenedNamesRecursive(
 	if( !xName.empty() )
 	{
 		xWorkingVector.push_back( {
-			xName, IsList(), IsOptional(), IsNonEmpty()
+			xName,
+            IsList(),
+            IsOptional(),
+            IsNonEmpty(),
+            IsSubstitution()
 		} );
 	}
 
@@ -123,6 +128,20 @@ void GrammarExpression::GetCBNFRecursive( std::string& xWorkingString ) const
 	{
 		mpxRight->GetCBNFRecursive( xWorkingString );
 	}
+}
+
+void GrammarExpression::RecursivelySetAsSubstitution()
+{
+    mbSubstitution = true;
+    if( mpxLeft != nullptr )
+    {
+        mpxLeft->RecursivelySetAsSubstitution();
+    }
+
+    if( mpxRight != nullptr )
+    {
+        mpxRight->RecursivelySetAsSubstitution();
+    }
 }
 
 }

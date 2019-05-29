@@ -6,6 +6,9 @@
 #include "Pool.h"
 #include "Token.h"
 
+// SE - TODO: for name - should extract name.
+#include "../../parser/cpp/GrammarExpression.h"
+
 #include <string>
 #include <string_view>
 #include <vector>
@@ -28,9 +31,9 @@ public:
 	// error node
 	ASTNode( const int iCursor,
 		const Token& xToken,
-		const std::string_view& xProductionName,
+		const Parser::Name& xProductionName,
 		const int iErrorNumber,
-		const std::string_view& xExpected )
+		const Parser::Name& xExpected )
 	: mxProductionName( xProductionName )
 	, mxToken( xToken )
 	, miCursor( iCursor )
@@ -46,7 +49,7 @@ public:
 
 	ASTNode( const int iCursor,
 		const Token& xToken,
-		const std::string_view& xProductionName,
+		const Parser::Name& xProductionName,
 		const std::vector< ASTNode* >& apxChildren = std::vector< ASTNode* >() )
 	: mapxChildren( apxChildren )
 	, mxProductionName( xProductionName )
@@ -87,7 +90,7 @@ public:
 
 		return mapxChildren.back()->GetEndCursor();
 	}
-	const std::string& GetProductionName() const { return mxProductionName; }
+	const std::string& GetProductionName() const { return mxProductionName.xName; }
 	const char* GetFilename() const { return mxToken.GetFilename(); }
 	int GetLine() const { return mxToken.GetLine(); }
 	int GetColumn() const { return mxToken.GetColumn(); }
@@ -101,6 +104,7 @@ public:
 	ASTNode* GetChild( const int i ) const { return mapxChildren[ i ]; }
 
 	bool IsValued() const { return mxToken.IsValued(); }
+    bool IsSubstitution() const { return mxProductionName.bSubstitution; }
 	bool IsErrored() const
 	{
 		// SE - TODO: this shouldn't need to be recursive (!)
@@ -125,6 +129,8 @@ public:
 
 	std::string GetErrorString() const;
 
+    void TidyRecursions();
+
 private:
 
 	void DebugPrintRecursive( std::string& xWorkingString ) const;
@@ -137,7 +143,7 @@ private:
 
 	std::vector< ASTNode* > mapxChildren;
 	std::vector< ParseError > maxErrors;
-	std::string mxProductionName;
+	Parser::Name mxProductionName;
 	Token mxToken;
 	int miCursor;
 

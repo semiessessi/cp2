@@ -19,6 +19,7 @@ struct Name
 	bool bList;
 	bool bOptional;
 	bool bNonEmpty;
+    bool bSubstitution;
 };
 
 class GrammarExpression
@@ -33,6 +34,7 @@ public:
 	, mbList( false )
 	, mbOptional( false )
 	, mbNonEmpty( false )
+    , mbSubstitution( false )
 	{
 
 	}
@@ -44,6 +46,7 @@ public:
 	, mbList( false )
 	, mbOptional( false )
 	, mbNonEmpty( false )
+    , mbSubstitution( false )
 	{
 
 	}
@@ -54,7 +57,8 @@ public:
 	, mpxRight( ( xOther.mpxRight != nullptr ) ? new GrammarExpression( *( xOther.mpxRight ) ) : nullptr )
 	, mbList( xOther.mbList )
 	, mbOptional( xOther.mbOptional )
-	, mbNonEmpty( false )
+	, mbNonEmpty( xOther.mbNonEmpty )
+    , mbSubstitution( xOther.mbSubstitution )
 	{
 
 	}
@@ -109,6 +113,7 @@ public:
 	bool IsList() const { return mbList | mbNonEmpty; }
 	bool IsNonEmpty() const { return mbNonEmpty; }
 	bool IsOptional() const { return mbOptional; }
+    bool IsSubstitution() const { return mbSubstitution; }
 	const std::string& GetName() const { return mxSymbolName; }
 
 	const GrammarExpression& GetLeftmostChild() const
@@ -135,7 +140,7 @@ private:
 
 	void GetFlattenedNamesRecursive( std::vector< Name >& xWorkingVector ) const;
 	void GetCBNFRecursive( std::string& xWorkingString ) const;
-
+    void RecursivelySetAsSubstitution();
 
     GrammarExpression*& GetLeftmostToReplace()
     {
@@ -163,6 +168,7 @@ private:
 	bool mbList;
 	bool mbOptional;
 	bool mbNonEmpty;
+    bool mbSubstitution;
 
 };
 

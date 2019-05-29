@@ -26,10 +26,12 @@ public:
     GrammarProduction( const std::string& xSymbolName, const GrammarExpression& xExpression );
 
     const std::string& GetName() const { return mxSymbolName; }
+    const std::string& GetSubstitutionName() const { return mxSubstitutionName; }
     const GrammarExpression& GetExpression() const { return mxExpression; }
 
-    bool IsSubstitution() const { return mbIsSubstitutedRecusion; }
     bool IsLeftRecursive() const { return mbIsLeftRecursive; }
+    bool IsSubstitution() const { return mxSubstitutionName.empty() == false; }
+
     static GrammarProduction CreateLeftmostSubstitution(
         const GrammarProduction& xProduction,
         const GrammarExpression& xSubstitution );
@@ -39,9 +41,10 @@ private:
     static bool IsLeftRecursive( const std::string& xString, const GrammarExpression& xExpression );
 
     std::string mxSymbolName;
+    // SE - TODO: something better handling n deep recursions?
+    std::string mxSubstitutionName;
     GrammarExpression mxExpression;
 
-    bool mbIsSubstitutedRecusion;
     bool mbIsLeftRecursive;
 
 };

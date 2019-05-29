@@ -26,7 +26,8 @@ struct ParseState
 
 std::vector< ParseState > ParseRecursive(
 	const std::vector< Token >& axTokens, const Grammar& xGrammar,
-	const int iCursor, const std::vector< GrammarProduction >& axProductions );
+	const int iCursor, const std::vector< GrammarProduction >& axProductions,
+    const bool bSubstitution );
 
 static inline bool HandleListOrOptional(
 	const bool bOptional, const bool bList, const bool bNonEmpty,
@@ -91,7 +92,7 @@ static inline bool HandleCatchAll(
 static inline bool ContinueState( size_t& k,
 	const std::vector< Token >& axTokens,
 	const Grammar& xGrammar,
-	const std::string& xName,
+	const Name& xName,
 	const std::vector< GrammarProduction >& axNewProductions,
 	std::vector< ParseState >& axWorkingNewStates,
 	std::vector< ParseState >& axNewStates )
@@ -110,7 +111,12 @@ static inline bool ContinueState( size_t& k,
 		// report error?
 		ParseState xNewState =
 		{
-			new ASTNode( iCurrentCursor, axTokens[ iCurrentCursor - 1 ], xName, 3001, xName ),
+			new ASTNode(
+                iCurrentCursor,
+                axTokens[ iCurrentCursor - 1 ],
+                xName,
+                3001,
+                xName ),
 			iCurrentCursor - 1
 		};
 		axWorkingNewStates.push_back( xNewState );
@@ -121,7 +127,7 @@ static inline bool ContinueState( size_t& k,
 	{
 		// this is a terminal
 		// does it match what we expect?
-		if( xName == axTokens[ iCurrentCursor ].GetName() )
+		if( xName.xName == axTokens[ iCurrentCursor ].GetName() )
 		{
 			// add the terminal as the one option here.
 			ParseState xNewState =
@@ -150,7 +156,12 @@ static inline bool ContinueState( size_t& k,
 
 	//
 	std::vector< ParseState > axChildStates =
-		ParseRecursive( axTokens, xGrammar, iCurrentCursor, axNewProductions );
+		ParseRecursive(
+            axTokens,
+            xGrammar,
+            iCurrentCursor,
+            axNewProductions,
+            xName.bSubstitution );
 	bool bAllErrors = true;
 	for( ParseState& xState : axChildStates )
 	{
@@ -199,7 +210,8 @@ static inline bool ParseName(
 {
 	axWorkingNewStates.clear();
 
-	const std::string& xName = axNames[ j ].xName;
+    const Name& xProductionName = axNames[ j ];
+	const std::string& xName = xProductionName.xName;
 
 	// safety...
 	if( xName.empty() )
@@ -225,7 +237,7 @@ static inline bool ParseName(
 	{
 		ContinueState( k,
 			axTokens, xGrammar,
-			xName, axNewProductions,
+            xProductionName, axNewProductions,
 			axWorkingNewStates, axNewStates );
 	}
 
@@ -243,8 +255,11 @@ static inline bool ParseName(
 }
 
 std::vector< ParseState > ParseRecursive(
-	const std::vector< Token >& axTokens, const Grammar& xGrammar,
-	const int iCursor, const std::vector< GrammarProduction >& axProductions )
+	const std::vector< Token >& axTokens,
+    const Grammar& xGrammar,
+	const int iCursor,
+    const std::vector< GrammarProduction >& axProductions,
+    bool bSubstitution )
 {
 	std::vector< ParseState > axStates;
 	if( axProductions.size() == 0 ) // safety, should never happen.
@@ -252,7 +267,16 @@ std::vector< ParseState > ParseRecursive(
 		return axStates;
 	}
 	
-	ASTNode xTopBaseNode( iCursor, axTokens[ iCursor ], axProductions[ 0 ].GetName() );
+	ASTNode xTopBaseNode(
+        iCursor,
+        axTokens[ iCursor ],
+        {
+            axProductions[ 0 ].GetName(),
+            false,
+            false,
+            false,
+            bSubstitution
+        } );
 
 	// we have one list of new states we iterate on
 	// and one we write the next set of new states into
@@ -317,6 +341,8 @@ std::vector< ParseState > ParseRecursive(
 		} ), axStates.end() );
 	}
 
+    // SE - TODO: should substitutions be tidied up here??
+
 	return axStates;
 }
 
@@ -341,7 +367,10 @@ ASTNode* Parse( const std::vector< Token >& axTokens, const Grammar& xGrammar )
 		return nullptr;
 	}
 
-	std::vector< ParseState > axStates = ParseRecursive( axTokens, xGrammar, 0, axTopLevelProductions );
+	std::vector< ParseState > axStates
+        = ParseRecursive(
+            axTokens, xGrammar, 0,
+            axTopLevelProductions, false );
 
 	if( axStates.size() == 0 )
 	{
@@ -363,6 +392,8 @@ ASTNode* Parse( const std::vector< Token >& axTokens, const Grammar& xGrammar )
 		Warning( 3500, szFilename, 0, 0, "Parse result was ambiguous, using first valid parse" );
 	}
 
+    // SE - TODO: expose all results?
+
 	// delete leftovers
 	for( size_t i = 1; i < axStates.size(); ++i )
 	{
@@ -379,6 +410,10 @@ ASTNode* Parse( const std::vector< Token >& axTokens, const Grammar& xGrammar )
 			"Incomplete parse. Unexpected token: %s", axTokens[ iLastCursor + 1 ].GetName() );
 		return nullptr;
 	}
+
+    // SE - NOTE: clean up after left recursion.
+    // sE - TODO: probably could be done better somewhere else...
+    pxChosenTree->TidyRecursions();
 
 	return pxChosenTree;
 }

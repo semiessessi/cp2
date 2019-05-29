@@ -56,9 +56,55 @@ std::string ASTNode::GetErrorString() const
 	return xReturnValue;
 }
 
+void ASTNode::TidyRecursions()
+{
+    if( mxProductionName.bSubstitution == false )
+    {
+        // loop over children and tidy or call accordingly
+        const size_t iBegin = 0;
+        size_t iEnd = 0;
+        for( size_t i = 0; i < mapxChildren.size(); ++i )
+        {
+            if( mapxChildren[ i ]->IsSubstitution() )
+            {
+                ++iEnd;
+            }
+
+            mapxChildren[ i ]->TidyRecursions();
+        }
+
+        // SE - NOTE: should be equality only but paranoia.
+        if( iEnd <= iBegin )
+        {
+            return;
+        }
+
+        // we need to insert a new node from iBegin to iEnd...
+        // and replace our children suitably.
+        std::vector< ASTNode* > apxNewChildren;
+        std::vector< ASTNode* > apxNewGrandchildren;
+        for( size_t i = iBegin; i < iEnd; ++i )
+        {
+            apxNewGrandchildren.push_back( new ASTNode( mapxChildren[ i ] ) );
+            delete mapxChildren[ i ];
+        }
+
+        // create the new thing!!
+        ASTNode* const pxNewChild = new ASTNode(
+            miCursor, mxToken,
+            mxProductionName, apxNewGrandchildren );
+
+        // fix the vector up
+        mapxChildren.erase(
+            mapxChildren.begin() + iBegin + 1,
+            mapxChildren.begin() + iEnd );
+        mapxChildren[ 0 ] = pxNewChild;
+    }
+}
+
 void ASTNode::DebugPrintRecursive( std::string& xWorkingString ) const
 {
-	xWorkingString += mxProductionName;
+	xWorkingString += mxProductionName.xName;
 	xWorkingString += "( ";
 
 	if( ( mapxChildren.size() == 0 ) )
