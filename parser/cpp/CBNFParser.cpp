@@ -71,6 +71,23 @@ const Grammar& GetCBNFGrammar()
 		kxCBNFGrammar.AddQuote( "<string>", "\"", "\"", "\\" );
 		kxCBNFGrammar.AddLexeme( "<identifier>", "[_a-zA-Z][_\\-a-zA-Z0-9]*" );
 		kxCBNFGrammar.SetName( "CBNF" );
+
+        // SE - TODO: consistency with quotes vs <>
+        kxCBNFGrammar.AddKeyword( "\"keywords\"" );
+        kxCBNFGrammar.AddKeyword( "\"identifiers\"" );
+        kxCBNFGrammar.AddKeyword( "\"operators\"" );
+        kxCBNFGrammar.AddKeyword( "\"terminators\"" );
+        kxCBNFGrammar.AddKeyword( "\"separators\"" );
+        kxCBNFGrammar.AddKeyword( "\"strings\"" );
+        kxCBNFGrammar.AddKeyword( "\"quote\"" );
+        kxCBNFGrammar.AddKeyword( "\"comment\"" );
+        kxCBNFGrammar.AddKeyword( "\"lexeme\"" );
+
+        kxCBNFGrammar.AddTerminator( "\";\"" );
+
+        kxCBNFGrammar.AddIdentifier( "identifier" );
+
+        kxCBNFGrammar.AddString( "string" );
 	}
 
 	return kxCBNFGrammar;
