@@ -54,6 +54,7 @@ const std::vector< Rule >& CBNFLexerRules()
 		Rule( "\\.\\.\\.",						Token( "...",				2004 ) ),
         Rule( "{",						        Token( "{",				    2005 ) ),
         Rule( "}",						        Token( "}",				    2006 ) ),
+        Rule( "\\+",							Token( "+",					2007 ) ),
 		
 	};
 
