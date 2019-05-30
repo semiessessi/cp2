@@ -29,6 +29,8 @@ const Grammar& GetCBNFGrammar()
         GrammarProduction( "<statement>", GE( "separators" ) + GE( "<terminal-list>" ) ),
         GrammarProduction( "<statement>", GE( "strings" ) + GE( "<terminal-list>" ) ),
 
+        GrammarProduction( "<statement>", GE( "<pass-definition>" ) ),
+
 		GrammarProduction( "<production>",
 			GE( "language" ) + GE( "<string>" ) + GE( ";" ) ),
 		GrammarProduction( "<production>",
@@ -57,6 +59,17 @@ const Grammar& GetCBNFGrammar()
 		GrammarProduction( "<rule-expression>", GE( "<identifier>" ) + GE( "*" ) ),
 		GrammarProduction( "<rule-expression>", GE( "<identifier>" ) + GE( "+" ) ),
 		GrammarProduction( "<rule-expression>", GE( "<identifier>" ) + GE( "?" ) ),
+
+        // for passes...
+        // pass-definition     =   "pass" string pass-modifiers pass-statements ;
+        GrammarProduction( "<pass-definition>",
+            GE( "pass" ) + GE( "<string>" )+ GE( "<pass-modifiers>" ) + GE( "<pass-statements>" ) ),
+        GrammarProduction( "<pass-statement>", GE( "ensure-path" ) + GE( "<string>" ) ),
+        GrammarProduction( "<pass-modifier>", GE( "requires" ) + GE( "<pass-names>" ) ),
+        GrammarProduction( "<pass-modifiers>", !GE( "<pass-modifier>" ) ),
+        GrammarProduction( "<pass-statements>",
+            GE( "{" ) + !GE( "<pass-statement>" ) + GE( "}" ) ),
+        GrammarProduction( "<pass-names>", GE( "{" ) + !GE( "<string>" ) + GE( "}" ) ),
 
         // for non-production statements...
         GrammarProduction( "<terminal-list>", GE( "{" ) + !GE( "<terminal>" ) + GE( "}" ) ),
