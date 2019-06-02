@@ -137,7 +137,11 @@ Grammar CompileGrammar( ASTNode* const pxAST )
         ASTNode* const pxPotentialProduction = pxStatementAST->GetChild( 0 );
         const int iProductionChildCount = pxPotentialProduction->GetChildCount();
         // SE - TODO: these things need to be in data in some map...
-        if( pxPotentialProduction->GetProductionName() == "keywords" )
+        if( pxPotentialProduction->GetProductionName() == "pass" )
+        {
+            continue;
+        }
+        else if( pxPotentialProduction->GetProductionName() == "keywords" )
         {
             ASTNode* const pxTerminalList = pxStatementAST->GetChild( 1 );
             const int iTerminalCount = pxTerminalList->GetChildCount() - 2;
