@@ -65,6 +65,33 @@ Passes CompilePasses( const ASTNode* const pxAST )
         const std::string& xPassName = pxPotentialPass->GetChild( 1 )->GetTokenValue();
         // add pass name, stripping quotes
         Pass& xPass = xPasses.AddPass( xPassName.substr( 1, xPassName.length() - 2 ) );
+
+        // check for modifiers.
+        int iStatementChild = 2;
+        if( iPassChildCount >= 4 )
+        {
+            if( pxPotentialPass->GetChild( 2 )->GetProductionName() == "<pass-modifiers>" )
+            {
+                ++iStatementChild;
+                // examine the modifiers etc.
+                ASTNode* const pxModifiers = pxPotentialPass->GetChild( 2 );
+                const int iModifierCount = pxModifiers->GetChildCount();
+                for( int j = 0; j < iModifierCount; ++j )
+                {
+                    ASTNode* const pxModifier = pxModifiers->GetChild( j );
+                    if( pxModifier->GetChildCount() == 1 )
+                    {
+                        if( pxModifier->GetChild( 0 )->GetTokenName() == "switch" )
+                        {
+                            xPass.SetSwitch( true );
+                        }
+                    }
+                }
+
+            }
+        }
+
+        
     }
 
     return xPasses;

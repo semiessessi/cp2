@@ -16,7 +16,32 @@ class Pass
 
 public:
 
+    Pass()
+    : mbIsSwitch( false )
+    {
+
+    }
+
+    Pass( const Pass& xPass )
+    : mbIsSwitch( xPass.mbIsSwitch )
+    {
+
+    }
+
+    Pass& operator =( const Pass& xPass )
+    {
+        mbIsSwitch = xPass.mbIsSwitch;
+        return *this;
+    }
+
+    void SetSwitch( const bool bSwitchValue )
+    {
+        mbIsSwitch = bSwitchValue;
+    }
+
 private:
+
+    bool mbIsSwitch;
 
 };
 
