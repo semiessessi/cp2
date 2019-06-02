@@ -9,7 +9,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FrontEnd", "FrontEnd.vcxpro
 	ProjectSection(ProjectDependencies) = postProject
 		{3C33E63D-A5FB-4985-BF26-C86981593FC8} = {3C33E63D-A5FB-4985-BF26-C86981593FC8}
 		{B186497C-9D84-4657-83E4-D0B066F466BA} = {B186497C-9D84-4657-83E4-D0B066F466BA}
-        {B186497C-9D84-4657-83E4-E0B066F466BA} = {B186497C-9D84-4657-83E4-E0B066F466BA}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Parser", "Parser.vcxproj", "{B186497C-9D84-4657-83E4-D0B066F466BA}"
@@ -19,6 +18,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "Common.vcxproj", "{29DF7CD7-BC1A-4E13-BE6A-73829C8274FF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CBNF", "CBNF.vcxproj", "{A04415FD-2036-4B35-900C-ED9208F8FB24}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B186497C-9D84-4657-83E4-E0B066F466BA} = {B186497C-9D84-4657-83E4-E0B066F466BA}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CPScheme", "CPScheme.vcxproj", "{81E9CF23-22EC-4671-9D97-284D71D856C0}"
 EndProject
@@ -99,5 +101,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {74CFF203-9530-45E4-BD5F-96D9485CE63D}
 	EndGlobalSection
 EndGlobal

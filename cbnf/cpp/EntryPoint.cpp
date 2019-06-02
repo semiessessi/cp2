@@ -9,6 +9,7 @@
 #include "../../common/cpp/ASTNode.h"
 #include "../../common/cpp/FileSystem.h"
 #include "../../common/cpp/Report.h"
+#include "../../compiler/cpp/PassCompiler.h"
 #include "../../lexer/cpp/CBNFLexer.h"
 #include "../../parser/cpp/CBNFParser.h"
 #include "../../parser/cpp/Grammar.h"
@@ -161,6 +162,7 @@ int main( const int iArgumentCount, const char* const* const pszArguments )
 	}
 
 	CP2::Parser::Grammar xCompleteGrammar;
+    std::vector< CP2::ASTNode* > axParseTrees;
 	for( int i = 0; i < iFileCount; ++i )
 	{
 		CP2::ASTNode* const pxAST = CP2::Parser::CBNFParse(
@@ -172,10 +174,20 @@ int main( const int iArgumentCount, const char* const* const pszArguments )
 			continue;
 		}
 
+        axParseTrees.push_back( pxAST );
+
 		CP2::Parser::Grammar xParsedGrammar = CP2::Parser::CompileGrammar( pxAST );
 
 		xCompleteGrammar.Merge( xParsedGrammar );
 	}
+
+    CP2::Compiler::Passes xCompilerPasses;
+    for( size_t i = 0; i < axParseTrees.size(); ++i )
+    {
+        CP2::ASTNode* const pxAST = axParseTrees[ i ];
+        CP2::Compiler::Passes xPasses = CP2::Compiler::CompilePasses( pxAST );
+        xCompilerPasses.Merge( xPasses );
+    }
 
 	if( CP2::GetErrorCount() )
 	{

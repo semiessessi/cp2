@@ -24,6 +24,9 @@
     <ClInclude Include="..\compiler\cpp\Passes.h">
       <Filter>compiler</Filter>
     </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Pass.h">
+      <Filter>compiler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\compiler\cpp\Compiler.cpp">
@@ -33,6 +36,9 @@
       <Filter>compiler</Filter>
     </ClCompile>
     <ClCompile Include="..\compiler\cpp\Passes.cpp">
+      <Filter>compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Pass.cpp">
       <Filter>compiler</Filter>
     </ClCompile>
   </ItemGroup>

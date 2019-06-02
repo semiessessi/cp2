@@ -191,6 +191,9 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ProjectReference Include="Compiler.vcxproj">
+      <Project>{b186497c-9d84-4657-83e4-e0b066f466ba}</Project>
+    </ProjectReference>
     <ProjectReference Include="Lexer.vcxproj">
       <Project>{3c33e63d-a5fb-4985-bf26-c86981593fc8}</Project>
     </ProjectReference>
