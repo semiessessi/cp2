@@ -46,6 +46,7 @@ const std::vector< Rule >& CBNFLexerRules()
         Rule( "output",						    Token( "output",			11 ) ),
         Rule( "pass",						    Token( "pass",			    12 ) ),
         Rule( "requires",						Token( "requires",			13 ) ),
+        Rule( "switch",						    Token( "switch",			14 ) ),
 
 		Rule( "[_a-zA-Z][_\\-a-zA-Z0-9]*",		Token( "<identifier>",		1000, true ) ),
 		//Rule( "\"(?:[^\\\"\\\\]|\\\\.)*\"",		Token( "<string>",			1001, true ) ),
