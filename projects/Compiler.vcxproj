@@ -22,9 +22,13 @@
     <ClInclude Include="..\common\cpp\Report.h" />
     <ClInclude Include="..\common\cpp\Token.h" />
     <ClInclude Include="..\compiler\cpp\Compiler.h" />
+    <ClInclude Include="..\compiler\cpp\PassCompiler.h" />
+    <ClInclude Include="..\compiler\cpp\Passes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\compiler\cpp\Compiler.cpp" />
+    <ClCompile Include="..\compiler\cpp\PassCompiler.cpp" />
+    <ClCompile Include="..\compiler\cpp\Passes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Common.vcxproj">

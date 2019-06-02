@@ -1,6 +1,6 @@
 // Copyright (c) 2019 Cranium Software
 
-#include "Compiler.h"
+#include "PassCompiler.h"
 
 #include "Passes.h"
 
@@ -12,8 +12,11 @@ namespace CP2
 namespace Compiler
 {
 
-void Compile( const ASTNode* const pxAST, const Passes& xPasses )
+Passes CompilePasses( const ASTNode* const pxAST )
 {
+    Passes xPasses;
+
+    return xPasses;
 }
 
 }

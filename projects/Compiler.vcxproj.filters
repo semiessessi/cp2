@@ -18,9 +18,21 @@
     <ClInclude Include="..\common\cpp\Token.h">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="..\compiler\cpp\PassCompiler.h">
+      <Filter>compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Passes.h">
+      <Filter>compiler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\compiler\cpp\Compiler.cpp">
+      <Filter>compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\PassCompiler.cpp">
+      <Filter>compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Passes.cpp">
       <Filter>compiler</Filter>
     </ClCompile>
   </ItemGroup>
