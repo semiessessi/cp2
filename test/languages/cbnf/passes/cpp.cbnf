@@ -1,0 +1,6 @@
+// Copyright (c) 2017-2019 Cranium Software
+
+pass "cpp" switch
+{
+    output "output.cpp" ;
+}
