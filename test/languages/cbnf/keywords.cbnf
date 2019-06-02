@@ -11,6 +11,10 @@ keywords
     "comment"
     "quote"
     "lexeme"
+    "pass"
+    "requires"
+    "output"
+    "switch"
 }
 
 identifiers
@@ -23,6 +27,9 @@ operators
     "="
     "{"
     "}"
+    "*"
+    "+"
+    "?"
 }
 
 terminators
@@ -34,4 +41,3 @@ strings
 {
     string
 }
-

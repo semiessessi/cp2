@@ -64,8 +64,10 @@ const Grammar& GetCBNFGrammar()
         // pass-definition     =   "pass" string pass-modifiers pass-statements ;
         GrammarProduction( "<pass-definition>",
             GE( "pass" ) + GE( "<string>" )+ GE( "<pass-modifiers>" ) + GE( "<pass-statements>" ) ),
-        GrammarProduction( "<pass-statement>", GE( "ensure-path" ) + GE( "<string>" ) ),
+        GrammarProduction( "<pass-statement>", GE( "output" ) + GE( "<string>" ) + GE( ";" ) ),
         GrammarProduction( "<pass-modifier>", GE( "requires" ) + GE( "<pass-names>" ) ),
+        GrammarProduction( "<pass-modifier>", GE( "switch" ) ),
+        GrammarProduction( "<pass-modifier>", GE( "switch" ) + GE( "<string>" ) ),
         GrammarProduction( "<pass-modifiers>", !GE( "<pass-modifier>" ) ),
         GrammarProduction( "<pass-statements>",
             GE( "{" ) + !GE( "<pass-statement>" ) + GE( "}" ) ),
@@ -95,10 +97,21 @@ const Grammar& GetCBNFGrammar()
         kxCBNFGrammar.AddKeyword( "\"quote\"" );
         kxCBNFGrammar.AddKeyword( "\"comment\"" );
         kxCBNFGrammar.AddKeyword( "\"lexeme\"" );
+        kxCBNFGrammar.AddKeyword( "\"pass\"" );
+        kxCBNFGrammar.AddKeyword( "\"output\"" );
+        kxCBNFGrammar.AddKeyword( "\"requires\"" );
+        kxCBNFGrammar.AddKeyword( "\"switch\"" );
 
         kxCBNFGrammar.AddTerminator( "\";\"" );
 
         kxCBNFGrammar.AddIdentifier( "identifier" );
+
+        kxCBNFGrammar.AddOperator( "\"=\"" );
+        kxCBNFGrammar.AddOperator( "\"{\"" );
+        kxCBNFGrammar.AddOperator( "\"}\"" );
+        kxCBNFGrammar.AddOperator( "\"*\"" );
+        kxCBNFGrammar.AddOperator( "\"+\"" );
+        kxCBNFGrammar.AddOperator( "\"?\"" );
 
         kxCBNFGrammar.AddString( "string" );
 	}

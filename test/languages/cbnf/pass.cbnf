@@ -3,9 +3,11 @@
 pass-definition     =   "pass" string pass-modifiers pass-statements ;
 
 // SE - TODO: string expression.
-pass-statement      =   "ensure-path" string ;
+pass-statement      =   "output" string ";" ;
 
 pass-modifier       =   "requires" pass-name-list ;
+pass-modifier       =   "switch" ;
+pass-modifier       =   "switch" string ;
 
 pass-modifiers      =   pass-modifier* ;  
 
