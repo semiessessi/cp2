@@ -64,14 +64,22 @@ const Grammar& GetCBNFGrammar()
         // pass-definition     =   "pass" string pass-modifiers pass-statements ;
         GrammarProduction( "<pass-definition>",
             GE( "pass" ) + GE( "<string>" )+ GE( "<pass-modifiers>" ) + GE( "<pass-statements>" ) ),
-        GrammarProduction( "<pass-statement>", GE( "output" ) + GE( "<string>" ) + GE( ";" ) ),
+
+        GrammarProduction( "<pass-statement>", GE( "output" ) + GE( "<string-expression>" ) + GE( ";" ) ),
+        GrammarProduction( "<pass-statement>", GE( "{" ) + !GE( "<pass-statement>" ) + GE( "}" ) ),
+
         GrammarProduction( "<pass-modifier>", GE( "requires" ) + GE( "<pass-names>" ) ),
         GrammarProduction( "<pass-modifier>", GE( "switch" ) ),
         GrammarProduction( "<pass-modifier>", GE( "switch" ) + GE( "<string>" ) ),
         GrammarProduction( "<pass-modifiers>", !GE( "<pass-modifier>" ) ),
+
         GrammarProduction( "<pass-statements>",
             GE( "{" ) + !GE( "<pass-statement>" ) + GE( "}" ) ),
+
         GrammarProduction( "<pass-names>", GE( "{" ) + !GE( "<string>" ) + GE( "}" ) ),
+
+        // SE - TODO: ...
+        GrammarProduction( "<string-expression>", GE( "<string>" ) ),
 
         // for non-production statements...
         GrammarProduction( "<terminal-list>", GE( "{" ) + !GE( "<terminal>" ) + GE( "}" ) ),

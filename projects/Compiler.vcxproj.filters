@@ -7,6 +7,9 @@
     <Filter Include="compiler">
       <UniqueIdentifier>{27e4d380-1c3e-4e38-a8ff-de297c1e119d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="compiler\Statements">
+      <UniqueIdentifier>{12cca9a4-5e44-4002-a9aa-7583effe9fee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\cpp\Report.h">
@@ -27,6 +30,21 @@
     <ClInclude Include="..\compiler\cpp\Pass.h">
       <Filter>compiler</Filter>
     </ClInclude>
+    <ClInclude Include="..\compiler\cpp\PassStatement.h">
+      <Filter>compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Statements\PassScope.h">
+      <Filter>compiler\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Statements\Output.h">
+      <Filter>compiler\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\OutputFile.h">
+      <Filter>compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Context.h">
+      <Filter>compiler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\compiler\cpp\Compiler.cpp">
@@ -39,6 +57,21 @@
       <Filter>compiler</Filter>
     </ClCompile>
     <ClCompile Include="..\compiler\cpp\Pass.cpp">
+      <Filter>compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\PassStatement.cpp">
+      <Filter>compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Statements\PassScope.cpp">
+      <Filter>compiler\Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Statements\Output.cpp">
+      <Filter>compiler\Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\OutputFile.cpp">
+      <Filter>compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Context.cpp">
       <Filter>compiler</Filter>
     </ClCompile>
   </ItemGroup>

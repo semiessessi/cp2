@@ -3,9 +3,12 @@
 pass-definition     =   "pass" string pass-modifiers pass-statements ;
 
 // SE - TODO: string expression.
-pass-statement      =   "output" string ";" ;
+string-expression   =   string ;
 
-pass-modifier       =   "requires" pass-name-list ;
+pass-statement      =   "output" string-expression ";" ;
+pass-statement      =   "{" pass-statement* "}" ;
+
+pass-modifier       =   "requires" pass-names ;
 pass-modifier       =   "switch" ;
 pass-modifier       =   "switch" string ;
 

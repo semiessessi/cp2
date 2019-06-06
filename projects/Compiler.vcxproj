@@ -22,15 +22,25 @@
     <ClInclude Include="..\common\cpp\Report.h" />
     <ClInclude Include="..\common\cpp\Token.h" />
     <ClInclude Include="..\compiler\cpp\Compiler.h" />
+    <ClInclude Include="..\compiler\cpp\Context.h" />
+    <ClInclude Include="..\compiler\cpp\OutputFile.h" />
     <ClInclude Include="..\compiler\cpp\Pass.h" />
     <ClInclude Include="..\compiler\cpp\PassCompiler.h" />
     <ClInclude Include="..\compiler\cpp\Passes.h" />
+    <ClInclude Include="..\compiler\cpp\PassStatement.h" />
+    <ClInclude Include="..\compiler\cpp\Statements\Output.h" />
+    <ClInclude Include="..\compiler\cpp\Statements\PassScope.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\compiler\cpp\Compiler.cpp" />
+    <ClCompile Include="..\compiler\cpp\Context.cpp" />
+    <ClCompile Include="..\compiler\cpp\OutputFile.cpp" />
     <ClCompile Include="..\compiler\cpp\Pass.cpp" />
     <ClCompile Include="..\compiler\cpp\PassCompiler.cpp" />
     <ClCompile Include="..\compiler\cpp\Passes.cpp" />
+    <ClCompile Include="..\compiler\cpp\PassStatement.cpp" />
+    <ClCompile Include="..\compiler\cpp\Statements\Output.cpp" />
+    <ClCompile Include="..\compiler\cpp\Statements\PassScope.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Common.vcxproj">

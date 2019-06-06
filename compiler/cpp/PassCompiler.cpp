@@ -91,7 +91,8 @@ Passes CompilePasses( const ASTNode* const pxAST )
             }
         }
 
-        
+        // compile the statements
+        xPass.Compile( pxPotentialPass->GetChild( iStatementChild ) );
     }
 
     return xPasses;

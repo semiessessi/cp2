@@ -3,45 +3,47 @@
 #ifndef PASS_H
 #define PASS_H
 
+#include "OutputFile.h"
+
+#include <vector>
 #include <string>
 
 namespace CP2
 {
 
+class ASTNode;
+
 namespace Compiler
 {
+
+class PassScope;
 
 class Pass
 {
 
 public:
 
-    Pass()
-    : mbIsSwitch( false )
-    {
+    Pass();
+    Pass( const Pass& xPass );
+    ~Pass();
 
-    }
-
-    Pass( const Pass& xPass )
-    : mbIsSwitch( xPass.mbIsSwitch )
-    {
-
-    }
-
-    Pass& operator =( const Pass& xPass )
-    {
-        mbIsSwitch = xPass.mbIsSwitch;
-        return *this;
-    }
+    Pass& operator =( const Pass& xPass );
 
     void SetSwitch( const bool bSwitchValue )
     {
         mbIsSwitch = bSwitchValue;
     }
 
+    void Compile( const ASTNode* const );
+
+    void GetRequiredPaths( std::vector< OutputFile >& xFiles );
+
+    void Execute();
+
 private:
 
     bool mbIsSwitch;
+    PassScope* mpxStatements;
 
 };
 
