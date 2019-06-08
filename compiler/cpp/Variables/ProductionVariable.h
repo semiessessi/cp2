@@ -29,6 +29,11 @@ public:
 
     std::string GetNameValue() const override;
 
+    Variable* GetIndexed( const int iIndex ) const override;
+    int GetIndexedCount() const override;
+
+    bool HasNames() const override { return true; }
+
 private:
 
     const Parser::Grammar& mxGrammar;

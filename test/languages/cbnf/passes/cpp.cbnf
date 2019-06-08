@@ -15,7 +15,18 @@ pass "cpp" switch
 
     for each production in language.productions
     {
-        write "\t\t// " + production.name + "\n" ;
+        write "\t\tGrammarProduction(\"" + production.name + "\",\n" ;
+        write "\t\t\t" ;
+        join = "" ;
+        
+        for each production-name in production.names
+        {
+            write join ;
+            write "GE( \"" + production-name + "\" ) " ;
+            join = "+ " ;
+        }
+        
+        write "),\n" ;
     }
 
     write "\t});\n\n" ;

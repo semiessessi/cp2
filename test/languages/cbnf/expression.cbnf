@@ -15,3 +15,5 @@ string-expression           =   identifier "." "name" ;
 string-expression           =   "language" "." "name" ;
 
 array-expression            =   "language" "." "productions" ;
+array-expression            =   identifier "." "productions" ;   
+array-expression            =   identifier "." "names" ;

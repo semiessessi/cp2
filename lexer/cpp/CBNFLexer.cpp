@@ -53,6 +53,7 @@ const std::vector< Rule >& CBNFLexerRules()
         Rule( "each",						    Token( "each",			    18 ) ),
         Rule( "in",						        Token( "in",			    19 ) ),
         Rule( "productions",					Token( "productions",		20 ) ),
+        Rule( "names",						    Token( "names",			    21 ) ),
 
 		Rule( "[_a-zA-Z][_\\-a-zA-Z0-9]*",		Token( "<identifier>",		1000, true ) ),
 		//Rule( "\"(?:[^\\\"\\\\]|\\\\.)*\"",		Token( "<string>",			1001, true ) ),

@@ -6,35 +6,68 @@ const Grammar& GetCBNFGrammar()
 {
 	static Grammar kxCBNFGrammar(
 	{
-		// <grammar>
-		// <statement>
-		// <statement>
-		// <statement>
-		// <statement>
-		// <statement>
-		// <statement>
-		// <statement>
-		// <statement>
-		// <terminal-list>
-		// <terminal>
-		// <terminal>
-		// <production>
-		// <production>
-		// <production>
-		// <production>
-		// <production>
-		// <production>
-		// <rule-expression>
-		// <rule-expression>
-		// <rule-expression>
-		// <rule-expression>
-		// <rule-expression>
-		// <string-expression>
-		// <string-expression>
-		// <string-expression>
-		// <string-expression>
-		// <string-expression>
-		// <array-expression>
+		GrammarProduction("<grammar>",
+			 GE( "<statement>" ) ),
+		GrammarProduction("<statement>",
+			 GE( "<production>" ) ),
+		GrammarProduction("<statement>",
+			 GE( "keywords" ) + GE( "<terminal-list>" ) ),
+		GrammarProduction("<statement>",
+			 GE( "identifiers" ) + GE( "<terminal-list>" ) ),
+		GrammarProduction("<statement>",
+			 GE( "operators" ) + GE( "<terminal-list>" ) ),
+		GrammarProduction("<statement>",
+			 GE( "separators" ) + GE( "<terminal-list>" ) ),
+		GrammarProduction("<statement>",
+			 GE( "terminators" ) + GE( "<terminal-list>" ) ),
+		GrammarProduction("<statement>",
+			 GE( "strings" ) + GE( "<terminal-list>" ) ),
+		GrammarProduction("<statement>",
+			 GE( "<pass-definition>" ) ),
+		GrammarProduction("<terminal-list>",
+			 GE( "{" ) + GE( "<terminal>" ) + GE( "}" ) ),
+		GrammarProduction("<terminal>",
+			 GE( "<identifier>" ) ),
+		GrammarProduction("<terminal>",
+			 GE( "<string>" ) ),
+		GrammarProduction("<production>",
+			 GE( "comment" ) + GE( "<string>" ) + GE( ";" ) ),
+		GrammarProduction("<production>",
+			 GE( "comment" ) + GE( "<string>" ) + GE( "<string>" ) + GE( ";" ) ),
+		GrammarProduction("<production>",
+			 GE( "quote" ) + GE( "<identifier>" ) + GE( "<string>" ) + GE( "<string>" ) + GE( "<string>" ) + GE( ";" ) ),
+		GrammarProduction("<production>",
+			 GE( "lexeme" ) + GE( "<identifier>" ) + GE( "<string>" ) + GE( ";" ) ),
+		GrammarProduction("<production>",
+			 GE( "<identifier>" ) + GE( "=" ) + GE( "<rule-expression>" ) + GE( ";" ) ),
+		GrammarProduction("<production>",
+			 GE( "<identifier>" ) + GE( "=" ) + GE( "..." ) + GE( ";" ) ),
+		GrammarProduction("<rule-expression>",
+			 GE( "<string>" ) ),
+		GrammarProduction("<rule-expression>",
+			 GE( "<identifier>" ) ),
+		GrammarProduction("<rule-expression>",
+			 GE( "<identifier>" ) + GE( "*" ) ),
+		GrammarProduction("<rule-expression>",
+			 GE( "<identifier>" ) + GE( "?" ) ),
+		GrammarProduction("<rule-expression>",
+			 GE( "<identifier>" ) + GE( "+" ) ),
+		GrammarProduction("<string-expression>",
+			 GE( "<string>" ) ),
+		GrammarProduction("<string-expression>",
+			 GE( "<identifier>" ) ),
+		GrammarProduction("<string-expression>",
+			 GE( "<string-expression>" ) + GE( "+" ) + GE( "<string-expression>" ) ),
+		GrammarProduction("<string-expression>",
+			 GE( "<identifier>" ) + GE( "." ) + GE( "name" ) ),
+		GrammarProduction("<string-expression>",
+			 GE( "language" ) + GE( "." ) + GE( "name" ) ),
+		GrammarProduction("<array-expression>",
+			 GE( "language" ) + GE( "." ) + GE( "productions" ) ),
+		GrammarProduction("<array-expression>",
+			 GE( "<identifier>" ) + GE( "." ) + GE( "productions" ) ),
+		GrammarProduction("<array-expression>",
+			 GE( "<identifier>" ) + GE( "." ) + GE( "names" ) ),
 	});
 
 #undef GE

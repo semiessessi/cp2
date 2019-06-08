@@ -2,7 +2,9 @@
 
 #include "ProductionVariable.h"
 
+#include "StringVariable.h"
 #include "../../../parser/cpp/Grammar.h"
+#include "../../../parser/cpp/GrammarExpression.h"
 
 namespace CP2
 {
@@ -23,6 +25,24 @@ ProductionVariable::ProductionVariable(
 std::string ProductionVariable::GetNameValue() const
 {
     return mxGrammar.GetProduction( miIndex ).GetName();
+}
+
+Variable* ProductionVariable::GetIndexed( const int iIndex ) const
+{
+    const std::vector< Parser::Name >& axNames =
+        mxGrammar.GetProduction( miIndex )
+            .GetExpression().GetFlattenedNames();
+    return new StringVariable(
+        "<temporary-name>",
+        axNames[ iIndex ].xName );
+}
+
+int ProductionVariable::GetIndexedCount() const
+{
+    const std::vector< Parser::Name >& axNames =
+        mxGrammar.GetProduction( miIndex )
+        .GetExpression().GetFlattenedNames();
+    return static_cast< int >( axNames.size() );
 }
 
 }

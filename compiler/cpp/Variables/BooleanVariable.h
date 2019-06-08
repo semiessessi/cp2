@@ -18,6 +18,17 @@ class BooleanVariable
 {
 public:
 
+    BooleanVariable(
+        const std::string& xName,
+        const bool bValue = false );
+
+    std::string GetValue() const override { return mbValue ? "true" : "false"; }
+    Variable* Clone() const override { return new BooleanVariable( GetName(), mbValue ); }
+
+private:
+
+    bool mbValue;
+
 };
 
 }

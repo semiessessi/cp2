@@ -94,6 +94,8 @@ const Grammar& GetCBNFGrammar()
         GrammarProduction( "<string-expression>", GE( "language" ) + GE( "." ) + GE( "name" ) ),
 
         GrammarProduction( "<array-expression>", GE( "language" ) + GE( "." ) + GE( "productions" ) ),
+        GrammarProduction( "<array-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "productions" ) ),
+        GrammarProduction( "<array-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "names" ) ),
 
         // for non-production statements...
         GrammarProduction( "<terminal-list>", GE( "{" ) + !GE( "<terminal>" ) + GE( "}" ) ),
@@ -130,6 +132,7 @@ const Grammar& GetCBNFGrammar()
         kxCBNFGrammar.AddKeyword( "\"each\"" );
         kxCBNFGrammar.AddKeyword( "\"in\"" );
         kxCBNFGrammar.AddKeyword( "\"productions\"" );
+        kxCBNFGrammar.AddKeyword( "\"names\"" );
 
         kxCBNFGrammar.AddTerminator( "\";\"" );
 

@@ -28,6 +28,11 @@ public:
     virtual Variable* GetIndexed( const int iIndex ) const;
     virtual int GetIndexedCount() const;
 
+    virtual bool HasNames() const { return false; }
+
+    virtual bool IsOptionalName() const { return false; }
+    virtual bool IsMultipleName() const { return false; }
+
     const std::string& GetName() const { return mxName; }
 
 private:

@@ -18,6 +18,8 @@ class NameVariable
 {
 public:
 
+private:
+
 };
 
 }

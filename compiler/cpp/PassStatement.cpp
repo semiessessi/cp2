@@ -77,8 +77,30 @@ Variable* PassStatement::EvaluateArrayExpression(
                     return new ArrayVariable(
                         "<temporary-language-productions>", axProductions );
                 }
+
+                // error?
+            }
+
+            if( pxAST->GetChild( 0 )->GetProductionName() == "<identifier>" )
+            {
+                if( pxAST->GetChild( 2 )->GetProductionName() == "names" )
+                {
+                    const Variable* const pxVariable
+                        = xContext.GetVariable(
+                            pxAST->GetChild( 0 )->GetTokenValue() );
+
+                    if( pxVariable->HasNames() == true )
+                    {
+                        return pxVariable->Clone();
+                    }
+
+                    // error?
+                }
+
+                // error?
             }
         }
+
     }
 
     // error?
