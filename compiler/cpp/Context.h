@@ -24,6 +24,7 @@ public:
     Context CreateChild();
     static Context CreateForPass( const Pass& xPass );
 
+    void* GetCurrentFile() { return mpCurrentFile; }
     void SetCurrentFile( const std::string& xPath );
 
     Variable* GetVariable( const std::string& xName );

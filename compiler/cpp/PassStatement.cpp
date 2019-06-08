@@ -6,6 +6,7 @@
 #include "Statements/Assignment.h"
 #include "Statements/Output.h"
 #include "Statements/PassScope.h"
+#include "Statements/Write.h"
 #include "Variables/Variable.h"
 
 #include "../../common/cpp/ASTNode.h"
@@ -25,6 +26,7 @@ const std::unordered_map<
 {
     { "{", PassScope::Create },
     { "output", Output::Create },
+    { "write", Write::Create },
 };
 
 #undef BP

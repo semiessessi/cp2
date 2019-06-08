@@ -31,6 +31,7 @@
     <ClInclude Include="..\compiler\cpp\Statements\Assignment.h" />
     <ClInclude Include="..\compiler\cpp\Statements\Output.h" />
     <ClInclude Include="..\compiler\cpp\Statements\PassScope.h" />
+    <ClInclude Include="..\compiler\cpp\Statements\Write.h" />
     <ClInclude Include="..\compiler\cpp\Variables\IntegerVariable.h" />
     <ClInclude Include="..\compiler\cpp\Variables\ProductionVariable.h" />
     <ClInclude Include="..\compiler\cpp\Variables\SetVariable.h" />
@@ -48,6 +49,7 @@
     <ClCompile Include="..\compiler\cpp\Statements\Assignment.cpp" />
     <ClCompile Include="..\compiler\cpp\Statements\Output.cpp" />
     <ClCompile Include="..\compiler\cpp\Statements\PassScope.cpp" />
+    <ClCompile Include="..\compiler\cpp\Statements\Write.cpp" />
     <ClCompile Include="..\compiler\cpp\Variables\IntegerVariable.cpp" />
     <ClCompile Include="..\compiler\cpp\Variables\ProductionVariable.cpp" />
     <ClCompile Include="..\compiler\cpp\Variables\SetVariable.cpp" />

@@ -2,6 +2,7 @@
 
 pass "cpp" switch
 {
-    output "output.cpp" ;
-    output pass-name ;
+    output "teste" + ".cpp" ;
+    write pass-name ;
+    
 }
