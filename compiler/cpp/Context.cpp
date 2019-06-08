@@ -78,6 +78,18 @@ const Variable* Context::GetVariable( const std::string& xName ) const
             : nullptr ) : pFound->second;
 }
 
+void Context::UpdateVariable(
+    const std::string& xName, const std::string& xValue )
+{
+    auto pFound = mxVariables.find( xName );
+    if( pFound != mxVariables.end() )
+    {
+        delete pFound->second;
+    }
+
+    mxVariables[ xName ] = new StringVariable( xName, xValue );
+}
+
 Context::Context()
 : mpCurrentFile( nullptr )
 , mpxParentContext( nullptr )

@@ -28,6 +28,7 @@
     <ClInclude Include="..\compiler\cpp\PassCompiler.h" />
     <ClInclude Include="..\compiler\cpp\Passes.h" />
     <ClInclude Include="..\compiler\cpp\PassStatement.h" />
+    <ClInclude Include="..\compiler\cpp\Statements\Assignment.h" />
     <ClInclude Include="..\compiler\cpp\Statements\Output.h" />
     <ClInclude Include="..\compiler\cpp\Statements\PassScope.h" />
     <ClInclude Include="..\compiler\cpp\Variables\IntegerVariable.h" />
@@ -44,6 +45,7 @@
     <ClCompile Include="..\compiler\cpp\PassCompiler.cpp" />
     <ClCompile Include="..\compiler\cpp\Passes.cpp" />
     <ClCompile Include="..\compiler\cpp\PassStatement.cpp" />
+    <ClCompile Include="..\compiler\cpp\Statements\Assignment.cpp" />
     <ClCompile Include="..\compiler\cpp\Statements\Output.cpp" />
     <ClCompile Include="..\compiler\cpp\Statements\PassScope.cpp" />
     <ClCompile Include="..\compiler\cpp\Variables\IntegerVariable.cpp" />

@@ -22,10 +22,6 @@ Output::Output( const ASTNode* const pxExpression )
 {
 }
 
-Output::~Output()
-{
-}
-
 void Output::Execute( Context& xContext )
 {
     if( mxPath.empty() && ( mpxStringExpression != nullptr ) )

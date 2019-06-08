@@ -1,10 +1,9 @@
 // Copyright (c) 2019 Cranium Software
 
-#ifndef STRING_VARIABLE_H
-#define STRING_VARIABLE_H
+#ifndef PRODUCTION_VARIABLE_H
+#define PRODUCTION_VARIABLE_H
 
 #include "Variable.h"
-#include <string>
 
 namespace CP2
 {

@@ -63,6 +63,9 @@
     <ClInclude Include="..\compiler\cpp\Variables\Variable.h">
       <Filter>compiler\Variables</Filter>
     </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Statements\Assignment.h">
+      <Filter>compiler\Statements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\compiler\cpp\Compiler.cpp">
@@ -106,6 +109,9 @@
     </ClCompile>
     <ClCompile Include="..\compiler\cpp\Variables\Variable.cpp">
       <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Statements\Assignment.cpp">
+      <Filter>compiler\Statements</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

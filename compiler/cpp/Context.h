@@ -29,6 +29,8 @@ public:
     Variable* GetVariable( const std::string& xName );
     const Variable* GetVariable( const std::string& xName ) const;
 
+    void UpdateVariable( const std::string& xName, const std::string& xValue );
+
 private:
 
     Context();

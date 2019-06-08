@@ -4,6 +4,7 @@
 #define STRING_VARIABLE_H
 
 #include "Variable.h"
+
 #include <string>
 
 namespace CP2

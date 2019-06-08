@@ -1,7 +1,7 @@
 // Copyright (c) 2019 Cranium Software
 
-#ifndef OUTPUT_H
-#define OUTPUT_H
+#ifndef ASSIGNMENT_H
+#define ASSIGNMENT_H
 
 #include "../PassStatement.h"
 
@@ -15,27 +15,25 @@ class ASTNode;
 namespace Compiler
 {
 
-class Output
+class Assignment
 : public PassStatement
 {
 
 public:
 
-    Output( const std::string& xPath );
-    Output( const ASTNode* const pxExpression );
+    Assignment(
+        const std::string& xVariableName,
+        const ASTNode* const pxExpression );
 
     void Execute( Context& xContext ) override;
     PassStatement* Clone() const override;
-
-    void GetRequiredPaths( std::vector< OutputFile >& xFiles ) const override;
 
     static PassStatement* Create( const ASTNode* const pxAST );
 
 private:
 
-    std::string mxPath;
+    std::string mxVariableName;
     const ASTNode* mpxStringExpression;
-    bool mbBinary;
 
 };
 

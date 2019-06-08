@@ -3,6 +3,7 @@
 #include "PassStatement.h"
 
 #include "Context.h"
+#include "Statements/Assignment.h"
 #include "Statements/Output.h"
 #include "Statements/PassScope.h"
 #include "Variables/Variable.h"
@@ -40,7 +41,9 @@ PassStatement* PassStatement::Create( const ASTNode* const pxAST )
         return xLookupIterator->second( pxAST );
     }
 
-    return nullptr;
+    PassStatement* pxStatement = nullptr;
+    pxStatement = Assignment::Create( pxAST );
+    return pxStatement;
 }
 
 std::string PassStatement::EvaluateStringExpression(
