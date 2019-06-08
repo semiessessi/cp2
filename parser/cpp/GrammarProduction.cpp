@@ -23,6 +23,14 @@ GrammarProduction::GrammarProduction( const std::string& xSymbolName, const Gram
 
 }
 
+GrammarProduction& GrammarProduction::operator =( const GrammarProduction& xProduction )
+{
+    mxSymbolName = xProduction.mxSymbolName;
+    mxExpression = xProduction.mxExpression;
+    mbIsLeftRecursive = xProduction.mbIsLeftRecursive;
+    return *this;
+}
+
 GrammarProduction GrammarProduction::CreateLeftmostSubstitution(
     const GrammarProduction& xProduction,
     const GrammarExpression& xSubstitution )

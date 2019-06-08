@@ -24,6 +24,7 @@ public:
 
     GrammarProduction( const GrammarProduction& xProduction );
     GrammarProduction( const std::string& xSymbolName, const GrammarExpression& xExpression );
+    GrammarProduction& operator =( const GrammarProduction& xProduction );
 
     const std::string& GetName() const { return mxSymbolName; }
     const std::string& GetSubstitutionName() const { return mxSubstitutionName; }

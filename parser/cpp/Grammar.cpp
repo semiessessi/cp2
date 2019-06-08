@@ -93,13 +93,13 @@ std::vector< GrammarProduction > Grammar::GetProductionsForParsing(
             {
                 for( int j = 0; j < iUnfactoredProductionCount; ++j )
                 {
-                    const GrammarProduction& xSubstitution = axProductions[ i ];
+                    const GrammarProduction& xSubstitution = axProductions[ j ];
                     if( xSubstitution.IsLeftRecursive() == false )
                     {
                         // create a new production with the substitution
-                        GrammarProduction xSubstitutedProduction( xProduction );
-                        xSubstitutedProduction.CreateLeftmostSubstitution( 
-                            xProduction, xSubstitution.GetExpression() );
+                        const GrammarProduction xSubstitutedProduction(
+                            xProduction.CreateLeftmostSubstitution(
+                                xProduction, xSubstitution.GetExpression() ) );
                         axRefactoredProductions.push_back( xSubstitutedProduction );
                     }
                 }
