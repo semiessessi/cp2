@@ -13,7 +13,7 @@ void GrammarExpression::SubstituteLeftmostChild(
     GrammarExpression*& pxChildToReplace = GetLeftmostToReplace();
     GrammarExpression* const pxOriginalChildReference = pxChildToReplace;
     pxChildToReplace = new GrammarExpression( xSubstitution );
-    pxChildToReplace->mbSubstitution = true;
+    pxChildToReplace->RecursivelySetAsSubstitution(); // important !!
     delete pxOriginalChildReference;
 }
 
