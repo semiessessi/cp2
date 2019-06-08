@@ -72,6 +72,15 @@ std::string PassStatement::EvaluateStringExpression(
             // error, unidentified variable.
         }
     }
+    else if( pxAST->GetChildCount() == 3 )
+    {
+        if( pxAST->GetChild( 1 )->GetProductionName() == "+" )
+        {
+            // concatenating...
+            return EvaluateStringExpression( pxAST->GetChild( 0 ), xContext )
+                + EvaluateStringExpression( pxAST->GetChild( 2 ), xContext );
+        }
+    }
 
     return "<error>";
 }

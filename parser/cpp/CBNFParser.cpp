@@ -83,6 +83,7 @@ const Grammar& GetCBNFGrammar()
         // SE - TODO: ...
         GrammarProduction( "<string-expression>", GE( "<string>" ) ),
         GrammarProduction( "<string-expression>", GE( "<identifier>" ) ),
+        GrammarProduction( "<string-expression>", GE( "<string-expression>" ) + GE( "+" ) + GE( "<string-expression>" ) ),
 
         // for non-production statements...
         GrammarProduction( "<terminal-list>", GE( "{" ) + !GE( "<terminal>" ) + GE( "}" ) ),
