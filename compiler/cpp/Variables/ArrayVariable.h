@@ -24,7 +24,7 @@ public:
     Variable* Clone() const override { return new ArrayVariable( GetName(), mxContent ); }
 
     Variable* GetIndexed( const int iIndex ) const override { return mxContent[ iIndex ]; }
-
+    int GetIndexedCount() const override { return static_cast< int >( mxContent.size() ); }
 private:
 
     std::vector< Variable* > mxContent;

@@ -75,6 +75,15 @@
     <ClInclude Include="..\compiler\cpp\Variables\LanguageVariable.h">
       <Filter>compiler\Variables</Filter>
     </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Statements\ForEach.h">
+      <Filter>compiler\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\NameVariable.h">
+      <Filter>compiler\Variables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\BooleanVariable.h">
+      <Filter>compiler\Variables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\compiler\cpp\Compiler.cpp">
@@ -129,6 +138,15 @@
       <Filter>compiler\Variables</Filter>
     </ClCompile>
     <ClCompile Include="..\compiler\cpp\Variables\LanguageVariable.cpp">
+      <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Statements\ForEach.cpp">
+      <Filter>compiler\Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\NameVariable.cpp">
+      <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\BooleanVariable.cpp">
       <Filter>compiler\Variables</Filter>
     </ClCompile>
   </ItemGroup>

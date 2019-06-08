@@ -20,5 +20,10 @@ ProductionVariable::ProductionVariable(
 
 }
 
+std::string ProductionVariable::GetNameValue() const
+{
+    return mxGrammar.GetProduction( miIndex ).GetName();
+}
+
 }
 }

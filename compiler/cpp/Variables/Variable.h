@@ -22,14 +22,17 @@ public:
     virtual Variable* Clone() const = 0;
 
     virtual std::string GetValue() const;
+
     virtual std::string GetNameValue() const { return GetName(); }
+
     virtual Variable* GetIndexed( const int iIndex ) const;
+    virtual int GetIndexedCount() const;
+
     const std::string& GetName() const { return mxName; }
 
 private:
 
     std::string mxName;
-
 };
 
 }

@@ -23,8 +23,14 @@ std::string Variable::GetValue() const
 
 Variable* Variable::GetIndexed( const int ) const
 {
-    CP2::Error( 6000, "???", 0, 0, "Trying to index a variable %s which can not be indexed.", mxName.c_str() );
+    CP2::Error( 6001, "???", 0, 0, "Trying to index a variable %s which can not be indexed.", mxName.c_str() );
     return nullptr;
+}
+
+int Variable::GetIndexedCount() const
+{
+    CP2::Error( 6002, "???", 0, 0, "Trying to count a variable %s which can not be indexed.", mxName.c_str() );
+    return 0;
 }
 
 }

@@ -6,8 +6,38 @@ const Grammar& GetCBNFGrammar()
 {
 	static Grammar kxCBNFGrammar(
 	{
-const Grammar& GetCBNFGrammar()
+		// <grammar>
+		// <statement>
+		// <statement>
+		// <statement>
+		// <statement>
+		// <statement>
+		// <statement>
+		// <statement>
+		// <statement>
+		// <terminal-list>
+		// <terminal>
+		// <terminal>
+		// <production>
+		// <production>
+		// <production>
+		// <production>
+		// <production>
+		// <production>
+		// <rule-expression>
+		// <rule-expression>
+		// <rule-expression>
+		// <rule-expression>
+		// <rule-expression>
+		// <string-expression>
+		// <string-expression>
+		// <string-expression>
+		// <string-expression>
+		// <string-expression>
+		// <array-expression>
 	});
+
+#undef GE
 
 	return kxCBNFGrammar;
 }

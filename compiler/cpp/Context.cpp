@@ -36,6 +36,7 @@ Context Context::CreateChild()
 Context Context::CreateForPass( const Pass& xPass, const Parser::Grammar& xGrammar )
 {
     Context xNewContext;
+    xNewContext.mpxGrammar = &xGrammar;
     xNewContext.mxVariables[ "pass-name" ]
         = new StringVariable( "pass-name", xPass.GetName() );
     xNewContext.mxVariables[ "language" ]
@@ -79,20 +80,37 @@ const Variable* Context::GetVariable( const std::string& xName ) const
 }
 
 void Context::UpdateVariable(
-    const std::string& xName, const std::string& xValue )
+    const std::string& xName,
+    const std::string& xValue,
+    const bool bLocal )
 {
-    auto pFound = mxVariables.find( xName );
-    if( pFound != mxVariables.end() )
+    UpdateVariable( xName, new StringVariable( xName, xValue ), bLocal );
+}
+
+void Context::UpdateVariable(
+    const std::string& xName,
+    const Variable* const pxVariable,
+    const bool bLocal )
+{
+    if( !bLocal )
     {
-        delete pFound->second;
+        auto pFound = mxVariables.find( xName );
+        if( ( pFound == mxVariables.end() ) && ( mpxParentContext != nullptr ) )
+        {
+            mpxParentContext->UpdateVariable( xName, pxVariable, false );
+            return;
+        }
     }
 
-    mxVariables[ xName ] = new StringVariable( xName, xValue );
+    Variable* const pxNew = pxVariable->Clone();
+    delete mxVariables[ xName ];
+    mxVariables[ xName ] = pxNew;
 }
 
 Context::Context()
 : mpCurrentFile( nullptr )
 , mpxParentContext( nullptr )
+, mpxGrammar( nullptr )
 {
 }
 
@@ -102,6 +120,7 @@ Context::Context( const Context& xOther )
 , mxCurrentPath( xOther.mxCurrentPath )
 , mpCurrentFile( xOther.mpCurrentFile )
 , mpxParentContext( xOther.mpxParentContext )
+, mpxGrammar( xOther.mpxGrammar )
 {
     for( auto xPair : xOther.mxVariables )
     {
@@ -115,6 +134,7 @@ Context::Context( const Context* const pxOther )
 , mxCurrentPath( pxOther->mxCurrentPath )
 , mpCurrentFile( pxOther->mpCurrentFile )
 , mpxParentContext( nullptr )
+, mpxGrammar( pxOther->mpxGrammar )
 {
 }
 
@@ -124,6 +144,7 @@ Context& Context::operator=( const Context& xOther )
     mxCurrentPath = xOther.mxCurrentPath;
     mpCurrentFile = xOther.mpCurrentFile;
     mpxParentContext = xOther.mpxParentContext;
+    mpxGrammar = xOther.mpxGrammar;
 
     for( auto xPair : xOther.mxVariables )
     {

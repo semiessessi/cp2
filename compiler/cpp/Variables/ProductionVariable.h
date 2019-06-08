@@ -27,6 +27,8 @@ public:
 
     Variable* Clone() const override { return new ProductionVariable( GetName(), mxGrammar, miIndex ); }
 
+    std::string GetNameValue() const override;
+
 private:
 
     const Parser::Grammar& mxGrammar;

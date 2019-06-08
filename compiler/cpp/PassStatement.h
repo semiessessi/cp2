@@ -17,6 +17,7 @@ namespace Compiler
 {
 
 class Context;
+class Variable;
 
 class PassStatement
 {
@@ -35,8 +36,10 @@ public:
 
     static PassStatement* Create( const ASTNode* const pxAST );
 
-    static std::string EvaluateStringExpression( const ASTNode* const pxAST, const Context& xContext );
+protected:
 
+    static Variable* EvaluateArrayExpression( const ASTNode* const pxAST, const Context& xContext );
+    static std::string EvaluateStringExpression( const ASTNode* const pxAST, const Context& xContext );
 };
 
 }

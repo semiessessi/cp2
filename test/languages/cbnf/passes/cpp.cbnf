@@ -15,6 +15,7 @@ pass "cpp" switch
 
     for each production in language.productions
     {
+        write "\t\t// " + production.name + "\n" ;
     }
 
     write "\t});\n\n" ;

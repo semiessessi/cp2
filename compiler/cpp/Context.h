@@ -33,7 +33,10 @@ public:
     Variable* GetVariable( const std::string& xName );
     const Variable* GetVariable( const std::string& xName ) const;
 
-    void UpdateVariable( const std::string& xName, const std::string& xValue );
+    void UpdateVariable( const std::string& xName, const std::string& xValue, const bool bLocal = false );
+    void UpdateVariable( const std::string& xName, const Variable* const pxVariable, const bool bLocal = false );
+
+    const Parser::Grammar* GetGrammar() const { return mpxGrammar; }
 
 private:
 
@@ -49,6 +52,7 @@ private:
     std::string mxCurrentPath;
     void* mpCurrentFile;
     Context* mpxParentContext;
+    const Parser::Grammar* mpxGrammar;
 };
 
 }
