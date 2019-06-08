@@ -32,6 +32,7 @@ public:
 
     virtual bool IsOptionalName() const { return false; }
     virtual bool IsMultipleName() const { return false; }
+    virtual bool IsNonEmptyName() const { return false; }
 
     const std::string& GetName() const { return mxName; }
 
