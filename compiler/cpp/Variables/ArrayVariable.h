@@ -6,6 +6,7 @@
 #include "Variable.h"
 
 #include <string>
+#include <vector>
 
 namespace CP2
 {
@@ -17,6 +18,16 @@ class ArrayVariable
 : public Variable
 {
 public:
+
+    ArrayVariable( const std::string& xName, const std::vector< Variable* >& xArray );
+
+    Variable* Clone() const override { return new ArrayVariable( GetName(), mxContent ); }
+
+    Variable* GetIndexed( const int iIndex ) const override { return mxContent[ iIndex ]; }
+
+private:
+
+    std::vector< Variable* > mxContent;
 
 };
 

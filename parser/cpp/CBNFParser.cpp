@@ -68,7 +68,12 @@ const Grammar& GetCBNFGrammar()
         GrammarProduction( "<pass-statement>", GE( "output" ) + GE( "<string-expression>" ) + GE( ";" ) ),
         GrammarProduction( "<pass-statement>", GE( "write" ) + GE( "<string-expression>" ) + GE( ";" ) ),
         GrammarProduction( "<pass-statement>", GE( "<identifier>" ) + GE( "=" ) + GE( "<string-expression>" ) + GE( ";" ) ),
+        
         GrammarProduction( "<pass-statement>", GE( "{" ) + !GE( "<pass-statement>" ) + GE( "}" ) ),
+
+        GrammarProduction( "<pass-statement>",
+            GE( "for" ) + GE( "each" ) + GE( "<identifier>" )
+                + GE( "in" ) + GE( "<array-expression>" ) + GE( "<pass-statements>" ) ),
 
         GrammarProduction( "<pass-modifier>", GE( "requires" ) + GE( "<pass-names>" ) ),
         GrammarProduction( "<pass-modifier>", GE( "switch" ) ),
@@ -80,7 +85,6 @@ const Grammar& GetCBNFGrammar()
 
         GrammarProduction( "<pass-names>", GE( "{" ) + !GE( "<string>" ) + GE( "}" ) ),
 
-        // SE - TODO: ...
         GrammarProduction( "<string-expression>", GE( "<string>" ) ),
         GrammarProduction( "<string-expression>", GE( "<identifier>" ) ),
 
@@ -88,6 +92,8 @@ const Grammar& GetCBNFGrammar()
 
         GrammarProduction( "<string-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "name" ) ),
         GrammarProduction( "<string-expression>", GE( "language" ) + GE( "." ) + GE( "name" ) ),
+
+        GrammarProduction( "<array-expression>", GE( "language" ) + GE( "." ) + GE( "productions" ) ),
 
         // for non-production statements...
         GrammarProduction( "<terminal-list>", GE( "{" ) + !GE( "<terminal>" ) + GE( "}" ) ),
@@ -120,6 +126,10 @@ const Grammar& GetCBNFGrammar()
         kxCBNFGrammar.AddKeyword( "\"switch\"" );
         kxCBNFGrammar.AddKeyword( "\"write\"" );
         kxCBNFGrammar.AddKeyword( "\"name\"" );
+        kxCBNFGrammar.AddKeyword( "\"for\"" );
+        kxCBNFGrammar.AddKeyword( "\"each\"" );
+        kxCBNFGrammar.AddKeyword( "\"in\"" );
+        kxCBNFGrammar.AddKeyword( "\"productions\"" );
 
         kxCBNFGrammar.AddTerminator( "\";\"" );
 

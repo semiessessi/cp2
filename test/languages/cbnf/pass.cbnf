@@ -8,6 +8,8 @@ pass-statement      =   identifier "=" string-expression ";" ;
 
 pass-statement      =   "{" pass-statement* "}" ;
 
+pass-statement      =   for each identifier in array-expression pass-statements ;
+
 pass-modifier       =   "requires" pass-names ;
 pass-modifier       =   "switch" ;
 pass-modifier       =   "switch" string ;

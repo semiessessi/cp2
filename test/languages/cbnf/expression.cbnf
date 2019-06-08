@@ -14,4 +14,4 @@ string-expression           =   string-expression "+" string-expression ;
 string-expression           =   identifier "." "name" ;
 string-expression           =   "language" "." "name" ;
 
-// production-list-expression  =   identifier "." "productions" ;
+array-expression            =   "language" "." "productions" ;

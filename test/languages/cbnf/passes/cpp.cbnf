@@ -3,6 +3,24 @@
 pass "cpp" switch
 {
     output language.name + ".cpp" ;
-    write "// CP2::Parser definition for " + language.name ;
     
+    write "// CP2::Parser definition for " + language.name + "\n\n" ;
+    
+    write "#define GE( ... ) GrammarExpression( __VA_ARGS__ )\n\n" ;
+
+    write "const Grammar& Get" + language.name + "Grammar()\n" ;
+    write "{\n" ;
+    write "\tstatic Grammar kx" + language.name + "Grammar(\n" ;
+    write "\t{\n" ;
+
+    for each production in language.productions
+    {
+    }
+
+    write "\t});\n\n" ;
+    
+    write "#undef GE\n\n" ;
+    
+    write "\treturn kx" + language.name + "Grammar;\n" ;
+    write "\}\n" ;
 }

@@ -23,7 +23,7 @@ public:
 
     virtual std::string GetValue() const;
     virtual std::string GetNameValue() const { return GetName(); }
-
+    virtual Variable* GetIndexed( const int iIndex ) const;
     const std::string& GetName() const { return mxName; }
 
 private:

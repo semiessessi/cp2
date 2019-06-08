@@ -4,7 +4,7 @@
 
 #include "../Context.h"
 #include "../../../common/cpp/ASTNode.h"
-
+#include "../../../common/cpp/Escaping.h"
 namespace CP2
 {
 namespace Compiler
@@ -22,8 +22,8 @@ void Write::Execute( Context& xContext )
     if( pFile != nullptr )
     {
         // SE - TODO: better...
-        fputs( EvaluateStringExpression(
-            mpxStringExpression, xContext ).c_str(), pFile );
+        fputs( HandleEscapes( EvaluateStringExpression(
+            mpxStringExpression, xContext ) ).c_str(), pFile );
     }
 }
 

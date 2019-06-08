@@ -8,6 +8,7 @@ keywords
     "separators"
     "terminators"
     "strings"
+    "language"
     "comment"
     "quote"
     "lexeme"
@@ -17,6 +18,10 @@ keywords
     "switch"
     "write"
     "name"
+    "for"
+    "each"
+    "in"
+    "productions"
 }
 
 identifiers

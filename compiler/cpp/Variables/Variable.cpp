@@ -21,5 +21,11 @@ std::string Variable::GetValue() const
     return "<error-string-value>";
 }
 
+Variable* Variable::GetIndexed( const int ) const
+{
+    CP2::Error( 6000, "???", 0, 0, "Trying to index a variable %s which can not be indexed.", mxName.c_str() );
+    return nullptr;
+}
+
 }
 }

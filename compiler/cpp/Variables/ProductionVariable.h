@@ -7,6 +7,10 @@
 
 namespace CP2
 {
+namespace Parser
+{
+class Grammar;
+}
 
 namespace Compiler
 {
@@ -16,6 +20,17 @@ class ProductionVariable
 {
 public:
 
+    ProductionVariable(
+        const std::string& xName,
+        const Parser::Grammar& xGrammar,
+        const int iIndex );
+
+    Variable* Clone() const override { return new ProductionVariable( GetName(), mxGrammar, miIndex ); }
+
+private:
+
+    const Parser::Grammar& mxGrammar;
+    int miIndex;
 };
 
 }
