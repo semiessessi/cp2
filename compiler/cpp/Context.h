@@ -8,7 +8,10 @@
 
 namespace CP2
 {
-
+namespace Parser
+{
+class Grammar;
+}
 namespace Compiler
 {
 
@@ -22,7 +25,7 @@ public:
     ~Context();
 
     Context CreateChild();
-    static Context CreateForPass( const Pass& xPass );
+    static Context CreateForPass( const Pass& xPass, const Parser::Grammar& xGrammar );
 
     void* GetCurrentFile() { return mpCurrentFile; }
     void SetCurrentFile( const std::string& xPath );

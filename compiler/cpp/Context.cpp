@@ -3,6 +3,7 @@
 #include "Context.h"
 
 #include "Pass.h"
+#include "Variables/LanguageVariable.h"
 #include "Variables/StringVariable.h"
 
 #include <cstdio>
@@ -32,14 +33,13 @@ Context Context::CreateChild()
     return xNewContext;
 }
 
-Context Context::CreateForPass( const Pass& xPass )
+Context Context::CreateForPass( const Pass& xPass, const Parser::Grammar& xGrammar )
 {
     Context xNewContext;
     xNewContext.mxVariables[ "pass-name" ]
         = new StringVariable( "pass-name", xPass.GetName() );
-    //xNewContext.mxVariables[ "language-name" ]
-    //    = new StringVariable( "language-name", xPass.GetName() );
-    // create grammar related variables.
+    xNewContext.mxVariables[ "language" ]
+        = new LanguageVariable( xGrammar );
 
     return xNewContext;
 }

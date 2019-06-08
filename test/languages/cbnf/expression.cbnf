@@ -1,0 +1,17 @@
+// Copyright (c) 2017-2019 Cranium Software
+
+string-expression           =   string ;
+string-expression           =   identifier ;
+
+//integer-expression        =   integer ;
+
+//string-expression           =   "(" another-expression ")" ;
+//string-expression           =   "(" integer-expression ")" ;
+//string-expression           =   "(" string-expression ")" ;
+
+string-expression           =   string-expression "+" string-expression ;
+
+string-expression           =   identifier "." "name" ;
+string-expression           =   "language" "." "name" ;
+
+// production-list-expression  =   identifier "." "productions" ;

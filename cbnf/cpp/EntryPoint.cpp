@@ -190,7 +190,7 @@ int main( const int iArgumentCount, const char* const* const pszArguments )
     }
 
     // SE - TEMP: ...
-    xCompilerPasses.Execute();
+    xCompilerPasses.Execute( xCompleteGrammar );
 
 	if( CP2::GetErrorCount() )
 	{

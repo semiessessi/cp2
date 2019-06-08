@@ -82,6 +82,24 @@ std::string PassStatement::EvaluateStringExpression(
             return EvaluateStringExpression( pxAST->GetChild( 0 ), xContext )
                 + EvaluateStringExpression( pxAST->GetChild( 2 ), xContext );
         }
+        else if( pxAST->GetChild( 1 )->GetProductionName() == "." )
+        {
+            const Variable* pxVariable
+                = xContext.GetVariable(
+                    pxAST->GetChild( 0 )->GetTokenValue() );
+            if( pxVariable == nullptr )
+            {
+                pxVariable = xContext.GetVariable(
+                    pxAST->GetChild( 0 )->GetTokenName() );
+            }
+            if( pxVariable )
+            {
+                if( pxAST->GetChild( 2 )->GetProductionName() == "name" )
+                {
+                    return pxVariable->GetNameValue();
+                }
+            }
+        }
     }
 
     return "<error>";

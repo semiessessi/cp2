@@ -8,7 +8,7 @@ namespace CP2
 namespace Compiler
 {
 
-void Passes::Execute()
+void Passes::Execute( const Parser::Grammar& xGrammar )
 {
     std::vector< std::string > axCompletedPasses;
     // run all passes where all the requisites were run already
@@ -36,7 +36,7 @@ void Passes::Execute()
 
             if( bMissing == false )
             {
-                xPassPair.second.Execute();
+                xPassPair.second.Execute( xGrammar );
                 axCompletedPasses.push_back( xPassPair.first );
             }
         }

@@ -13,6 +13,11 @@ namespace CP2
 
 class ASTNode;
 
+namespace Parser
+{
+class Grammar;
+}
+
 namespace Compiler
 {
 
@@ -46,7 +51,7 @@ public:
     void GetRequiredPaths( std::vector< OutputFile >& xFiles );
     void GetRequiredPasses( std::vector< std::string >& xPassNames );
 
-    void Execute();
+    void Execute( const Parser::Grammar& xGrammar );
 
     const std::string& GetName() const { return mxName; }
 

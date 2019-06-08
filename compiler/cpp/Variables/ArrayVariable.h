@@ -1,7 +1,7 @@
 // Copyright (c) 2019 Cranium Software
 
-#ifndef SET_VARIABLE_H
-#define SET_VARIABLE_H
+#ifndef ARRAY_VARIABLE_H
+#define ARRAY_VARIABLE_H
 
 #include "Variable.h"
 
@@ -13,7 +13,7 @@ namespace CP2
 namespace Compiler
 {
 
-class SetVariable
+class ArrayVariable
 : public Variable
 {
 public:

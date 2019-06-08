@@ -2,7 +2,7 @@
 
 pass "cpp" switch
 {
-    output "teste" + ".cpp" ;
-    write pass-name ;
+    output language.name + ".cpp" ;
+    write "// CP2::Parser definition for " + language.name ;
     
 }

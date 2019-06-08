@@ -87,11 +87,11 @@ void Pass::GetRequiredPasses( std::vector< std::string >& xPassNames )
     }
 }
 
-void Pass::Execute()
+void Pass::Execute( const Parser::Grammar& xGrammar )
 {
     if( mpxStatements )
     {
-        Context xPassContext = Context::CreateForPass( *this );
+        Context xPassContext = Context::CreateForPass( *this, xGrammar );
         mpxStatements->Execute( xPassContext );
     }
 }

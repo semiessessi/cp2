@@ -22,6 +22,7 @@ public:
     virtual Variable* Clone() const = 0;
 
     virtual std::string GetValue() const;
+    virtual std::string GetNameValue() const { return GetName(); }
 
     const std::string& GetName() const { return mxName; }
 

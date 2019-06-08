@@ -2,11 +2,6 @@
 
 pass-definition     =   "pass" string pass-modifiers pass-statements ;
 
-// SE - TODO: string expression.
-string-expression   =   string ;
-string-expression   =   identifier ;
-string-expression   =   string-expression + string-expression ;
-
 pass-statement      =   "output" string-expression ";" ;
 pass-statement      =   "write" string-expression ";"
 pass-statement      =   identifier "=" string-expression ";" ;

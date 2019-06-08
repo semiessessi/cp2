@@ -17,8 +17,8 @@ Variable::Variable( const std::string& xName )
 
 std::string Variable::GetValue() const
 {
-    CP2::Error( 6000, "???", 0, 0, "Reading from variable which can not be treated as a string." );
-    return "<error>";
+    CP2::Error( 6000, "???", 0, 0, "Reading from variable %s which can not be treated as a string.", mxName.c_str() );
+    return "<error-string-value>";
 }
 
 }

@@ -54,9 +54,6 @@
     <ClInclude Include="..\compiler\cpp\Variables\ProductionVariable.h">
       <Filter>compiler\Variables</Filter>
     </ClInclude>
-    <ClInclude Include="..\compiler\cpp\Variables\SetVariable.h">
-      <Filter>compiler\Variables</Filter>
-    </ClInclude>
     <ClInclude Include="..\compiler\cpp\Variables\StringVariable.h">
       <Filter>compiler\Variables</Filter>
     </ClInclude>
@@ -68,6 +65,15 @@
     </ClInclude>
     <ClInclude Include="..\compiler\cpp\Statements\Write.h">
       <Filter>compiler\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\ArrayVariable.h">
+      <Filter>compiler\Variables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\ParseVariable.h">
+      <Filter>compiler\Variables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\LanguageVariable.h">
+      <Filter>compiler\Variables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -104,9 +110,6 @@
     <ClCompile Include="..\compiler\cpp\Variables\ProductionVariable.cpp">
       <Filter>compiler\Variables</Filter>
     </ClCompile>
-    <ClCompile Include="..\compiler\cpp\Variables\SetVariable.cpp">
-      <Filter>compiler\Variables</Filter>
-    </ClCompile>
     <ClCompile Include="..\compiler\cpp\Variables\StringVariable.cpp">
       <Filter>compiler\Variables</Filter>
     </ClCompile>
@@ -118,6 +121,15 @@
     </ClCompile>
     <ClCompile Include="..\compiler\cpp\Statements\Write.cpp">
       <Filter>compiler\Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\ArrayVariable.cpp">
+      <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\ParseVariable.cpp">
+      <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\LanguageVariable.cpp">
+      <Filter>compiler\Variables</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

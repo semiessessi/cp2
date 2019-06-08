@@ -10,7 +10,10 @@
 
 namespace CP2
 {
-
+namespace Parser
+{
+class Grammar;
+}
 namespace Compiler
 {
 
@@ -34,7 +37,7 @@ public:
         }
     }
 
-    void Execute();
+    void Execute( const Parser::Grammar& xGrammar );
 
 private:
 

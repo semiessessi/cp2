@@ -83,7 +83,11 @@ const Grammar& GetCBNFGrammar()
         // SE - TODO: ...
         GrammarProduction( "<string-expression>", GE( "<string>" ) ),
         GrammarProduction( "<string-expression>", GE( "<identifier>" ) ),
+
         GrammarProduction( "<string-expression>", GE( "<string-expression>" ) + GE( "+" ) + GE( "<string-expression>" ) ),
+
+        GrammarProduction( "<string-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "name" ) ),
+        GrammarProduction( "<string-expression>", GE( "language" ) + GE( "." ) + GE( "name" ) ),
 
         // for non-production statements...
         GrammarProduction( "<terminal-list>", GE( "{" ) + !GE( "<terminal>" ) + GE( "}" ) ),
@@ -100,6 +104,7 @@ const Grammar& GetCBNFGrammar()
 		kxCBNFGrammar.SetName( "CBNF" );
 
         // SE - TODO: consistency with quotes vs <>
+        kxCBNFGrammar.AddKeyword( "\"language\"" );
         kxCBNFGrammar.AddKeyword( "\"keywords\"" );
         kxCBNFGrammar.AddKeyword( "\"identifiers\"" );
         kxCBNFGrammar.AddKeyword( "\"operators\"" );
@@ -114,6 +119,7 @@ const Grammar& GetCBNFGrammar()
         kxCBNFGrammar.AddKeyword( "\"requires\"" );
         kxCBNFGrammar.AddKeyword( "\"switch\"" );
         kxCBNFGrammar.AddKeyword( "\"write\"" );
+        kxCBNFGrammar.AddKeyword( "\"name\"" );
 
         kxCBNFGrammar.AddTerminator( "\";\"" );
 
@@ -125,6 +131,7 @@ const Grammar& GetCBNFGrammar()
         kxCBNFGrammar.AddOperator( "\"*\"" );
         kxCBNFGrammar.AddOperator( "\"+\"" );
         kxCBNFGrammar.AddOperator( "\"?\"" );
+        kxCBNFGrammar.AddOperator( "\".\"" );
 
         kxCBNFGrammar.AddString( "string" );
 	}
