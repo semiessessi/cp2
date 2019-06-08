@@ -2,7 +2,7 @@
 
 #include "ProductionVariable.h"
 
-#include "StringVariable.h"
+#include "NameVariable.h"
 #include "../../../parser/cpp/Grammar.h"
 #include "../../../parser/cpp/GrammarExpression.h"
 
@@ -32,9 +32,9 @@ Variable* ProductionVariable::GetIndexed( const int iIndex ) const
     const std::vector< Parser::Name >& axNames =
         mxGrammar.GetProduction( miIndex )
             .GetExpression().GetFlattenedNames();
-    return new StringVariable(
+    return new NameVariable(
         "<temporary-name>",
-        axNames[ iIndex ].xName );
+        axNames[ iIndex ] );
 }
 
 int ProductionVariable::GetIndexedCount() const

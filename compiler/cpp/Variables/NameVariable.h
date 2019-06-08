@@ -24,6 +24,8 @@ public:
         const std::string& xVariableName,
         const Parser::Name& xParseName );
 
+    std::string GetValue() const override { return mxParseName.xName; }
+
     Variable* Clone() const override { return new NameVariable( GetName(), mxParseName ); }
 
     bool IsOptionalName() const override { return mxParseName.bOptional; }
