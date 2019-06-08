@@ -66,6 +66,8 @@ const Grammar& GetCBNFGrammar()
             GE( "pass" ) + GE( "<string>" )+ GE( "<pass-modifiers>" ) + GE( "<pass-statements>" ) ),
 
         GrammarProduction( "<pass-statement>", GE( "output" ) + GE( "<string-expression>" ) + GE( ";" ) ),
+        GrammarProduction( "<pass-statement>", GE( "write" ) + GE( "<string-expression>" ) + GE( ";" ) ),
+        GrammarProduction( "<pass-statement>", GE( "<identifier>" ) + GE( "=" ) + GE( "<string-expression>" ) + GE( ";" ) ),
         GrammarProduction( "<pass-statement>", GE( "{" ) + !GE( "<pass-statement>" ) + GE( "}" ) ),
 
         GrammarProduction( "<pass-modifier>", GE( "requires" ) + GE( "<pass-names>" ) ),
@@ -80,6 +82,7 @@ const Grammar& GetCBNFGrammar()
 
         // SE - TODO: ...
         GrammarProduction( "<string-expression>", GE( "<string>" ) ),
+        GrammarProduction( "<string-expression>", GE( "<identifier>" ) ),
 
         // for non-production statements...
         GrammarProduction( "<terminal-list>", GE( "{" ) + !GE( "<terminal>" ) + GE( "}" ) ),
@@ -109,6 +112,7 @@ const Grammar& GetCBNFGrammar()
         kxCBNFGrammar.AddKeyword( "\"output\"" );
         kxCBNFGrammar.AddKeyword( "\"requires\"" );
         kxCBNFGrammar.AddKeyword( "\"switch\"" );
+        kxCBNFGrammar.AddKeyword( "\"write\"" );
 
         kxCBNFGrammar.AddTerminator( "\";\"" );
 

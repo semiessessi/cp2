@@ -34,6 +34,8 @@ public:
         }
     }
 
+    void Execute();
+
 private:
 
     std::unordered_map< std::string, Pass > mxPasses;

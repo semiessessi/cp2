@@ -189,6 +189,9 @@ int main( const int iArgumentCount, const char* const* const pszArguments )
         xCompilerPasses.Merge( xPasses );
     }
 
+    // SE - TEMP: ...
+    xCompilerPasses.Execute();
+
 	if( CP2::GetErrorCount() )
 	{
 		CP2::Message( "Build failed!\r\nFinished with %d errors and %d warnings",

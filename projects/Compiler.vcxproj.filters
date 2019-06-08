@@ -10,6 +10,9 @@
     <Filter Include="compiler\Statements">
       <UniqueIdentifier>{12cca9a4-5e44-4002-a9aa-7583effe9fee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="compiler\Variables">
+      <UniqueIdentifier>{db0941fd-366a-4bec-ae01-edd6ad35cc48}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\cpp\Report.h">
@@ -45,6 +48,21 @@
     <ClInclude Include="..\compiler\cpp\Context.h">
       <Filter>compiler</Filter>
     </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\IntegerVariable.h">
+      <Filter>compiler\Variables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\ProductionVariable.h">
+      <Filter>compiler\Variables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\SetVariable.h">
+      <Filter>compiler\Variables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\StringVariable.h">
+      <Filter>compiler\Variables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\Variable.h">
+      <Filter>compiler\Variables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\compiler\cpp\Compiler.cpp">
@@ -73,6 +91,21 @@
     </ClCompile>
     <ClCompile Include="..\compiler\cpp\Context.cpp">
       <Filter>compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\IntegerVariable.cpp">
+      <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\ProductionVariable.cpp">
+      <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\SetVariable.cpp">
+      <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\StringVariable.cpp">
+      <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\Variable.cpp">
+      <Filter>compiler\Variables</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

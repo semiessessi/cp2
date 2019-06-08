@@ -64,8 +64,9 @@ Passes CompilePasses( const ASTNode* const pxAST )
 
         const std::string& xPassName = pxPotentialPass->GetChild( 1 )->GetTokenValue();
         // add pass name, stripping quotes
-        Pass& xPass = xPasses.AddPass( xPassName.substr( 1, xPassName.length() - 2 ) );
-
+        const std::string xTrimmedName = xPassName.substr( 1, xPassName.length() - 2 );
+        Pass& xPass = xPasses.AddPass( xTrimmedName );
+        xPass.SetName( xTrimmedName );
         // check for modifiers.
         int iStatementChild = 2;
         if( iPassChildCount >= 4 )

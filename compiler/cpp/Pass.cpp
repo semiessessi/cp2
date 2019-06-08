@@ -11,9 +11,10 @@ namespace CP2
 namespace Compiler
 {
 
-Pass::Pass()
+Pass::Pass( const std::string& xName )
 : mbIsSwitch( false )
 , mpxStatements( nullptr )
+, mxName( xName )
 {
 
 }
@@ -23,6 +24,8 @@ Pass::Pass( const Pass& xPass )
 , mpxStatements( xPass.mpxStatements
     ? new PassScope( xPass.mpxStatements )
     : nullptr )
+, maxRequiredPasses( xPass.maxRequiredPasses )
+, mxName( xPass.mxName )
 {
 
 }
@@ -35,7 +38,23 @@ Pass::~Pass()
 Pass& Pass::operator =( const Pass& xPass )
 {
     mbIsSwitch = xPass.mbIsSwitch;
+    mpxStatements = xPass.mpxStatements
+        ? new PassScope( xPass.mpxStatements )
+        : nullptr;
+    maxRequiredPasses = xPass.maxRequiredPasses;
+    mxName = xPass.mxName;
     return *this;
+}
+
+void Pass::AddRequiredPass( const std::string& xPassName )
+{
+    if( std::find(
+        maxRequiredPasses.begin(),
+        maxRequiredPasses.end(),
+        xPassName ) == maxRequiredPasses.end() )
+    {
+        maxRequiredPasses.push_back( xPassName );
+    }
 }
 
 void Pass::Compile( const ASTNode* const pxAST )
@@ -50,6 +69,21 @@ void Pass::GetRequiredPaths( std::vector< OutputFile >& xFiles )
     if( mpxStatements )
     {
         mpxStatements->GetRequiredPaths( xFiles );
+
+        CreateRequiredPaths( xFiles );
+    }
+}
+void Pass::GetRequiredPasses( std::vector< std::string >& xPassNames )
+{
+    for( const std::string xPassName : maxRequiredPasses )
+    {
+        if( std::find(
+            maxRequiredPasses.begin(),
+            maxRequiredPasses.end(),
+            xPassName ) == maxRequiredPasses.end() )
+        {
+            xPassNames.push_back( xPassName );
+        }
     }
 }
 
@@ -60,6 +94,11 @@ void Pass::Execute()
         Context xPassContext = Context::CreateForPass( *this );
         mpxStatements->Execute( xPassContext );
     }
+}
+
+void Pass::CreateRequiredPaths( const std::vector< OutputFile >& xFiles )
+{
+
 }
 
 }

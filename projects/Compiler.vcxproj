@@ -30,6 +30,11 @@
     <ClInclude Include="..\compiler\cpp\PassStatement.h" />
     <ClInclude Include="..\compiler\cpp\Statements\Output.h" />
     <ClInclude Include="..\compiler\cpp\Statements\PassScope.h" />
+    <ClInclude Include="..\compiler\cpp\Variables\IntegerVariable.h" />
+    <ClInclude Include="..\compiler\cpp\Variables\ProductionVariable.h" />
+    <ClInclude Include="..\compiler\cpp\Variables\SetVariable.h" />
+    <ClInclude Include="..\compiler\cpp\Variables\StringVariable.h" />
+    <ClInclude Include="..\compiler\cpp\Variables\Variable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\compiler\cpp\Compiler.cpp" />
@@ -41,6 +46,11 @@
     <ClCompile Include="..\compiler\cpp\PassStatement.cpp" />
     <ClCompile Include="..\compiler\cpp\Statements\Output.cpp" />
     <ClCompile Include="..\compiler\cpp\Statements\PassScope.cpp" />
+    <ClCompile Include="..\compiler\cpp\Variables\IntegerVariable.cpp" />
+    <ClCompile Include="..\compiler\cpp\Variables\ProductionVariable.cpp" />
+    <ClCompile Include="..\compiler\cpp\Variables\SetVariable.cpp" />
+    <ClCompile Include="..\compiler\cpp\Variables\StringVariable.cpp" />
+    <ClCompile Include="..\compiler\cpp\Variables\Variable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Common.vcxproj">

@@ -23,27 +23,41 @@ class Pass
 
 public:
 
-    Pass();
+    Pass( const std::string& xName = "<unknown-pass>" );
     Pass( const Pass& xPass );
     ~Pass();
 
     Pass& operator =( const Pass& xPass );
+
+    void SetName( const std::string& xName )
+    {
+        mxName = xName;
+    }
 
     void SetSwitch( const bool bSwitchValue )
     {
         mbIsSwitch = bSwitchValue;
     }
 
+    void AddRequiredPass( const std::string& xPassName );
+
     void Compile( const ASTNode* const );
 
     void GetRequiredPaths( std::vector< OutputFile >& xFiles );
+    void GetRequiredPasses( std::vector< std::string >& xPassNames );
 
     void Execute();
 
+    const std::string& GetName() const { return mxName; }
+
 private:
+
+    void CreateRequiredPaths( const std::vector< OutputFile >& xFile );
 
     bool mbIsSwitch;
     PassScope* mpxStatements;
+    std::vector< std::string > maxRequiredPasses;
+    std::string mxName;
 
 };
 

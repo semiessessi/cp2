@@ -35,6 +35,8 @@ public:
 
     static PassStatement* Create( const ASTNode* const pxAST );
 
+    static std::string EvaluateStringExpression( const ASTNode* const pxAST, const Context& xContext );
+
 };
 
 }

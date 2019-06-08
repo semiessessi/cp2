@@ -3,4 +3,5 @@
 pass "cpp" switch
 {
     output "output.cpp" ;
+    output pass-name ;
 }

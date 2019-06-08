@@ -10,6 +10,8 @@
 namespace CP2
 {
 
+class ASTNode;
+
 namespace Compiler
 {
 
@@ -20,9 +22,10 @@ class Output
 public:
 
     Output( const std::string& xPath );
+    Output( const ASTNode* const pxExpression );
     ~Output();
 
-    void Execute() override;
+    void Execute( Context& xContext ) override;
     PassStatement* Clone() const override;
 
     void GetRequiredPaths( std::vector< OutputFile >& xFiles ) const override;
@@ -32,6 +35,7 @@ public:
 private:
 
     std::string mxPath;
+    const ASTNode* mpxStringExpression;
     bool mbBinary;
 
 };
