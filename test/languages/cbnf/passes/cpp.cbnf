@@ -1,0 +1,56 @@
+// Copyright (c) 2017-2019 Cranium Software
+
+pass "cpp" switch
+{
+    output language.name + ".cpp" ;
+    
+    write "// CP2::Parser definition for " + language.name + "\n\n" ;
+    
+    write "#define GE( ... ) GrammarExpression( __VA_ARGS__ )\n\n" ;
+
+    write "const Grammar& Get" + language.name + "Grammar()\n" ;
+    write "{\n" ;
+    write "\tstatic Grammar kx" + language.name + "Grammar(\n" ;
+    write "\t{\n" ;
+
+    for each production in language.productions
+    {
+        write "\t\tGrammarProduction(\"" + production.name + "\",\n" ;
+        write "\t\t\t" ;
+        join = "" ;
+        
+        for each production-name in production.names
+        {
+            write join ;
+            if production-name.is-list
+            {
+                if production-name.is-non-empty
+                {
+                    write "+" ;
+                }
+                else
+                {
+                    write "!" ;
+                }
+            }
+            else
+            {
+                if production-name.is-optional
+                {
+                    write "~" ;
+                }
+            }
+            write "GE( \"" + production-name + "\" ) " ;
+            join = "+ " ;
+        }
+        
+        write "),\n" ;
+    }
+
+    write "\t});\n\n" ;
+    
+    write "#undef GE\n\n" ;
+    
+    write "\treturn kx" + language.name + "Grammar;\n" ;
+    write "\}\n" ;
+}

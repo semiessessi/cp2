@@ -1,0 +1,36 @@
+// Copyright (c) 2017-2019 Cranium Software
+
+// provide the name of the language as metadata
+language "CBNF" ;
+
+// allow C and C++ style comments
+comment "//" ;
+comment "/*" "*/" ;
+
+// C style strings
+quote string "\"" "\"" "\\" ;
+
+// this regex describes the identifier rules
+lexeme identifier "[_a-zA-Z][_\\-a-zA-Z0-9]*" ;
+
+// a grammar is a list of statements
+grammar             =   statement* ;
+
+// a production of the grammar, e.g. this one.
+statement           =   production ;
+
+// for marking symbols as keywords etc. for syntax highlighting
+statement           =   "keywords" terminal-list ;
+statement           =   "identifiers" terminal-list ;
+statement           =   "operators" terminal-list ;
+statement           =   "separators" terminal-list ;
+statement           =   "terminators" terminal-list ;
+statement           =   "strings" terminal-list ;
+
+// for defining the behaviour of a compilation pass
+statement           =   pass-definition ;
+
+// required by the other stuff...
+terminal-list       =   "{" terminal* "}" ;
+terminal            =   identifier ;
+terminal            =   string ;

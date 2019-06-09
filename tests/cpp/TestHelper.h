@@ -32,6 +32,11 @@ static inline bool Expect(
 	return true;
 }
 
+static inline void AnnounceTest( const char* const szName )
+{
+	Message( "Running test: \"%s\"", szName );
+}
+
 static inline bool ExpectClean( const char* const szName )
 {
 	return Expect( ( GetErrorCount() == 0 ) && ( GetWarningCount() == 0 ), [ = ]()

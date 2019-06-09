@@ -5,6 +5,8 @@
 #include "../../common/cpp/ASTNode.h"
 #include "../../common/cpp/Report.h"
 
+#include <algorithm>
+
 namespace CP2
 {
 namespace Parser
@@ -24,7 +26,8 @@ struct ParseState
 
 std::vector< ParseState > ParseRecursive(
 	const std::vector< Token >& axTokens, const Grammar& xGrammar,
-	const int iCursor, const std::vector< GrammarProduction >& axProductions );
+	const int iCursor, const std::vector< GrammarProduction >& axProductions,
+    const bool bSubstitution );
 
 static inline bool HandleListOrOptional(
 	const bool bOptional, const bool bList, const bool bNonEmpty,
@@ -33,7 +36,7 @@ static inline bool HandleListOrOptional(
 	std::vector< ParseState >& axNewStates )
 {
 	// if its optional in anyway ...
-	const bool bNotOptional = bNonEmpty && ( iCurrentListCount == 0 );
+	//const bool bNotOptional = bNonEmpty && ( iCurrentListCount == 0 );
 	if( bOptional || bList )
 	{
 		// ... and we failed to parse anything
@@ -43,11 +46,23 @@ static inline bool HandleListOrOptional(
 			// with the same states we just tried...
 			return true;
 		}
+
+		// check if what we got back was just errors and do the same
+		bool bErrorsOnly = true;
+		for( const ParseState& xState : axWorkingNewStates )
+		{
+			bErrorsOnly = bErrorsOnly && ( ( xState.mpxAST == nullptr )
+				|| ( xState.mpxAST->IsErrored() ) );
+		}
+
+		if( bErrorsOnly )
+		{
+			return true;
+		}
 	}
 
 	if( bList ) // if its a list, and we didn't skip out ...
 	{
-
 		// ... try and parse the same thing again, add to the list
 		--j;
 		++iCurrentListCount;
@@ -57,6 +72,7 @@ static inline bool HandleListOrOptional(
 		iCurrentListCount = 0;
 	}
 
+	// SE - TODO: this has nothing todo with the function name.
 	// cleanup the old 'new' states before forgetting them.
 	for( ParseState& xState : axNewStates )
 	{
@@ -76,7 +92,7 @@ static inline bool HandleCatchAll(
 static inline bool ContinueState( size_t& k,
 	const std::vector< Token >& axTokens,
 	const Grammar& xGrammar,
-	const std::string& xName,
+	const Name& xName,
 	const std::vector< GrammarProduction >& axNewProductions,
 	std::vector< ParseState >& axWorkingNewStates,
 	std::vector< ParseState >& axNewStates )
@@ -84,9 +100,26 @@ static inline bool ContinueState( size_t& k,
 	// continue where this state left off
 	const int iCurrentCursor = axNewStates[ k ].miCursor;
 	ASTNode* const pxBaseNode = axNewStates[ k ].mpxAST;
+	// early out for error states
+	if( pxBaseNode->IsErrored() )
+	{
+		return false;
+	}
+
 	if( iCurrentCursor >= axTokens.size() )
 	{
 		// report error?
+		ParseState xNewState =
+		{
+			new ASTNode(
+                iCurrentCursor,
+                axTokens[ iCurrentCursor - 1 ],
+                xName,
+                3001,
+                xName ),
+			iCurrentCursor - 1
+		};
+		axWorkingNewStates.push_back( xNewState );
 		return false;
 	}
 
@@ -94,7 +127,7 @@ static inline bool ContinueState( size_t& k,
 	{
 		// this is a terminal
 		// does it match what we expect?
-		if( xName == axTokens[ iCurrentCursor ].GetName() )
+		if( xName.xName == axTokens[ iCurrentCursor ].GetName() )
 		{
 			// add the terminal as the one option here.
 			ParseState xNewState =
@@ -107,27 +140,61 @@ static inline bool ContinueState( size_t& k,
 			};
 			axWorkingNewStates.push_back( xNewState );
 		}
-		//else
-		//{
-		//	// report error?
-		//}
+		else
+		{
+			// report error
+			ParseState xNewState =
+			{
+				new ASTNode( iCurrentCursor, axTokens[ iCurrentCursor ], xName, 3002, xName ),
+				iCurrentCursor - 1
+			};
+			axWorkingNewStates.push_back( xNewState );
+		}
 
 		return false;
 	}
 
 	//
 	std::vector< ParseState > axChildStates =
-		ParseRecursive( axTokens, xGrammar, iCurrentCursor, axNewProductions );
+		ParseRecursive(
+            axTokens,
+            xGrammar,
+            iCurrentCursor,
+            axNewProductions,
+            xName.bSubstitution );
+	bool bAllErrors = true;
 	for( ParseState& xState : axChildStates )
 	{
-		ParseState xNewState =
+		// only add error free states... unless they are all errors
+		if( ( xState.mpxAST != nullptr )
+			&& ( !xState.mpxAST->IsErrored() ) )
 		{
-			ASTNode::DuplicateAndAddChild(
-				pxBaseNode,
-				ASTNode::Duplicate( xState.mpxAST ) ),
-			xState.miCursor
-		};
-		axWorkingNewStates.push_back( xNewState );
+			ParseState xNewState =
+			{
+				ASTNode::DuplicateAndAddChild(
+					pxBaseNode,
+					ASTNode::Duplicate( xState.mpxAST ) ),
+				xState.miCursor
+			};
+			bAllErrors = false;
+			axWorkingNewStates.push_back( xNewState );
+		}
+	}
+
+	if( bAllErrors )
+	{
+		// bubble the errors upwards
+		for( ParseState& xState : axChildStates )
+		{
+			ParseState xNewState =
+			{
+				ASTNode::DuplicateAndAddChild(
+					pxBaseNode,
+					ASTNode::Duplicate( xState.mpxAST ) ),
+				xState.miCursor
+			};
+			axWorkingNewStates.push_back( xNewState );
+		}
 	}
 
 	return false;
@@ -135,7 +202,7 @@ static inline bool ContinueState( size_t& k,
 
 static inline bool ParseName(
 	const std::vector< Token >& axTokens,
-	const std::vector< std::string >& axNames,
+	const std::vector< Name >& axNames,
 	const Grammar& xGrammar,
 	int& iCurrentListCount, size_t& j,
 	std::vector< ParseState >& axWorkingNewStates,
@@ -143,26 +210,21 @@ static inline bool ParseName(
 {
 	axWorkingNewStates.clear();
 
-	const std::string& xBaseName = axNames[ j ];
+    const Name& xProductionName = axNames[ j ];
+	const std::string& xName = xProductionName.xName;
 
 	// safety...
-	if( xBaseName.empty() )
+	if( xName.empty() )
 	{
 		return false;
 	}
-
-	// tidy up the name.
-	// SE - TODO: something better than magical encodings
-	const std::string xListName( &xBaseName[ 1 ] );
-	const bool bNonEmpty = ( xBaseName[ 0 ] == '+' ) && ( xBaseName.length() > 1 );
-	const bool bList = bNonEmpty ||
-		( ( xBaseName[ 0 ] == '!' ) && ( xBaseName.length() > 1 ) );
-	const bool bOptional = ( xBaseName[ 0 ] == '?' ) && ( xBaseName.length() > 1 );
-	const std::string& xName = ( bList || bOptional ) ? xListName : xBaseName;
+	const bool bNonEmpty = axNames[ j ].bNonEmpty;
+	const bool bList = bNonEmpty || axNames[ j ].bList;
+	const bool bOptional = axNames[ j ].bOptional;
 
 	// do we have any productions for this thing?
 	const std::vector< GrammarProduction > axNewProductions =
-		xGrammar.GetProductions( xName );
+		xGrammar.GetProductionsForParsing( xName );
 
 	// handle catch all ...
 	if( HandleCatchAll( axNewProductions ) )
@@ -175,7 +237,7 @@ static inline bool ParseName(
 	{
 		ContinueState( k,
 			axTokens, xGrammar,
-			xName, axNewProductions,
+            xProductionName, axNewProductions,
 			axWorkingNewStates, axNewStates );
 	}
 
@@ -193,8 +255,11 @@ static inline bool ParseName(
 }
 
 std::vector< ParseState > ParseRecursive(
-	const std::vector< Token >& axTokens, const Grammar& xGrammar,
-	const int iCursor, const std::vector< GrammarProduction >& axProductions )
+	const std::vector< Token >& axTokens,
+    const Grammar& xGrammar,
+	const int iCursor,
+    const std::vector< GrammarProduction >& axProductions,
+    bool bSubstitution )
 {
 	std::vector< ParseState > axStates;
 	if( axProductions.size() == 0 ) // safety, should never happen.
@@ -202,15 +267,25 @@ std::vector< ParseState > ParseRecursive(
 		return axStates;
 	}
 	
-	ASTNode xTopBaseNode( iCursor, axTokens[ iCursor ], axProductions[ 0 ].GetName() );
+	ASTNode xTopBaseNode(
+        iCursor,
+        axTokens[ iCursor ],
+        {
+            axProductions[ 0 ].GetName(),
+            false,
+            false,
+            false,
+            bSubstitution
+        } );
 
 	// we have one list of new states we iterate on
 	// and one we write the next set of new states into
 	std::vector< ParseState > axNewStates;
 	std::vector< ParseState > axWorkingNewStates;
+	bool bAllErrors = true;
 	for( size_t i = 0; i < axProductions.size(); ++i )
 	{
-		const std::vector< std::string >& axNames =
+		const std::vector< Name >& axNames =
 			axProductions[ i ].GetExpression().GetFlattenedNames();
 
 		axNewStates.clear();
@@ -236,8 +311,37 @@ std::vector< ParseState > ParseRecursive(
 			}
 		}
 
-		axStates.insert( axStates.end(), axNewStates.begin(), axNewStates.end() );
+		// only return states containing no errors, unless they all errored
+		bool bAnyStateSucceeded = false;
+		std::copy_if( axNewStates.begin(), axNewStates.end(),
+			std::back_inserter( axStates ), [ & ]( const ParseState& xState ) -> bool
+			{
+				const bool bCopy = ( xState.mpxAST != nullptr )
+					&& !( xState.mpxAST->IsErrored() );
+				bAnyStateSucceeded = bAnyStateSucceeded || bCopy;
+				bAllErrors = bAllErrors && !bCopy;
+				return bCopy;
+			} );
+
+		// SE - TODO: ...
+		// no state succeded? return an error state containing our accumulated errors.
+		if( !bAnyStateSucceeded )
+		{
+			axStates.insert( axStates.end(), axNewStates.begin(), axNewStates.end() );
+		}
 	}
+
+	if( !bAllErrors ) // remove errors if we had successes
+	{
+		axStates.erase( std::remove_if( axStates.begin(), axStates.end(),
+			[ & ]( const ParseState& xState ) -> bool
+		{
+			return ( xState.mpxAST == nullptr )
+				|| ( xState.mpxAST->IsErrored() );
+		} ), axStates.end() );
+	}
+
+    // SE - TODO: should substitutions be tidied up here??
 
 	return axStates;
 }
@@ -246,7 +350,11 @@ ASTNode* Parse( const std::vector< Token >& axTokens, const Grammar& xGrammar )
 {
 	const std::vector< GrammarProduction > axTopLevelProductions =
 		xGrammar.GetTopLevelProductions();
-	const char* const szFilename = axTokens.size() ? axTokens[ 0 ].GetFilename() : "<unknown-file>";
+	const char* const szFilename = axTokens.size()
+		? ( ( axTokens[ 0 ].GetFilename() != nullptr )
+			? axTokens[ 0 ].GetFilename()
+			: "<unknown-file>" )
+		: "<unknown-file>";
 	if( axTopLevelProductions.size() == 0 )
 	{
 		InternalError( 3400, szFilename, 0, 0, "Grammar has no top level productions!" );
@@ -259,17 +367,32 @@ ASTNode* Parse( const std::vector< Token >& axTokens, const Grammar& xGrammar )
 		return nullptr;
 	}
 
-	std::vector< ParseState > axStates = ParseRecursive( axTokens, xGrammar, 0, axTopLevelProductions );
+	std::vector< ParseState > axStates
+        = ParseRecursive(
+            axTokens, xGrammar, 0,
+            axTopLevelProductions, false );
 
 	if( axStates.size() == 0 )
 	{
 		return nullptr;
 	}
 
+	// check if its just errors
+	if( ( axStates[ 0 ].mpxAST != nullptr )
+		&& axStates[ 0 ].mpxAST->IsErrored() )
+	{
+		// all we got was errors (!)
+		Error( 3000, szFilename, 0, 0, "Parsing was unsuccessful!" );
+		return nullptr;
+	}
+
+
 	if( axStates.size() != 1 )
 	{
 		Warning( 3500, szFilename, 0, 0, "Parse result was ambiguous, using first valid parse" );
 	}
+
+    // SE - TODO: expose all results?
 
 	// delete leftovers
 	for( size_t i = 1; i < axStates.size(); ++i )
@@ -277,7 +400,22 @@ ASTNode* Parse( const std::vector< Token >& axTokens, const Grammar& xGrammar )
 		axStates[ i ].Cleanup();
 	}
 
-	return axStates[ 0 ].mpxAST;
+	// check if parse was complete
+	ASTNode* const pxChosenTree = axStates[ 0 ].mpxAST;
+	const int iLastCursor = pxChosenTree->GetEndCursor();
+	if( ( iLastCursor + 1 ) < static_cast< int >( axTokens.size() ) )
+	{
+		// SE - NOTE: line and column here should be from the last node...
+		Error( 3003, szFilename, pxChosenTree->GetLine(), pxChosenTree->GetColumn(),
+			"Incomplete parse. Unexpected token: %s", axTokens[ iLastCursor + 1 ].GetName() );
+		return nullptr;
+	}
+
+    // SE - NOTE: clean up after left recursion.
+    // sE - TODO: probably could be done better somewhere else...
+    pxChosenTree->TidyRecursions();
+
+	return pxChosenTree;
 }
 
 }

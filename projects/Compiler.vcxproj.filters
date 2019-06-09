@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="common">
+      <UniqueIdentifier>{150e8721-d7c3-4f34-9ed0-7cf8102f7a37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="compiler">
+      <UniqueIdentifier>{27e4d380-1c3e-4e38-a8ff-de297c1e119d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="compiler\Statements">
+      <UniqueIdentifier>{12cca9a4-5e44-4002-a9aa-7583effe9fee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="compiler\Variables">
+      <UniqueIdentifier>{db0941fd-366a-4bec-ae01-edd6ad35cc48}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\common\cpp\Report.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Compiler.h">
+      <Filter>compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\cpp\Token.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\PassCompiler.h">
+      <Filter>compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Passes.h">
+      <Filter>compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Pass.h">
+      <Filter>compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\PassStatement.h">
+      <Filter>compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Statements\PassScope.h">
+      <Filter>compiler\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Statements\Output.h">
+      <Filter>compiler\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\OutputFile.h">
+      <Filter>compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Context.h">
+      <Filter>compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\IntegerVariable.h">
+      <Filter>compiler\Variables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\ProductionVariable.h">
+      <Filter>compiler\Variables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\StringVariable.h">
+      <Filter>compiler\Variables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\Variable.h">
+      <Filter>compiler\Variables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Statements\Assignment.h">
+      <Filter>compiler\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Statements\Write.h">
+      <Filter>compiler\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\ArrayVariable.h">
+      <Filter>compiler\Variables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\ParseVariable.h">
+      <Filter>compiler\Variables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\LanguageVariable.h">
+      <Filter>compiler\Variables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Statements\ForEach.h">
+      <Filter>compiler\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\NameVariable.h">
+      <Filter>compiler\Variables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\BooleanVariable.h">
+      <Filter>compiler\Variables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Statements\Conditional.h">
+      <Filter>compiler\Statements</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\compiler\cpp\Compiler.cpp">
+      <Filter>compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\PassCompiler.cpp">
+      <Filter>compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Passes.cpp">
+      <Filter>compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Pass.cpp">
+      <Filter>compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\PassStatement.cpp">
+      <Filter>compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Statements\PassScope.cpp">
+      <Filter>compiler\Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Statements\Output.cpp">
+      <Filter>compiler\Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\OutputFile.cpp">
+      <Filter>compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Context.cpp">
+      <Filter>compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\IntegerVariable.cpp">
+      <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\ProductionVariable.cpp">
+      <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\StringVariable.cpp">
+      <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\Variable.cpp">
+      <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Statements\Assignment.cpp">
+      <Filter>compiler\Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Statements\Write.cpp">
+      <Filter>compiler\Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\ArrayVariable.cpp">
+      <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\ParseVariable.cpp">
+      <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\LanguageVariable.cpp">
+      <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Statements\ForEach.cpp">
+      <Filter>compiler\Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\NameVariable.cpp">
+      <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\BooleanVariable.cpp">
+      <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Statements\Conditional.cpp">
+      <Filter>compiler\Statements</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

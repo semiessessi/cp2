@@ -8,6 +8,16 @@ namespace CP2
 namespace Lexer
 {
 
+const std::vector< Quote >& CBNFQuoteRules()
+{
+	static const std::vector< Quote > lsaxQuoteRules =
+	{
+		Quote( "<string>", "\"", "\"", "\\" ),
+	};
+
+	return lsaxQuoteRules;
+}
+
 const std::vector< Comment >& CBNFCommentRules()
 {
 	static const std::vector< Comment > lsaxCommentRules =
@@ -23,17 +33,47 @@ const std::vector< Rule >& CBNFLexerRules()
 {
 	static const std::vector< Rule > lsaxLexerRules =
 	{
-		Rule( "comment",						Token( "comment",			0001 ) ),
-		Rule( "lexeme",							Token( "lexeme",			0002 ) ),
+		Rule( "comment",						Token( "comment",			1 ) ),
+		Rule( "lexeme",							Token( "lexeme",			2 ) ),
+		Rule( "quote",							Token( "quote",				3 ) ),
+		Rule( "language",						Token( "language",			4 ) ),
+        Rule( "keywords",						Token( "keywords",			5 ) ),
+        Rule( "identifiers",					Token( "identifiers",		6 ) ),
+        Rule( "operators",						Token( "operators",			7 ) ),
+        Rule( "terminators",					Token( "terminators",		8 ) ),
+        Rule( "separators",						Token( "separators",		9 ) ),
+        Rule( "strings",						Token( "strings",			10 ) ),
+        Rule( "output",						    Token( "output",			11 ) ),
+        Rule( "pass",						    Token( "pass",			    12 ) ),
+        Rule( "requires",						Token( "requires",			13 ) ),
+        Rule( "switch",						    Token( "switch",			14 ) ),
+        Rule( "write",						    Token( "write",			    15 ) ),
+        Rule( "name",						    Token( "name",			    16 ) ),
+        Rule( "for",						    Token( "for",			    17 ) ),
+        Rule( "each",						    Token( "each",			    18 ) ),
+        Rule( "in",						        Token( "in",			    19 ) ),
+        Rule( "productions",					Token( "productions",		20 ) ),
+        Rule( "names",						    Token( "names",			    21 ) ),
+        Rule( "is-optional",					Token( "is-optional",		22 ) ),
+        Rule( "is-non-empty",					Token( "is-non-empty",		23 ) ),
+        Rule( "is-list",						Token( "is-list",			24 ) ),
+        Rule( "true",						    Token( "true",			    25 ) ),
+        Rule( "false",						    Token( "false",			    26 ) ),
+        Rule( "if",						        Token( "if",			    27 ) ),
+        Rule( "else",						    Token( "else",			    28 ) ),
 
 		Rule( "[_a-zA-Z][_\\-a-zA-Z0-9]*",		Token( "<identifier>",		1000, true ) ),
-		Rule( "\"(?:[^\\\"\\\\]|\\\\.)*\"",		Token( "<string>",			1001, true ) ),
+		//Rule( "\"(?:[^\\\"\\\\]|\\\\.)*\"",		Token( "<string>",			1001, true ) ),
 
 		Rule( "\\=",							Token( "=",					2000 ) ),
 		Rule( "\\;",							Token( ";",					2001 ) ),
 		Rule( "\\*",							Token( "*",					2002 ) ),
 		Rule( "\\?",							Token( "?",					2003 ) ),
 		Rule( "\\.\\.\\.",						Token( "...",				2004 ) ),
+        Rule( "{",						        Token( "{",				    2005 ) ),
+        Rule( "}",						        Token( "}",				    2006 ) ),
+        Rule( "\\+",							Token( "+",					2007 ) ),
+        Rule( "\\.",							Token( ".",					2008 ) ),
 		
 	};
 
@@ -44,14 +84,14 @@ std::vector< Token > CBNFLex( const char* const szFilename )
 {
 	std::vector< Token > xTokenList;
 
-	return Lex( szFilename, CBNFLexerRules(), CBNFCommentRules() );
+	return Lex( szFilename, CBNFLexerRules(), CBNFCommentRules(), CBNFQuoteRules() );
 }
 
 std::vector< Token > CBNFLex( const char* const szFilename, const char* const szSource )
 {
 	std::vector< Token > xTokenList;
 
-	return Lex( szFilename, szSource, CBNFLexerRules(), CBNFCommentRules() );
+	return Lex( szFilename, szSource, CBNFLexerRules(), CBNFCommentRules(), CBNFQuoteRules() );
 }
 
 }

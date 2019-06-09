@@ -4,11 +4,12 @@
 
 int HelpHandler( const char* const )
 {
-    puts( "CP2 Language Compiler" );
+    puts( "CBNF Grammar Tool" );
     puts( "" );
-    puts( "cp2 <source-files>" );
+    puts( "cbnf <source-files> -o <output-file>" );
     puts( "" );
     puts( "<source-files>			one or more source files" );
+	puts( "<output-file>			an output file" );
 
     return 1;
 }

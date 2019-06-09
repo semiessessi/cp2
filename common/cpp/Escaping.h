@@ -43,12 +43,50 @@ static inline std::string SimpleUnescape( const std::string& xSource )
 	size_t uOffset = xCopy.find( '\\', 0 );
 	while( uOffset != std::string::npos )
 	{
-		xCopy.erase( uOffset );
+		xCopy.erase( uOffset, 1 );
 		++uOffset;
 		uOffset = xCopy.find( '\\', uOffset );
 	}
 
 	return xCopy;
+}
+
+static inline std::string HandleEscapes( const std::string& xSource )
+{
+    std::string xCopy = xSource;
+
+    size_t uOffset = xCopy.find( '\\', 0 );
+    while( uOffset != std::string::npos )
+    {
+        xCopy.erase( uOffset, 1 );
+        switch( xCopy[ uOffset ] )
+        {
+            case 'n':
+            {
+                xCopy[ uOffset ] = '\n';
+                break;
+            }
+            case 'r':
+            {
+                xCopy[ uOffset ] = '\r';
+                break;
+            }
+            case 't':
+            {
+                xCopy[ uOffset ] = '\t';
+                break;
+            }
+            case '0':
+            {
+                xCopy[ uOffset ] = 0;
+                break;
+            }
+        }
+        ++uOffset;
+        uOffset = xCopy.find( '\\', uOffset );
+    }
+
+    return xCopy;
 }
 
 

@@ -24,6 +24,28 @@ do { \
 	} ); \
 } while( false )
 
+#define CP2_PARSER_TEST_SIMPLE_ERROR( name, input, grammar, code ) \
+do { \
+	Message( "Running simple parser test \"" name "\" on %d input tokens...", input.size() ); \
+	ResetMessageReports(); \
+	StartProfiling( name ); \
+	Parser::Parse( input, grammar ); \
+	EndProfiling( name ); \
+	ExpectSingleError( name, code ); \
+	ResetMessageReports(); \
+} while( false )
+
+#define CP2_PARSER_TEST_SIMPLE_WARNING( name, input, grammar, code ) \
+do { \
+	Message( "Running simple parser test \"" name "\" on %d input tokens...", input.size() ); \
+	ResetMessageReports(); \
+	StartProfiling( name ); \
+	Parser::Parse( input, grammar ); \
+	EndProfiling( name ); \
+	ExpectSingleWarning( name, code ); \
+	ResetMessageReports(); \
+} while( false )
+
 void DoParserTests();
 
 }

@@ -1,0 +1,23 @@
+// Copyright (c) 2017-2019 Cranium Software
+
+pass-definition     =   "pass" string pass-modifiers pass-statements ;
+
+pass-statement      =   "output" string-expression ";" ;
+pass-statement      =   "write" string-expression ";"
+pass-statement      =   identifier "=" string-expression ";" ;
+
+pass-statement      =   "{" pass-statement* "}" ;
+
+pass-statement      =   for each identifier in array-expression pass-statements ;
+pass-statement      =   "if" boolean-expresion pass-statements ;
+pass-statement      =   "if" boolean-expresion pass-statements "else" pass-statements ;
+
+pass-modifier       =   "requires" pass-names ;
+pass-modifier       =   "switch" ;
+pass-modifier       =   "switch" string ;
+
+pass-modifiers      =   pass-modifier* ;  
+
+pass-statements     =   "{" pass-statement* "}" ;
+
+pass-names          =   "{" string* "}" ;

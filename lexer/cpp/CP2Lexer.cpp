@@ -8,6 +8,16 @@ namespace CP2
 namespace Lexer
 {
 
+const std::vector< Quote >& CP2QuoteRules()
+{
+	static const std::vector< Quote > lsaxQuoteRules =
+	{
+		Quote( "<string>", "\"", "\"", "\\" ),
+	};
+
+	return lsaxQuoteRules;
+}
+
 const std::vector< Comment >& CP2CommentRules()
 {
 	static const std::vector< Comment > lsaxCommentRules =
@@ -110,7 +120,7 @@ std::vector< Token > CP2Lex( const char* const szFilename )
 {
 	std::vector< Token > xTokenList;
 
-	return Lex( szFilename, CP2LexerRules(), CP2CommentRules() );
+	return Lex( szFilename, CP2LexerRules(), CP2CommentRules(), CP2QuoteRules() );
 }
 
 }

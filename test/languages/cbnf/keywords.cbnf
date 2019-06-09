@@ -1,0 +1,57 @@
+// Copyright (c) 2017-2019 Cranium Software
+
+keywords
+{
+    "keywords"
+    "identifiers"
+    "operators"
+    "separators"
+    "terminators"
+    "strings"
+    "language"
+    "comment"
+    "quote"
+    "lexeme"
+    "pass"
+    "requires"
+    "output"
+    "switch"
+    "write"
+    "name"
+    "for"
+    "each"
+    "in"
+    "productions"
+    "names"
+    "is-optional"
+    "is-non-empty"
+    "is-list"
+    "true"
+    "false"
+}
+
+identifiers
+{
+    identifier
+}
+
+operators
+{
+    "="
+    "{"
+    "}"
+    "*"
+    "+"
+    "?"
+    "."
+}
+
+terminators
+{
+    ";"
+}
+
+strings
+{
+    string
+}

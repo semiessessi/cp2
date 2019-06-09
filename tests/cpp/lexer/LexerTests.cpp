@@ -11,6 +11,8 @@ namespace CP2
 namespace Tests
 {
 
+// SE - TODO: quote tests.
+
 static const std::string kxSimpleLexerInput = "abc";
 static const std::string kxSimpleSpacedLexerInput = "a b c";
 static const std::string kxDummyLexerInput = "abcbacabcbb ab bc\nababca bcacb\nabacbac abacb";
@@ -19,6 +21,7 @@ static std::string gxLong = kxDummyLexerInput;
 
 static const std::vector< Lexer::Rule > kaxEmptyLexerRules;
 static const std::vector< Lexer::Comment > kaxEmptyCommentRules;
+static const std::vector< Lexer::Quote > kaxEmptyQuoteRules;
 
 static const std::vector< Lexer::Rule > kaxABCRules =
 {
@@ -63,38 +66,38 @@ void DoEdgecaseInputTests()
 {
 	CP2_LEXER_TEST_SINGLE_INTERNAL_ERROR(
 		"no rules, no comments, no input", "empty-test-input",
-		kxEmptyString, kaxEmptyLexerRules, kaxEmptyCommentRules, 2401 );
+		kxEmptyString, kaxEmptyLexerRules, kaxEmptyCommentRules, kaxEmptyQuoteRules, 2401 );
 
 	CP2_LEXER_TEST_SINGLE_INTERNAL_ERROR(
 		"no rules, no comments, short input", "simple-test-input",
-		kxSimpleLexerInput, kaxEmptyLexerRules, kaxEmptyCommentRules, 2401 );
+		kxSimpleLexerInput, kaxEmptyLexerRules, kaxEmptyCommentRules, kaxEmptyQuoteRules, 2401 );
 
 	CP2_LEXER_TEST_CLEAN(
 		"abc rules, no comments, no input", "long-test-input",
-		kxEmptyString, kaxABCRules, kaxEmptyCommentRules );
+		kxEmptyString, kaxABCRules, kaxEmptyCommentRules, kaxEmptyQuoteRules );
 
 	CP2_LEXER_TEST_CLEAN(
 		"abc rules, no comments, long input", "long-test-input",
-		gxLong, kaxABCRules, kaxEmptyCommentRules );
+		gxLong, kaxABCRules, kaxEmptyCommentRules, kaxEmptyQuoteRules );
 	
 	CP2_LEXER_TEST_CLEAN(
 		"ac rules, b line comments, long input", "long-test-input",
-		gxLong, kaxACRules, kaxBCommentRules );
+		gxLong, kaxACRules, kaxBCommentRules, kaxEmptyQuoteRules );
 
 	CP2_LEXER_TEST_CLEAN(
 		"b rules, ac block comments, long input", "long-test-input",
-		gxLong, kaxBRules, kaxACCommentRules );
+		gxLong, kaxBRules, kaxACCommentRules, kaxEmptyQuoteRules );
 }
 
 void DoBadTokenTests()
 {
 	CP2_LEXER_TEST_SINGLE_ERROR(
 		"ac rules, no comments, short input", "simple-test-input",
-		kxSimpleLexerInput, kaxACRules, kaxEmptyCommentRules, 2002 );
+		kxSimpleLexerInput, kaxACRules, kaxEmptyCommentRules, kaxEmptyQuoteRules, 2002 );
 
 	CP2_LEXER_TEST_SINGLE_ERROR(
 		"ac rules, no comments, short spaced input", "simple-spaced-test-input",
-		kxSimpleSpacedLexerInput, kaxACRules, kaxEmptyCommentRules, 2002 );
+		kxSimpleSpacedLexerInput, kaxACRules, kaxEmptyCommentRules, kaxEmptyQuoteRules, 2002 );
 }
 
 void DoAccuracyTests()

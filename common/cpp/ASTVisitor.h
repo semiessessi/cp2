@@ -4,12 +4,20 @@
 namespace CP2
 {
 
+class ASTNode;
+
 class ASTVisitor
 {
 
 public:
 
-	virtual void Visit( class ASTNode& xNode ) = 0;
+	virtual void Visit( ASTNode& xNode ) = 0;
+
+	void DoVisit( ASTNode& xNode )
+	{
+		Visit( xNode );
+	}
+
 };
 
 }

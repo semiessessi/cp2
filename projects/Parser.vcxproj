@@ -23,6 +23,10 @@
     <ClCompile Include="..\parser\cpp\CP2Parser.cpp" />
     <ClCompile Include="..\parser\cpp\Grammar.cpp" />
     <ClCompile Include="..\parser\cpp\GrammarCompiler.cpp" />
+    <ClCompile Include="..\parser\cpp\GrammarExpression.cpp" />
+    <ClCompile Include="..\parser\cpp\GrammarProduction.cpp" />
+    <ClCompile Include="..\parser\cpp\LLK.cpp" />
+    <ClCompile Include="..\parser\cpp\NormalisedGrammar.cpp" />
     <ClCompile Include="..\parser\cpp\Parser.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -33,6 +37,10 @@
     <ClInclude Include="..\parser\cpp\CP2Parser.h" />
     <ClInclude Include="..\parser\cpp\Grammar.h" />
     <ClInclude Include="..\parser\cpp\GrammarCompiler.h" />
+    <ClInclude Include="..\parser\cpp\GrammarExpression.h" />
+    <ClInclude Include="..\parser\cpp\GrammarProduction.h" />
+    <ClInclude Include="..\parser\cpp\LLK.h" />
+    <ClInclude Include="..\parser\cpp\NormalisedGrammar.h" />
     <ClInclude Include="..\parser\cpp\Parser.h" />
   </ItemGroup>
   <ItemGroup>
@@ -45,7 +53,7 @@
     <ProjectGuid>{B186497C-9D84-4657-83E4-D0B066F466BA}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Parser</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -115,7 +123,9 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <DisableSpecificWarnings>4530;4577</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4530;4577;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -128,7 +138,9 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <DisableSpecificWarnings>4530;4577</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4530;4577;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -149,7 +161,9 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <ExceptionHandling>false</ExceptionHandling>
-      <DisableSpecificWarnings>4530;4577</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4530;4577;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -172,7 +186,9 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <ExceptionHandling>false</ExceptionHandling>
-      <DisableSpecificWarnings>4530;4577</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4530;4577;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

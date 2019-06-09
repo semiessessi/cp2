@@ -8,4 +8,7 @@ int HelpHandler( const char* const );
 int OutputHandler( const char* const );
 int VerbosityHandler( const char* const );
 
+int CPPHandler( const char* const szParameter );
+int VSIXHandler( const char* const szParameter );
+
 #endif

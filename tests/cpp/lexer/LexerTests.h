@@ -6,38 +6,38 @@
 namespace CP2
 {
 
-#define CP2_LEXER_TEST_SINGLE_INTERNAL_ERROR( name, inputName, input, rules, comments, error ) \
+#define CP2_LEXER_TEST_SINGLE_INTERNAL_ERROR( name, inputName, input, rules, comments, quotes, error ) \
 	Message( "Running lexer test \"" name "\" on %d input characters...", input.size() ); \
 	ResetMessageReports(); \
 	StartProfiling( name ); \
-	Lexer::Lex( inputName, input.c_str(), rules, comments ); \
+	Lexer::Lex( inputName, input.c_str(), rules, comments, quotes ); \
 	EndProfiling( name ); \
 	ExpectSingleInternalError( name, error ); \
 	ResetMessageReports()
 
-#define CP2_LEXER_TEST_SINGLE_ERROR( name, inputName, input, rules, comments, error ) \
+#define CP2_LEXER_TEST_SINGLE_ERROR( name, inputName, input, rules, comments, quotes, error ) \
 	Message( "Running lexer test \"" name "\" on %d input characters...", input.size() ); \
 	ResetMessageReports(); \
 	StartProfiling( name ); \
-	Lexer::Lex( inputName, input.c_str(), rules, comments ); \
+	Lexer::Lex( inputName, input.c_str(), rules, comments, quotes ); \
 	EndProfiling( name ); \
 	ExpectSingleError( name, error ); \
 	ResetMessageReports()
 
-#define CP2_LEXER_TEST_SINGLE_WARNING( name, inputName, input, rules, comments, error ) \
+#define CP2_LEXER_TEST_SINGLE_WARNING( name, inputName, input, rules, comments, quotes, error ) \
 	Message( "Running lexer test \"" name "\" on %d input characters...", input.size() ); \
 	ResetMessageReports(); \
 	StartProfiling( name ); \
-	Lexer::Lex( inputName, input.c_str(), rules, comments ); \
+	Lexer::Lex( inputName, input.c_str(), rules, comments, quotes ); \
 	EndProfiling( name ); \
 	ExpectSingleError( name, error ); \
 	ResetMessageReports()
 
-#define CP2_LEXER_TEST_CLEAN( name, inputName, input, rules, comments ) \
+#define CP2_LEXER_TEST_CLEAN( name, inputName, input, rules, comments, quotes ) \
 	Message( "Running lexer test \"" name "\" on %d input characters...", input.size() ); \
 	ResetMessageReports(); \
 	StartProfiling( name ); \
-	Lexer::Lex( inputName, input.c_str(), rules, comments ); \
+	Lexer::Lex( inputName, input.c_str(), rules, comments, quotes ); \
 	EndProfiling( name ); \
 	ExpectClean( name ); \
 	ResetMessageReports()
