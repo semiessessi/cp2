@@ -7,7 +7,7 @@ const Grammar& GetCBNFGrammar()
 	static Grammar kxCBNFGrammar(
 	{
 		GrammarProduction("<grammar>",
-			GE( "<statement>" ) ),
+			!GE( "<statement>" ) ),
 		GrammarProduction("<statement>",
 			GE( "<production>" ) ),
 		GrammarProduction("<statement>",
@@ -25,7 +25,7 @@ const Grammar& GetCBNFGrammar()
 		GrammarProduction("<statement>",
 			GE( "<pass-definition>" ) ),
 		GrammarProduction("<terminal-list>",
-			GE( "{" ) + GE( "<terminal>" ) + GE( "}" ) ),
+			GE( "{" ) + !GE( "<terminal>" ) + GE( "}" ) ),
 		GrammarProduction("<terminal>",
 			GE( "<identifier>" ) ),
 		GrammarProduction("<terminal>",
@@ -39,7 +39,7 @@ const Grammar& GetCBNFGrammar()
 		GrammarProduction("<production>",
 			GE( "lexeme" ) + GE( "<identifier>" ) + GE( "<string>" ) + GE( ";" ) ),
 		GrammarProduction("<production>",
-			GE( "<identifier>" ) + GE( "=" ) + GE( "<rule-expression>" ) + GE( ";" ) ),
+			GE( "<identifier>" ) + GE( "=" ) + !GE( "<rule-expression>" ) + GE( ";" ) ),
 		GrammarProduction("<production>",
 			GE( "<identifier>" ) + GE( "=" ) + GE( "..." ) + GE( ";" ) ),
 		GrammarProduction("<rule-expression>",

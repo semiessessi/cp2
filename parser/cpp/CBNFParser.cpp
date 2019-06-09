@@ -75,6 +75,12 @@ const Grammar& GetCBNFGrammar()
             GE( "for" ) + GE( "each" ) + GE( "<identifier>" )
                 + GE( "in" ) + GE( "<array-expression>" ) + GE( "<pass-statements>" ) ),
 
+        GrammarProduction( "<pass-statement>",
+            GE( "if" ) + GE( "<boolean-expression>" ) + GE( "<pass-statements>" )
+                + GE( "else" ) + GE( "<pass-statements>" ) ),
+        GrammarProduction( "<pass-statement>",
+            GE( "if" ) + GE( "<boolean-expression>" ) + GE( "<pass-statements>" ) ),
+
         GrammarProduction( "<pass-modifier>", GE( "requires" ) + GE( "<pass-names>" ) ),
         GrammarProduction( "<pass-modifier>", GE( "switch" ) ),
         GrammarProduction( "<pass-modifier>", GE( "switch" ) + GE( "<string>" ) ),
@@ -145,6 +151,8 @@ const Grammar& GetCBNFGrammar()
         kxCBNFGrammar.AddKeyword( "\"is-list\"" );
         kxCBNFGrammar.AddKeyword( "\"true\"" );
         kxCBNFGrammar.AddKeyword( "\"false\"" );
+        kxCBNFGrammar.AddKeyword( "\"if\"" );
+        kxCBNFGrammar.AddKeyword( "\"else\"" );
 
         kxCBNFGrammar.AddTerminator( "\";\"" );
 

@@ -22,6 +22,24 @@ pass "cpp" switch
         for each production-name in production.names
         {
             write join ;
+            if production-name.is-list
+            {
+                if production-name.is-non-empty
+                {
+                    write "+" ;
+                }
+                else
+                {
+                    write "!" ;
+                }
+            }
+            else
+            {
+                if production-name.is-optional
+                {
+                    write "~" ;
+                }
+            }
             write "GE( \"" + production-name + "\" ) " ;
             join = "+ " ;
         }

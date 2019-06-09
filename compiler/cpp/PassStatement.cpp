@@ -4,6 +4,7 @@
 
 #include "Context.h"
 #include "Statements/Assignment.h"
+#include "Statements/Conditional.h"
 #include "Statements/ForEach.h"
 #include "Statements/Output.h"
 #include "Statements/PassScope.h"
@@ -32,6 +33,7 @@ const std::unordered_map<
     { "output", Output::Create },
     { "write", Write::Create },
     { "for", ForEach::Create },
+    { "if", Conditional::Create },
 };
 
 #undef BP
