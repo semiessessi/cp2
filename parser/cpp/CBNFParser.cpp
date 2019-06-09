@@ -87,6 +87,7 @@ const Grammar& GetCBNFGrammar()
 
         GrammarProduction( "<string-expression>", GE( "<string>" ) ),
         GrammarProduction( "<string-expression>", GE( "<identifier>" ) ),
+        GrammarProduction( "<string-expression>", GE( "<boolean-expression>" ) ),
 
         GrammarProduction( "<string-expression>", GE( "<string-expression>" ) + GE( "+" ) + GE( "<string-expression>" ) ),
 
@@ -96,6 +97,12 @@ const Grammar& GetCBNFGrammar()
         GrammarProduction( "<array-expression>", GE( "language" ) + GE( "." ) + GE( "productions" ) ),
         GrammarProduction( "<array-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "productions" ) ),
         GrammarProduction( "<array-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "names" ) ),
+
+        GrammarProduction( "<boolean-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "is-optional" ) ),
+        GrammarProduction( "<boolean-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "is-non-empty" ) ),
+        GrammarProduction( "<boolean-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "is-list" ) ),
+        GrammarProduction( "<boolean-expression>", GE( "true" ) ),
+        GrammarProduction( "<boolean-expression>", GE( "false" ) ),
 
         // for non-production statements...
         GrammarProduction( "<terminal-list>", GE( "{" ) + !GE( "<terminal>" ) + GE( "}" ) ),
@@ -133,6 +140,11 @@ const Grammar& GetCBNFGrammar()
         kxCBNFGrammar.AddKeyword( "\"in\"" );
         kxCBNFGrammar.AddKeyword( "\"productions\"" );
         kxCBNFGrammar.AddKeyword( "\"names\"" );
+        kxCBNFGrammar.AddKeyword( "\"is-optional\"" );
+        kxCBNFGrammar.AddKeyword( "\"is-non-empty\"" );
+        kxCBNFGrammar.AddKeyword( "\"is-list\"" );
+        kxCBNFGrammar.AddKeyword( "\"true\"" );
+        kxCBNFGrammar.AddKeyword( "\"false\"" );
 
         kxCBNFGrammar.AddTerminator( "\";\"" );
 

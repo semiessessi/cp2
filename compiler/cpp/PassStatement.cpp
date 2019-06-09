@@ -108,6 +108,52 @@ Variable* PassStatement::EvaluateArrayExpression(
     return nullptr;
 }
 
+bool PassStatement::EvaluateBooleanExpression(
+    const ASTNode* const pxAST, const Context& xContext )
+{
+    if( pxAST->GetChildCount() == 1 )
+    {
+        return pxAST->GetChild( 0 )->GetProductionName() == "true";
+    }
+    else if( pxAST->GetChildCount() == 3 )
+    {
+        if( pxAST->GetChild( 1 )->GetProductionName() == "." )
+        {
+            const Variable* pxVariable
+                = xContext.GetVariable(
+                    pxAST->GetChild( 0 )->GetTokenValue() );
+            if( pxVariable == nullptr )
+            {
+                pxVariable
+                    = xContext.GetVariable(
+                        pxAST->GetChild( 0 )->GetProductionName() );
+            }
+
+            if( pxVariable != nullptr )
+            {
+                if( pxAST->GetChild( 2 )->GetProductionName()
+                    == "is-optional" )
+                {
+                    return pxVariable->IsOptionalName();
+                }
+                else if( pxAST->GetChild( 2 )->GetProductionName()
+                    == "is-non-empty" )
+                {
+                    return pxVariable->IsNonEmptyName();
+                }
+                else if( pxAST->GetChild( 2 )->GetProductionName()
+                    == "is-list" )
+                {
+                    return pxVariable->IsMultipleName();
+                }
+            }
+        }
+    }
+
+    // SE - TODO: error?
+    return false;
+}
+
 std::string PassStatement::EvaluateStringExpression(
     const ASTNode* const pxAST, const Context& xContext )
 {
@@ -120,6 +166,12 @@ std::string PassStatement::EvaluateStringExpression(
             const std::string& xValue
                 = pxAST->GetChild( 0 )->GetTokenValue();
             return xValue.substr( 1, xValue.length() - 2 );
+        }
+        else if( xProductionName == "<boolean-expression>" )
+        {
+            return EvaluateBooleanExpression(
+                pxAST->GetChild( 0 ), xContext )
+                    ? "true" : "false";
         }
         else if( xProductionName == "<identifier>" )
         {

@@ -57,6 +57,8 @@ const Grammar& GetCBNFGrammar()
 		GrammarProduction("<string-expression>",
 			GE( "<identifier>" ) ),
 		GrammarProduction("<string-expression>",
+			GE( "<boolean-expression>" ) ),
+		GrammarProduction("<string-expression>",
 			GE( "<string-expression>" ) + GE( "+" ) + GE( "<string-expression>" ) ),
 		GrammarProduction("<string-expression>",
 			GE( "<identifier>" ) + GE( "." ) + GE( "name" ) ),
@@ -68,6 +70,16 @@ const Grammar& GetCBNFGrammar()
 			GE( "<identifier>" ) + GE( "." ) + GE( "productions" ) ),
 		GrammarProduction("<array-expression>",
 			GE( "<identifier>" ) + GE( "." ) + GE( "names" ) ),
+		GrammarProduction("<boolean-expression>",
+			GE( "<identifier>" ) + GE( "." ) + GE( "is-optional" ) ),
+		GrammarProduction("<boolean-expression>",
+			GE( "<identifier>" ) + GE( "." ) + GE( "is-non-empty" ) ),
+		GrammarProduction("<boolean-expression>",
+			GE( "<identifier>" ) + GE( "." ) + GE( "is-list" ) ),
+		GrammarProduction("<boolean-expression>",
+			GE( "true" ) ),
+		GrammarProduction("<boolean-expression>",
+			GE( "false" ) ),
 	});
 
 #undef GE

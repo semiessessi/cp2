@@ -23,6 +23,11 @@ keywords
     "in"
     "productions"
     "names"
+    "is-optional"
+    "is-non-empty"
+    "is-list"
+    "true"
+    "false"
 }
 
 identifiers
