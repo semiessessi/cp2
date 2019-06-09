@@ -29,6 +29,7 @@
     <ClInclude Include="..\compiler\cpp\Passes.h" />
     <ClInclude Include="..\compiler\cpp\PassStatement.h" />
     <ClInclude Include="..\compiler\cpp\Statements\Assignment.h" />
+    <ClInclude Include="..\compiler\cpp\Statements\Conditional.h" />
     <ClInclude Include="..\compiler\cpp\Statements\ForEach.h" />
     <ClInclude Include="..\compiler\cpp\Statements\Output.h" />
     <ClInclude Include="..\compiler\cpp\Statements\PassScope.h" />
@@ -52,6 +53,7 @@
     <ClCompile Include="..\compiler\cpp\Passes.cpp" />
     <ClCompile Include="..\compiler\cpp\PassStatement.cpp" />
     <ClCompile Include="..\compiler\cpp\Statements\Assignment.cpp" />
+    <ClCompile Include="..\compiler\cpp\Statements\Conditional.cpp" />
     <ClCompile Include="..\compiler\cpp\Statements\ForEach.cpp" />
     <ClCompile Include="..\compiler\cpp\Statements\Output.cpp" />
     <ClCompile Include="..\compiler\cpp\Statements\PassScope.cpp" />

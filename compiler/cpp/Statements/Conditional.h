@@ -1,7 +1,7 @@
 // Copyright (c) 2019 Cranium Software
 
-#ifndef FOREACH_H
-#define FOREACH_H
+#ifndef CONDITIONAL_H
+#define CONDITIONAL_H
 
 #include "../PassStatement.h"
 
@@ -13,17 +13,17 @@ class ASTNode;
 namespace Compiler
 {
 
-class ForEach
+class Conditional
 : public PassStatement
 {
 
 public:
 
-    ForEach(
+    Conditional(
         const ASTNode* const pxExpression,
-        const std::string& xIdentifier,
-        const ASTNode* const pxScope );
-    ~ForEach();
+        const PassStatement* const pxIf,
+        const PassStatement* const pxElse = nullptr );
+    ~Conditional();
 
     void Execute( Context& xContext ) override;
     PassStatement* Clone() const override;
@@ -32,10 +32,9 @@ public:
 
 private:
 
-    const ASTNode* mpxArrayExpression;
-    const ASTNode* mpxStatements;
-    std::string mxName;
-    PassStatement* mpxScope;
+    const ASTNode* mpxBooleanExpression;
+    PassStatement* mpxIf;
+    PassStatement* mpxElse;
 
 };
 

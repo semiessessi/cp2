@@ -22,6 +22,11 @@ ForEach::ForEach(
 {
 }
 
+ForEach::~ForEach()
+{
+    delete mpxScope;
+}
+
 void ForEach::Execute( Context& xContext )
 {
     Variable* pxVariable =

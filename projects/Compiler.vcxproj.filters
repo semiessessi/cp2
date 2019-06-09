@@ -84,6 +84,9 @@
     <ClInclude Include="..\compiler\cpp\Variables\BooleanVariable.h">
       <Filter>compiler\Variables</Filter>
     </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Statements\Conditional.h">
+      <Filter>compiler\Statements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\compiler\cpp\Compiler.cpp">
@@ -148,6 +151,9 @@
     </ClCompile>
     <ClCompile Include="..\compiler\cpp\Variables\BooleanVariable.cpp">
       <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Statements\Conditional.cpp">
+      <Filter>compiler\Statements</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
