@@ -163,7 +163,7 @@ int main( const int iArgumentCount, const char* const* const pszArguments )
 
 	CP2::Parser::Grammar xCompleteGrammar;
     std::vector< CP2::ASTNode* > axParseTrees;
-	for( int i = 0; i < iFileCount; ++i )
+	for( size_t i = 0; i < axFilenames.size(); ++i )
 	{
 		CP2::ASTNode* const pxAST = CP2::Parser::CBNFParse(
 			CP2::Lexer::CBNFLex( axFilenames[ i ].c_str() ) );
