@@ -11,7 +11,7 @@
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommandArguments>languages/cbnf/grammar.cbnf languages/cbnf/production.cbnf languages/cbnf/expression.cbnf languages/cbnf/keywords.cbnf languages/cbnf/passes/cpp.cbnf -o test -vsix -cpp</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>languages/cbnf/grammar.cbnf languages/cbnf/production.cbnf languages/cbnf/expression.cbnf languages/cbnf/keywords.cbnf languages/cbnf/passes/cpp.cbnf languages/cbnf/passes/cbnf.cbnf -o test -vsix -cpp -cbnf</LocalDebuggerCommandArguments>
     <LocalDebuggerWorkingDirectory>$(TargetDir)</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>

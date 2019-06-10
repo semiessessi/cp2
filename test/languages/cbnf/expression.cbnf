@@ -13,9 +13,28 @@ string-expression           =   string-expression "+" string-expression ;
 
 string-expression           =   identifier "." "name" ;
 string-expression           =   "language" "." "name" ;
+string-expression           =   identifier "." "input-name" ;
 
 array-expression            =   "language" "." "productions" ;
 array-expression            =   identifier "." "productions" ;   
+array-expression            =   "language" "." "keywords" ;
+array-expression            =   identifier "." "keywords" ; 
+array-expression            =   "language" "." "identifiers" ;
+array-expression            =   identifier "." "identifiers" ; 
+array-expression            =   "language" "." "operators" ;
+array-expression            =   identifier "." "operators" ; 
+array-expression            =   "language" "." "terminators" ;
+array-expression            =   identifier "." "terminators" ; 
+array-expression            =   "language" "." "separators" ;
+array-expression            =   identifier "." "separators" ; 
+array-expression            =   "language" "." "strings" ;
+array-expression            =   identifier "." "strings" ; 
+array-expression            =   "language" "." "quotes" ;
+array-expression            =   identifier "." "quotes" ; 
+array-expression            =   "language" "." "line-comments" ;
+array-expression            =   identifier "." "line-comments" ; 
+array-expression            =   "language" "." "block-comments" ;
+array-expression            =   identifier "." "block-comments" ; 
 array-expression            =   identifier "." "names" ;
 
 boolean-expression          =   identifier "." "is-optional" ;

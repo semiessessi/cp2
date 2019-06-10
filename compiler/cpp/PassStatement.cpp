@@ -11,6 +11,7 @@
 #include "Statements/Write.h"
 #include "Variables/ArrayVariable.h"
 #include "Variables/ProductionVariable.h"
+#include "Variables/StringVariable.h"
 #include "Variables/Variable.h"
 
 #include "../../common/cpp/ASTNode.h"
@@ -77,9 +78,104 @@ Variable* PassStatement::EvaluateArrayExpression(
                                 "<temporary-production>", xGrammar, i ) );
                     }
                     return new ArrayVariable(
-                        "<temporary-language-productions>", axProductions );
+                        "<temporary-language-productions>", axProductions, true );
                 }
 
+                if( pxAST->GetChild( 2 )->GetProductionName() == "keywords" )
+                {
+                    std::vector< Variable* > axValues;
+                    const Parser::Grammar& xGrammar
+                        = *( xContext.GetGrammar() );
+                    for( int i = 0; i < xGrammar.GetKeywordCount(); ++i )
+                    {
+                        axValues.push_back(
+                            new StringVariable(
+                                "<temporary-identifier>",
+                                xGrammar.GetKeywords()[ i ] ) );
+                    }
+                    return new ArrayVariable(
+                        "<temporary-language-keywords>", axValues, true );
+                }
+
+                if( pxAST->GetChild( 2 )->GetProductionName() == "identifiers" )
+                {
+                    std::vector< Variable* > axValues;
+                    const Parser::Grammar& xGrammar
+                        = *( xContext.GetGrammar() );
+                    for( int i = 0; i < xGrammar.GetIdentifierCount(); ++i )
+                    {
+                        axValues.push_back(
+                            new StringVariable(
+                                "<temporary-identifier>",
+                                xGrammar.GetIdentifiers()[ i ] ) );
+                    }
+                    return new ArrayVariable(
+                        "<temporary-language-identifiers>", axValues, true );
+                }
+
+                if( pxAST->GetChild( 2 )->GetProductionName() == "operators" )
+                {
+                    std::vector< Variable* > axValues;
+                    const Parser::Grammar& xGrammar
+                        = *( xContext.GetGrammar() );
+                    for( int i = 0; i < xGrammar.GetOperatorCount(); ++i )
+                    {
+                        axValues.push_back(
+                            new StringVariable(
+                                "<temporary-identifier>",
+                                xGrammar.GetOperators()[ i ] ) );
+                    }
+                    return new ArrayVariable(
+                        "<temporary-language-operators>", axValues, true );
+                }
+
+                if( pxAST->GetChild( 2 )->GetProductionName() == "terminators" )
+                {
+                    std::vector< Variable* > axValues;
+                    const Parser::Grammar& xGrammar
+                        = *( xContext.GetGrammar() );
+                    for( int i = 0; i < xGrammar.GetTerminatorCount(); ++i )
+                    {
+                        axValues.push_back(
+                            new StringVariable(
+                                "<temporary-identifier>",
+                                xGrammar.GetTerminators()[ i ] ) );
+                    }
+                    return new ArrayVariable(
+                        "<temporary-language-terminators>", axValues, true );
+                }
+
+                if( pxAST->GetChild( 2 )->GetProductionName() == "separators" )
+                {
+                    std::vector< Variable* > axValues;
+                    const Parser::Grammar& xGrammar
+                        = *( xContext.GetGrammar() );
+                    for( int i = 0; i < xGrammar.GetSeparatorCount(); ++i )
+                    {
+                        axValues.push_back(
+                            new StringVariable(
+                                "<temporary-identifier>",
+                                xGrammar.GetSeparators()[ i ] ) );
+                    }
+                    return new ArrayVariable(
+                        "<temporary-language-separators>", axValues, true );
+                }
+
+                if( pxAST->GetChild( 2 )->GetProductionName() == "strings" )
+                {
+                    std::vector< Variable* > axValues;
+                    const Parser::Grammar& xGrammar
+                        = *( xContext.GetGrammar() );
+                    for( int i = 0; i < xGrammar.GetStringCount(); ++i )
+                    {
+                        axValues.push_back(
+                            new StringVariable(
+                                "<temporary-identifier>",
+                                xGrammar.GetStrings()[ i ] ) );
+                    }
+                    return new ArrayVariable(
+                        "<temporary-language-strings>", axValues, true );
+                }
                 // error?
             }
 
@@ -211,6 +307,11 @@ std::string PassStatement::EvaluateStringExpression(
                 if( pxAST->GetChild( 2 )->GetProductionName() == "name" )
                 {
                     return pxVariable->GetNameValue();
+                }
+
+                if( pxAST->GetChild( 2 )->GetProductionName() == "input-name" )
+                {
+                    return pxVariable->GetInputName();
                 }
             }
         }

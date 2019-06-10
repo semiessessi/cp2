@@ -16,5 +16,10 @@ NameVariable::NameVariable(
 
 }
 
+std::string NameVariable::GetInputName() const
+{
+    return InputNameFromOutputName( mxParseName.xName );
+}
+
 }
 }

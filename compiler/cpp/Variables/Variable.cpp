@@ -33,5 +33,89 @@ int Variable::GetIndexedCount() const
     return 0;
 }
 
+std::string Variable::GetInputName() const
+{
+    CP2::Error( 6003, "???", 0, 0, "Trying to get input name from variable %s which is not a production name", mxName.c_str() );
+    return "";
+}
+
+std::string Variable::InputNameFromOutputName(
+    const std::string& xOutputName )
+{
+    if( xOutputName.front() == '<' )
+    {
+        return xOutputName.substr( 1, xOutputName.size() - 2 );
+    }
+
+    return std::string( "\"" ) + xOutputName + "\"";
+}
+
+Variable* Variable::GetKeywords() const
+{
+    CP2::Error( 6004, "???", 0, 0, "Bad member access on variable %s which is not a language", mxName.c_str() );
+    return nullptr;
+}
+
+Variable* Variable::GetIdentifiers() const
+{
+    CP2::Error( 6004, "???", 0, 0, "Bad member access on variable %s which is not a language", mxName.c_str() );
+    return nullptr;
+}
+
+Variable* Variable::GetStrings() const
+{
+    CP2::Error( 6004, "???", 0, 0, "Bad member access on variable %s which is not a language", mxName.c_str() );
+    return nullptr;
+}
+
+Variable* Variable::GetOperators() const
+{
+    CP2::Error( 6004, "???", 0, 0, "Bad member access on variable %s which is not a language", mxName.c_str() );
+    return nullptr;
+}
+
+Variable* Variable::GetTerminators() const
+{
+    CP2::Error( 6004, "???", 0, 0, "Bad member access on variable %s which is not a language", mxName.c_str() );
+    return nullptr;
+}
+
+Variable* Variable::GetSeparators() const
+{
+    CP2::Error( 6004, "???", 0, 0, "Bad member access on variable %s which is not a language", mxName.c_str() );
+    return nullptr;
+}
+
+Variable* Variable::GetLexemes() const
+{
+    CP2::Error( 6004, "???", 0, 0, "Bad member access on variable %s which is not a language", mxName.c_str() );
+    return nullptr;
+}
+
+Variable* Variable::GetQuotes() const
+{
+    CP2::Error( 6004, "???", 0, 0, "Bad member access on variable %s which is not a language", mxName.c_str() );
+    return nullptr;
+}
+
+Variable* Variable::GetLineComments() const
+{
+    CP2::Error( 6004, "???", 0, 0, "Bad member access on variable %s which is not a language", mxName.c_str() );
+    return nullptr;
+}
+
+Variable* Variable::GetBlockComments() const
+{
+    CP2::Error( 6004, "???", 0, 0, "Bad member access on variable %s which is not a language", mxName.c_str() );
+    return nullptr;
+}
+
+void Variable::DeleteArray( const std::vector< Variable* >& xVariables )
+{
+    for( Variable* const pxVariable : xVariables )
+    {
+        delete pxVariable;
+    }
+}
 }
 }

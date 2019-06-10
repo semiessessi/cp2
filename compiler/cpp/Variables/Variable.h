@@ -4,6 +4,7 @@
 #define VARIABLE_H
 
 #include <string>
+#include <vector>
 
 namespace CP2
 {
@@ -35,6 +36,25 @@ public:
     virtual bool IsNonEmptyName() const { return false; }
 
     const std::string& GetName() const { return mxName; }
+    virtual std::string GetInputName() const;
+
+    virtual Variable* GetKeywords() const;
+    virtual Variable* GetIdentifiers() const;
+    virtual Variable* GetStrings() const;
+    virtual Variable* GetOperators() const;
+    virtual Variable* GetTerminators() const;
+    virtual Variable* GetSeparators() const;
+    
+    virtual Variable* GetLexemes() const;
+    virtual Variable* GetQuotes() const;
+    virtual Variable* GetLineComments() const;
+    virtual Variable* GetBlockComments() const;
+
+    static void DeleteArray( const std::vector< Variable* >& xVariables );
+
+protected:
+
+    static std::string InputNameFromOutputName( const std::string& xOutputName );
 
 private:
 

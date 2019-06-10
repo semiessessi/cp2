@@ -45,5 +45,10 @@ int ProductionVariable::GetIndexedCount() const
     return static_cast< int >( axNames.size() );
 }
 
+std::string ProductionVariable::GetInputName() const
+{
+    return InputNameFromOutputName( GetNameValue() );
+}
+
 }
 }

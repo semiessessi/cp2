@@ -9,7 +9,8 @@ namespace Compiler
 
 ArrayVariable::ArrayVariable(
     const std::string& xName,
-    const std::vector< Variable* >& xArray )
+    const std::vector< Variable* >& xArray,
+    const bool bDelete )
 : Variable( xName )
 , mxContent()
 {
@@ -17,6 +18,16 @@ ArrayVariable::ArrayVariable(
     {
         mxContent.push_back( pxVariable->Clone() );
     }
+
+    if( bDelete )
+    {
+        DeleteArray( xArray );
+    }
+}
+
+ArrayVariable::~ArrayVariable()
+{
+    DeleteArray( mxContent );
 }
 
 }

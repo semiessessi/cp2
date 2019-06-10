@@ -1,0 +1,93 @@
+// Copyright (c) 2017-2019 Cranium Software
+
+pass "cbnf" switch
+{
+    output language.name + ".cbnf" ;
+    
+    write "// CBNF grammar definition for " + language.name + "\n\n" ;
+
+    write "language \"" + language.name + "\" ;\n\n" ;
+    
+    for each production in language.productions
+    {
+        write production.input-name + " = " ;
+        join = "" ;
+        
+        for each production-name in production.names
+        {
+            write join ;
+            write production-name.input-name ;
+            if production-name.is-list
+            {
+                if production-name.is-non-empty
+                {
+                    write "+" ;
+                }
+                else
+                {
+                    write "*" ;
+                }
+            }
+            else
+            {
+                if production-name.is-optional
+                {
+                    write "?" ;
+                }
+            }
+            join = " " ;
+        }
+        
+        write " ;\n" ;
+    }
+    
+    write "\n" ;
+    
+    write "keywords\n" ;
+    write "{\n" ;
+    for each value in language.keywords
+    {
+        write "\t" + value + "\n";
+    }
+    write "}\n\n";
+    
+    write "identifiers\n" ;
+    write "{\n" ;
+    for each value in language.identifiers
+    {
+        write "\t" + value + "\n";
+    }
+    write "}\n\n";
+    
+    write "operators\n" ;
+    write "{\n" ;
+    for each value in language.operators
+    {
+        write "\t" + value + "\n";
+    }
+    write "}\n\n";
+    
+    write "separators\n" ;
+    write "{\n" ;
+    for each value in language.separators
+    {
+        write "\t" + value + "\n" ;
+    }
+    write "}\n\n";
+    
+    write "terminators\n" ;
+    write "{\n" ;
+    for each value in language.terminators
+    {
+        write "\t" + value + "\n" ;
+    }
+    write "}\n\n";
+    
+    write "strings\n" ;
+    write "{\n" ;
+    for each value in language.strings
+    {
+        write "\t" + value + "\n" ;
+    }
+    write "}\n";
+}

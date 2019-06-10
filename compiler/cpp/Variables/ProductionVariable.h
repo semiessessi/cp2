@@ -34,6 +34,8 @@ public:
 
     bool HasNames() const override { return true; }
 
+    std::string GetInputName() const override;
+
 private:
 
     const Parser::Grammar& mxGrammar;

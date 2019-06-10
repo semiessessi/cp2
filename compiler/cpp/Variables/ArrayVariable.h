@@ -19,7 +19,11 @@ class ArrayVariable
 {
 public:
 
-    ArrayVariable( const std::string& xName, const std::vector< Variable* >& xArray );
+    ArrayVariable(
+        const std::string& xName, 
+        const std::vector< Variable* >& xArray,
+        const bool bDelete = false);
+    ~ArrayVariable();
 
     Variable* Clone() const override { return new ArrayVariable( GetName(), mxContent ); }
 

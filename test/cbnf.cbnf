@@ -1,28 +1,120 @@
-// Copyright (c) 2017 Cranium Software
+// CBNF grammar definition for CBNF
 
 language "CBNF" ;
 
-comment "//" ;
-comment "/*" "*/" ;
+grammar = statement* ;
+statement = production ;
+statement = "keywords" terminal-list ;
+statement = "identifiers" terminal-list ;
+statement = "operators" terminal-list ;
+statement = "separators" terminal-list ;
+statement = "terminators" terminal-list ;
+statement = "strings" terminal-list ;
+statement = pass-definition ;
+terminal-list = "{" terminal* "}" ;
+terminal = identifier ;
+terminal = string ;
+production = "comment" string ";" ;
+production = "comment" string string ";" ;
+production = "quote" identifier string string string ";" ;
+production = "lexeme" identifier string ";" ;
+production = identifier "=" rule-expression* ";" ;
+production = identifier "=" "..." ";" ;
+rule-expression = string ;
+rule-expression = identifier ;
+rule-expression = identifier "*" ;
+rule-expression = identifier "?" ;
+rule-expression = identifier "+" ;
+string-expression = string ;
+string-expression = identifier ;
+string-expression = boolean-expression ;
+string-expression = string-expression "+" string-expression ;
+string-expression = identifier "." "name" ;
+string-expression = "language" "." "name" ;
+string-expression = identifier "." "input-name" ;
+array-expression = "language" "." "productions" ;
+array-expression = identifier "." "productions" ;
+array-expression = "language" "." "keywords" ;
+array-expression = identifier "." "keywords" ;
+array-expression = "language" "." "identifiers" ;
+array-expression = identifier "." "identifiers" ;
+array-expression = "language" "." "operators" ;
+array-expression = identifier "." "operators" ;
+array-expression = "language" "." "terminators" ;
+array-expression = identifier "." "terminators" ;
+array-expression = "language" "." "separators" ;
+array-expression = identifier "." "separators" ;
+array-expression = "language" "." "strings" ;
+array-expression = identifier "." "strings" ;
+array-expression = "language" "." "quotes" ;
+array-expression = identifier "." "quotes" ;
+array-expression = "language" "." "line-comments" ;
+array-expression = identifier "." "line-comments" ;
+array-expression = "language" "." "block-comments" ;
+array-expression = identifier "." "block-comments" ;
+array-expression = identifier "." "names" ;
+boolean-expression = identifier "." "is-optional" ;
+boolean-expression = identifier "." "is-non-empty" ;
+boolean-expression = identifier "." "is-list" ;
+boolean-expression = "true" ;
+boolean-expression = "false" ;
 
-quote string "\"" "\"" "\\" ;
+keywords
+{
+	"keywords"
+	"identifiers"
+	"operators"
+	"separators"
+	"terminators"
+	"strings"
+	"language"
+	"comment"
+	"quote"
+	"lexeme"
+	"pass"
+	"requires"
+	"output"
+	"switch"
+	"write"
+	"name"
+	"for"
+	"each"
+	"in"
+	"productions"
+	"names"
+	"is-optional"
+	"is-non-empty"
+	"is-list"
+	"true"
+	"false"
+}
 
-lexeme identifier "[_a-zA-Z][_\\-a-zA-Z0-9]*" ;
+identifiers
+{
+	identifier
+}
 
-grammar				=	production* ;
+operators
+{
+	"="
+	"{"
+	"}"
+	"*"
+	"+"
+	"?"
+	"."
+}
 
-production			=	"comment" string ";" ;
-production			=	"comment" string string ";" ;
+separators
+{
+}
 
-production			=	"quote" identifier string string string ";" ;
+terminators
+{
+	";"
+}
 
-production			=	"lexeme" identifier string ";" ;
-
-production			=	identifier "=" rule-expression* ";" ;
-production			=	identifier "=" "..." ";" ;
-
-rule-expression     =   string ;
-rule-expression		=	identifier ;
-rule-expression		=	identifier "*" ;
-rule-expression		=	identifier "?" ;
-rule-expression		=	identifier "+" ;
+strings
+{
+	string
+}

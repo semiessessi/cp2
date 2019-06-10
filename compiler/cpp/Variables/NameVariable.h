@@ -32,6 +32,8 @@ public:
     bool IsMultipleName() const override { return mxParseName.bList; }
     bool IsNonEmptyName() const override { return mxParseName.bNonEmpty; }
 
+    std::string GetInputName() const override;
+
 private:
 
     Parser::Name mxParseName;
