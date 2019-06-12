@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Cranium Software
+// Copyright (c) 2017-2019 Cranium Software
 
 #include "CBNFLexer.h"
 #include "Lexer.h"
@@ -79,6 +79,7 @@ const std::vector< Rule >& CBNFLexerRules()
         Rule( "}",						        Token( "}",				    2006 ) ),
         Rule( "\\+",							Token( "+",					2007 ) ),
         Rule( "\\.",							Token( ".",					2008 ) ),
+        Rule( "\\=\\=",							Token( "==",				2009 ) ),
 		
 	};
 

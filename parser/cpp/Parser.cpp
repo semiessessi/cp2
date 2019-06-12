@@ -1,9 +1,12 @@
+// Copyright (c) 2017-2019 Cranium Software
+
 #include "Parser.h"
 
 #include "Grammar.h"
 
 #include "../../common/cpp/ASTNode.h"
 #include "../../common/cpp/Report.h"
+#include "../../common/cpp/Token.h"
 
 #include <algorithm>
 
@@ -11,6 +14,9 @@ namespace CP2
 {
 namespace Parser
 {
+
+static std::vector< ASTNode* > saxDeepestErrors;
+static int siDeepestCursor = -1;
 
 struct ParseState
 {
@@ -23,6 +29,17 @@ struct ParseState
 		mpxAST = nullptr;
 	}
 };
+
+void ResetDeepestErrors()
+{
+    for( ASTNode* pxError : saxDeepestErrors )
+    {
+        delete pxError;
+    }
+
+    saxDeepestErrors.clear();
+    siDeepestCursor = -1;
+}
 
 std::vector< ParseState > ParseRecursive(
 	const std::vector< Token >& axTokens, const Grammar& xGrammar,
@@ -92,6 +109,8 @@ static inline bool HandleCatchAll(
 static inline bool ContinueState( size_t& k,
 	const std::vector< Token >& axTokens,
 	const Grammar& xGrammar,
+    const int iProduction,
+    const GrammarProduction& xProduction,
 	const Name& xName,
 	const std::vector< GrammarProduction >& axNewProductions,
 	std::vector< ParseState >& axWorkingNewStates,
@@ -116,7 +135,9 @@ static inline bool ContinueState( size_t& k,
                 axTokens[ iCurrentCursor - 1 ],
                 xName,
                 3001,
-                xName ),
+                xName,
+                xGrammar.GetProductionsForParsing(
+                    xName.xName )[ iProduction ] ),
 			iCurrentCursor - 1
 		};
 		axWorkingNewStates.push_back( xNewState );
@@ -145,10 +166,26 @@ static inline bool ContinueState( size_t& k,
 			// report error
 			ParseState xNewState =
 			{
-				new ASTNode( iCurrentCursor, axTokens[ iCurrentCursor ], xName, 3002, xName ),
+				new ASTNode( iCurrentCursor,
+                    axTokens[ iCurrentCursor ],
+                    xName, 3002, xName,
+                    xGrammar.GetProductionsForParsing(
+                        xProduction.GetName() )[ iProduction ] ),
 				iCurrentCursor - 1
 			};
 			axWorkingNewStates.push_back( xNewState );
+
+            if( iCurrentCursor >= siDeepestCursor )
+            {
+                if( siDeepestCursor < iCurrentCursor )
+                {
+                    ResetDeepestErrors();
+                }
+
+                saxDeepestErrors.push_back(
+                    ASTNode::Duplicate( xNewState.mpxAST ) );
+                siDeepestCursor = iCurrentCursor;
+            }
 		}
 
 		return false;
@@ -204,6 +241,8 @@ static inline bool ParseName(
 	const std::vector< Token >& axTokens,
 	const std::vector< Name >& axNames,
 	const Grammar& xGrammar,
+    const int iProduction,
+    const GrammarProduction& xProduction,
 	int& iCurrentListCount, size_t& j,
 	std::vector< ParseState >& axWorkingNewStates,
 	std::vector< ParseState >& axNewStates )
@@ -237,6 +276,8 @@ static inline bool ParseName(
 	{
 		ContinueState( k,
 			axTokens, xGrammar,
+            iProduction,
+            xProduction,
             xProductionName, axNewProductions,
 			axWorkingNewStates, axNewStates );
 	}
@@ -303,8 +344,10 @@ std::vector< ParseState > ParseRecursive(
 		int iCurrentListCount = 0;
 		for( size_t j = 0; j < axNames.size(); ++j )
 		{
-			if( ParseName( axTokens, axNames, xGrammar,
-				iCurrentListCount, j,
+			if( ParseName( axTokens,
+                axNames, xGrammar,
+                i, axProductions[ i ],
+                iCurrentListCount, j,
 				axWorkingNewStates, axNewStates ) )
 			{
 				break;
@@ -341,13 +384,13 @@ std::vector< ParseState > ParseRecursive(
 		} ), axStates.end() );
 	}
 
-    // SE - TODO: should substitutions be tidied up here??
-
 	return axStates;
 }
 
 ASTNode* Parse( const std::vector< Token >& axTokens, const Grammar& xGrammar )
 {
+    ResetDeepestErrors();
+
 	const std::vector< GrammarProduction > axTopLevelProductions =
 		xGrammar.GetTopLevelProductions();
 	const char* const szFilename = axTokens.size()
@@ -405,10 +448,44 @@ ASTNode* Parse( const std::vector< Token >& axTokens, const Grammar& xGrammar )
 	const int iLastCursor = pxChosenTree->GetEndCursor();
 	if( ( iLastCursor + 1 ) < static_cast< int >( axTokens.size() ) )
 	{
+        const Token& xErrorToken = saxDeepestErrors.empty()
+            ? axTokens[ iLastCursor - 1 ]
+            : saxDeepestErrors[ 0 ]->GetToken();
 		// SE - NOTE: line and column here should be from the last node...
-		Error( 3003, szFilename, pxChosenTree->GetLine(), pxChosenTree->GetColumn(),
-			"Incomplete parse. Unexpected token: %s", axTokens[ iLastCursor + 1 ].GetName() );
-		return nullptr;
+        if( saxDeepestErrors.size() == 1 )
+        {
+            Error( saxDeepestErrors[ 0 ]->GetErrorNumber(),
+                szFilename,
+                saxDeepestErrors[ 0 ]->GetLine(),
+                saxDeepestErrors[ 0 ]->GetColumn(),
+                "Syntax error: %s, expected %s",
+                xErrorToken.GetName(),
+                saxDeepestErrors[ 0 ]->GetExpectedName()
+                    .xName.c_str() );
+            return nullptr;
+        }
+
+        Error( 3003, szFilename,
+            pxChosenTree->GetLine(),
+            pxChosenTree->GetColumn(),
+            "Incomplete parse. Unexpected token: %s",
+            xErrorToken.GetName() );
+		
+        bool bFirst = true;
+        for( ASTNode* const pxError : saxDeepestErrors )
+        {
+            Report( szFilename,
+                pxError->GetLine(),
+                pxError->GetColumn(),
+                "  %s %s - trying to match %s",
+                bFirst ? "expected" : "      or",
+                pxError->GetExpectedName().xName.c_str(),
+                pxError->GetExpectedProduction()
+                    .GetExpression().GetCBNF().c_str() );
+            bFirst = false;
+        }
+
+        return nullptr;
 	}
 
     // SE - NOTE: clean up after left recursion.

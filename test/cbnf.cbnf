@@ -9,7 +9,9 @@ lexeme identifier "[_a-zA-Z][_\\-a-zA-Z0-9]*" ;
 
 quote string "\"" "\"" "\\" ;
 
+
 grammar = statement* ;
+
 statement = production ;
 statement = "keywords" terminal-list ;
 statement = "identifiers" terminal-list ;
@@ -18,26 +20,32 @@ statement = "separators" terminal-list ;
 statement = "terminators" terminal-list ;
 statement = "strings" terminal-list ;
 statement = pass-definition ;
+
 terminal-list = "{" terminal* "}" ;
+
 terminal = identifier ;
 terminal = string ;
+
 production = "comment" string ";" ;
 production = "comment" string string ";" ;
 production = "quote" identifier string string string ";" ;
 production = "lexeme" identifier string ";" ;
 production = identifier "=" rule-expression* ";" ;
 production = identifier "=" "..." ";" ;
+
 rule-expression = string ;
 rule-expression = identifier ;
 rule-expression = identifier "*" ;
 rule-expression = identifier "?" ;
 rule-expression = identifier "+" ;
+
 string-expression = string ;
 string-expression = identifier ;
 string-expression = string-expression "+" string-expression ;
 string-expression = identifier "." "name" ;
 string-expression = "language" "." "name" ;
 string-expression = identifier "." "input-name" ;
+
 array-expression = "language" "." "productions" ;
 array-expression = identifier "." "productions" ;
 array-expression = "language" "." "keywords" ;
@@ -62,6 +70,8 @@ array-expression = "language" "." "block-comments" ;
 array-expression = identifier "." "block-comments" ;
 array-expression = identifier "." "names" ;
 array-expression = identifier ;
+
+boolean-expression = string-expression "==" string-expression ;
 boolean-expression = identifier "." "is-optional" ;
 boolean-expression = identifier "." "is-non-empty" ;
 boolean-expression = identifier "." "is-list" ;
@@ -118,6 +128,7 @@ operators
 	"+"
 	"?"
 	"."
+	"=="
 }
 
 separators

@@ -40,7 +40,8 @@ public:
 	const std::vector< GrammarProduction >& GetProductions() const { return maxProductions; }
 
     std::vector< GrammarProduction > GetOriginalProductions( const std::string& xName ) const;
-	std::vector< GrammarProduction > GetProductionsForParsing( const std::string& xName ) const;
+	const std::vector< GrammarProduction >& GetProductionsForParsing(
+        const std::string& xName ) const;
 
 	std::string GetCBNF() const;
 
