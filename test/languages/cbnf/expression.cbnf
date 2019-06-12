@@ -41,7 +41,7 @@ array-expression            =   identifier "." "names" ;
 array-expression            =   identifier ;
 
 boolean-expression          =   string-expression "==" string-expression ;
-//boolean-expression          =   boolean-expression "==" boolean-expression ;
+boolean-expression          =   boolean-expression "==" boolean-expression ;
 boolean-expression          =   identifier "." "is-optional" ;
 boolean-expression          =   identifier "." "is-non-empty" ;
 boolean-expression          =   identifier "." "is-list" ;
