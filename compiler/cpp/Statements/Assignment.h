@@ -33,7 +33,7 @@ public:
 private:
 
     std::string mxVariableName;
-    const ASTNode* mpxStringExpression;
+    const ASTNode* mpxExpression;
 
 };
 

@@ -87,6 +87,12 @@
     <ClInclude Include="..\compiler\cpp\Statements\Conditional.h">
       <Filter>compiler\Statements</Filter>
     </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\LexemeVariable.h">
+      <Filter>compiler\Variables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\QuoteVariable.h">
+      <Filter>compiler\Variables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\compiler\cpp\Compiler.cpp">
@@ -154,6 +160,12 @@
     </ClCompile>
     <ClCompile Include="..\compiler\cpp\Statements\Conditional.cpp">
       <Filter>compiler\Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\LexemeVariable.cpp">
+      <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\QuoteVariable.cpp">
+      <Filter>compiler\Variables</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

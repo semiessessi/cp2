@@ -10,7 +10,9 @@
 #include "Statements/PassScope.h"
 #include "Statements/Write.h"
 #include "Variables/ArrayVariable.h"
+#include "Variables/LexemeVariable.h"
 #include "Variables/ProductionVariable.h"
+#include "Variables/QuoteVariable.h"
 #include "Variables/StringVariable.h"
 #include "Variables/Variable.h"
 
@@ -79,6 +81,36 @@ Variable* PassStatement::EvaluateArrayExpression(
                     }
                     return new ArrayVariable(
                         "<temporary-language-productions>", axProductions, true );
+                }
+
+                if( pxAST->GetChild( 2 )->GetProductionName() == "lexemes" )
+                {
+                    std::vector< Variable* > axValues;
+                    const Parser::Grammar& xGrammar
+                        = *( xContext.GetGrammar() );
+                    for( int i = 0; i < xGrammar.GetLexemeCount(); ++i )
+                    {
+                        axValues.push_back(
+                            new LexemeVariable(
+                                "<temporary-lexeme>", xGrammar, i ) );
+                    }
+                    return new ArrayVariable(
+                        "<temporary-language-lexemes>", axValues, true );
+                }
+
+                if( pxAST->GetChild( 2 )->GetProductionName() == "quotes" )
+                {
+                    std::vector< Variable* > axValues;
+                    const Parser::Grammar& xGrammar
+                        = *( xContext.GetGrammar() );
+                    for( size_t i = 0; i < xGrammar.GetQuotes().size(); ++i )
+                    {
+                        axValues.push_back(
+                            new QuoteVariable(
+                                "<temporary-quote>", xGrammar, static_cast< int >( i ) ) );
+                    }
+                    return new ArrayVariable(
+                        "<temporary-language-quotes>", axValues, true );
                 }
 
                 if( pxAST->GetChild( 2 )->GetProductionName() == "keywords" )

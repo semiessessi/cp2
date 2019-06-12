@@ -8,6 +8,12 @@ pass "cbnf" switch
 
     write "language \"" + language.name + "\" ;\n\n" ;
     
+    for each value in language.lexemes
+    {
+        write "lexeme " + value.name + " " + value + "\n";
+    }
+    write "\n\n";
+    
     for each production in language.productions
     {
         write production.input-name + " = " ;

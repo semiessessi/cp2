@@ -28,6 +28,11 @@ keywords
     "is-list"
     "true"
     "false"
+    "input-name"
+    "quotes"
+    "lexemes"
+    "block-comments"
+    "line-comments"
 }
 
 identifiers

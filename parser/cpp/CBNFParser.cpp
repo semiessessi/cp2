@@ -68,7 +68,8 @@ const Grammar& GetCBNFGrammar()
         GrammarProduction( "<pass-statement>", GE( "output" ) + GE( "<string-expression>" ) + GE( ";" ) ),
         GrammarProduction( "<pass-statement>", GE( "write" ) + GE( "<string-expression>" ) + GE( ";" ) ),
         GrammarProduction( "<pass-statement>", GE( "<identifier>" ) + GE( "=" ) + GE( "<string-expression>" ) + GE( ";" ) ),
-        
+        GrammarProduction( "<pass-statement>", GE( "<identifier>" ) + GE( "=" ) + GE( "<boolean-expression>" ) + GE( ";" ) ),
+
         GrammarProduction( "<pass-statement>", GE( "{" ) + !GE( "<pass-statement>" ) + GE( "}" ) ),
 
         GrammarProduction( "<pass-statement>",
@@ -117,6 +118,8 @@ const Grammar& GetCBNFGrammar()
         GrammarProduction( "<array-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "strings" ) ),
         GrammarProduction( "<array-expression>", GE( "language" ) + GE( "." ) + GE( "quotes" ) ),
         GrammarProduction( "<array-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "quotes" ) ),
+        GrammarProduction( "<array-expression>", GE( "language" ) + GE( "." ) + GE( "lexemes" ) ),
+        GrammarProduction( "<array-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "lexemes" ) ),
         GrammarProduction( "<array-expression>", GE( "language" ) + GE( "." ) + GE( "line-comments" ) ),
         GrammarProduction( "<array-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "line-comments" ) ),
         GrammarProduction( "<array-expression>", GE( "language" ) + GE( "." ) + GE( "block-comments" ) ),
@@ -173,6 +176,11 @@ const Grammar& GetCBNFGrammar()
         kxCBNFGrammar.AddKeyword( "\"if\"" );
         kxCBNFGrammar.AddKeyword( "\"else\"" );
         kxCBNFGrammar.AddKeyword( "\"input-name\"" );
+        kxCBNFGrammar.AddKeyword( "\"line-comments\"" );
+        kxCBNFGrammar.AddKeyword( "\"block-comments\"" );
+        kxCBNFGrammar.AddKeyword( "\"quotes\"" );
+        kxCBNFGrammar.AddKeyword( "\"lexemes\"" );
+
 
         kxCBNFGrammar.AddTerminator( "\";\"" );
 

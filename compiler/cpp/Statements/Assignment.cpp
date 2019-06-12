@@ -3,6 +3,7 @@
 #include "Assignment.h"
 
 #include "../Context.h"
+#include "../Variables/BooleanVariable.h"
 #include "../../../common/cpp/ASTNode.h"
 
 namespace CP2
@@ -14,20 +15,31 @@ Assignment::Assignment(
     const std::string& xVariableName,
     const ASTNode* const pxExpression )
 : mxVariableName( xVariableName )
-, mpxStringExpression( pxExpression )
+, mpxExpression( pxExpression )
 {
 }
 
 void Assignment::Execute( Context& xContext )
 {
-    const std::string xResult
-        = EvaluateStringExpression( mpxStringExpression, xContext );
-    xContext.UpdateVariable( mxVariableName, xResult );
+    if( mpxExpression->GetProductionName() == "<string-expression>" )
+    {
+        const std::string xResult
+            = EvaluateStringExpression( mpxExpression, xContext );
+        xContext.UpdateVariable( mxVariableName, xResult );
+    }
+    else if( mpxExpression->GetProductionName() == "<boolean-expression>" )
+    {
+        const BooleanVariable xResult( mxVariableName,
+            EvaluateBooleanExpression( mpxExpression, xContext ) );
+        xContext.UpdateVariable(
+            mxVariableName,
+            &xResult );
+    }
 }
 
 PassStatement* Assignment::Clone() const
 {
-    return new Assignment( mxVariableName, mpxStringExpression );
+    return new Assignment( mxVariableName, mpxExpression );
 }
 
 PassStatement* Assignment::Create( const ASTNode* const pxAST )
