@@ -52,8 +52,34 @@ std::vector< ASTNode* > ASTNode::Append( const std::vector< ASTNode* >& xA, ASTN
 
 std::string ASTNode::GetErrorString() const
 {
-	std::string xReturnValue = "Unhandled parser error";
+    if( maxErrors.empty() )
+    {
+        return "Unhandled parser error "
+            "(no information - please report this as a bug)";
+    }
+
+    std::string xReturnValue = "Unhandled parser error "
+        "(no information - please report this as a bug)";
+
+    if( maxErrors.size() == 1 )
+    {
+        xReturnValue = "error ";
+        xReturnValue += maxErrors[ 0 ].iNumber;
+        xReturnValue += ": expected ";
+        xReturnValue += maxErrors[ 0 ].xExpected.xName;
+    }
+
 	return xReturnValue;
+}
+
+const Parser::Name& ASTNode::GetExpectedName() const
+{
+    return maxErrors[ 0 ].xExpected;
+}
+
+const Parser::GrammarProduction& ASTNode::GetExpectedProduction() const
+{
+    return *mpxProduction;
 }
 
 void ASTNode::TidyRecursions()
@@ -142,6 +168,8 @@ ASTNode::ASTNode( const ASTNode* const pxTemplate, ASTNode* const pxChild )
 , mxProductionName( pxTemplate->mxProductionName )
 , mxToken( pxTemplate->mxToken )
 , miCursor( pxTemplate->miCursor )
+, miErrorNumber( pxTemplate->miErrorNumber )
+, mpxProduction( pxTemplate->mpxProduction )
 {
 
 }
@@ -152,6 +180,8 @@ ASTNode::ASTNode( const ASTNode* const pxTemplate )
 , mxProductionName( pxTemplate->mxProductionName )
 , mxToken( pxTemplate->mxToken )
 , miCursor( pxTemplate->miCursor )
+, miErrorNumber( pxTemplate->miErrorNumber )
+, mpxProduction( pxTemplate->mpxProduction )
 {
 
 }

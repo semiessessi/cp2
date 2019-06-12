@@ -68,8 +68,9 @@ std::vector< GrammarProduction > Grammar::GetOriginalProductions(
     return mxProductionCache[ xName ];
 }
 
-std::vector< GrammarProduction > Grammar::GetProductionsForParsing(
-    const std::string& xName ) const
+const std::vector< GrammarProduction >&
+    Grammar::GetProductionsForParsing(
+        const std::string& xName ) const
 {
 	auto it = mxRefactoredProductionCache.find( xName );
 	if( it == mxRefactoredProductionCache.end() )

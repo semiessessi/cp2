@@ -126,8 +126,8 @@ const Grammar& GetCBNFGrammar()
         GrammarProduction( "<array-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "names" ) ),
         GrammarProduction( "<array-expression>", GE( "<identifier>" ) ),
 
-        GrammarProduction( "<boolean-expression>", GE( "<string-expression>" ) + GE( "==" ) + GE( "string-expression" ) ),
-        //GrammarProduction( "<boolean-expression>", GE( "<boolean-expression>" ) + GE( "==" ) + GE( "boolean-expression" ) ),
+        GrammarProduction( "<boolean-expression>", GE( "<string-expression>" ) + GE( "==" ) + GE( "<string-expression>" ) ),
+        //GrammarProduction( "<boolean-expression>", GE( "<boolean-expression>" ) + GE( "==" ) + GE( "<boolean-expression>" ) ),
         GrammarProduction( "<boolean-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "is-optional" ) ),
         GrammarProduction( "<boolean-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "is-non-empty" ) ),
         GrammarProduction( "<boolean-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "is-list" ) ),

@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Cranium Software
+// Copyright (c) 2017-2019 Cranium Software
 
 #include "CBNFLexer.h"
 #include "Lexer.h"
