@@ -38,6 +38,47 @@ rule-expression = identifier "*" ;
 rule-expression = identifier "?" ;
 rule-expression = identifier "+" ;
 
+string-expression = string ;
+string-expression = identifier ;
+string-expression = string-expression "+" string-expression ;
+string-expression = identifier "." "name" ;
+string-expression = "language" "." "name" ;
+string-expression = identifier "." "input-name" ;
+
+array-expression = "language" "." "productions" ;
+array-expression = identifier "." "productions" ;
+array-expression = "language" "." "keywords" ;
+array-expression = identifier "." "keywords" ;
+array-expression = "language" "." "identifiers" ;
+array-expression = identifier "." "identifiers" ;
+array-expression = "language" "." "operators" ;
+array-expression = identifier "." "operators" ;
+array-expression = "language" "." "terminators" ;
+array-expression = identifier "." "terminators" ;
+array-expression = "language" "." "separators" ;
+array-expression = identifier "." "separators" ;
+array-expression = "language" "." "strings" ;
+array-expression = identifier "." "strings" ;
+array-expression = "language" "." "quotes" ;
+array-expression = identifier "." "quotes" ;
+array-expression = "language" "." "lexemes" ;
+array-expression = identifier "." "lexemes" ;
+array-expression = "language" "." "line-comments" ;
+array-expression = identifier "." "line-comments" ;
+array-expression = "language" "." "block-comments" ;
+array-expression = identifier "." "block-comments" ;
+array-expression = identifier "." "names" ;
+array-expression = identifier ;
+
+boolean-expression = string-expression "==" string-expression ;
+boolean-expression = boolean-expression "==" boolean-expression ;
+boolean-expression = identifier "." "is-optional" ;
+boolean-expression = identifier "." "is-non-empty" ;
+boolean-expression = identifier "." "is-list" ;
+boolean-expression = "true" ;
+boolean-expression = "false" ;
+boolean-expression = identifier ;
+
 keywords
 {
 	"keywords"
