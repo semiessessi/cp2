@@ -364,6 +364,17 @@ std::unordered_set< std::string > Grammar::GetNonTerminals() const
 	return mxNonTerminals;
 }
 
+int Grammar::GetDirectLeftRecursionCount() const
+{
+    int iCount = 0;
+    for( GrammarProduction xProduction : maxProductions )
+    {
+        iCount += xProduction.IsLeftRecursive() ? 1 : 0;
+    }
+
+    return iCount;
+}
+
 std::string Grammar::CommentText( const char* const szSource ) const
 {
 	// do we have any block comments?

@@ -346,7 +346,8 @@ std::vector< ParseState > ParseRecursive(
 		{
 			if( ParseName( axTokens,
                 axNames, xGrammar,
-                i, axProductions[ i ],
+                static_cast< int >( i ),
+                axProductions[ i ],
                 iCurrentListCount, j,
 				axWorkingNewStates, axNewStates ) )
 			{

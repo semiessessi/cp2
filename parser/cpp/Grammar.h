@@ -94,7 +94,7 @@ public:
 	std::unordered_set< std::string > GetTerminals() const;
 	std::unordered_set< std::string > GetNonTerminals() const;
 
-	int GetDirectLeftRecursionCount() const { return static_cast< int >( maxDirectLeftRecursions.size() ); }
+    int GetDirectLeftRecursionCount() const;// { return static_cast< int >( maxDirectLeftRecursions.size() ); }
 	//int GetIndirectLeftRecursionCount() const;
 
 	//int GetLLK() const { return mxLLKTable.GetK(); }

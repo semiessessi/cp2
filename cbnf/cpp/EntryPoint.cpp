@@ -165,6 +165,7 @@ int main( const int iArgumentCount, const char* const* const pszArguments )
     std::vector< CP2::ASTNode* > axParseTrees;
 	for( size_t i = 0; i < axFilenames.size(); ++i )
 	{
+        CP2::Message( "%s...", axFilenames[ i ].c_str() );
 		CP2::ASTNode* const pxAST = CP2::Parser::CBNFParse(
 			CP2::Lexer::CBNFLex( axFilenames[ i ].c_str() ) );
 		if( pxAST == nullptr )
@@ -175,7 +176,6 @@ int main( const int iArgumentCount, const char* const* const pszArguments )
 		}
 
         axParseTrees.push_back( pxAST );
-
 		CP2::Parser::Grammar xParsedGrammar = CP2::Parser::CompileGrammar( pxAST );
 
 		xCompleteGrammar.Merge( xParsedGrammar );
