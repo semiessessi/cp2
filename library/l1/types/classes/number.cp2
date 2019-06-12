@@ -1,0 +1,4 @@
+// defines the number typeclass as an attribute combining other
+// attributes together
+
+type attribute number = 

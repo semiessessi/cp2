@@ -62,6 +62,7 @@ array-expression = "language" "." "block-comments" ;
 array-expression = identifier "." "block-comments" ;
 array-expression = identifier "." "names" ;
 array-expression = identifier ;
+boolean-expression = string-expression "==" string-expression ;
 boolean-expression = identifier "." "is-optional" ;
 boolean-expression = identifier "." "is-non-empty" ;
 boolean-expression = identifier "." "is-list" ;
@@ -118,6 +119,7 @@ operators
 	"+"
 	"?"
 	"."
+	"=="
 }
 
 separators

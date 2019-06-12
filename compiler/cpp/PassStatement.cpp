@@ -333,6 +333,24 @@ bool PassStatement::EvaluateBooleanExpression(
                 }
             }
         }
+
+        if( pxAST->GetChild( 1 )->GetProductionName() == "==" )
+        {
+            if( pxAST->GetChild( 0 )->GetProductionName() == "<string-expression>" )
+            {
+                return EvaluateStringExpression(
+                        pxAST->GetChild( 0 ), xContext )
+                    == EvaluateStringExpression(
+                        pxAST->GetChild( 2 ), xContext );
+            }
+            else if( pxAST->GetChild( 0 )->GetProductionName() == "<boolean-expression>" )
+            {
+                return EvaluateBooleanExpression(
+                        pxAST->GetChild( 0 ), xContext )
+                    == EvaluateBooleanExpression(
+                        pxAST->GetChild( 2 ), xContext );
+            }
+        }
     }
 
     // SE - TODO: error?

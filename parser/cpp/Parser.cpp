@@ -341,8 +341,6 @@ std::vector< ParseState > ParseRecursive(
 		} ), axStates.end() );
 	}
 
-    // SE - TODO: should substitutions be tidied up here??
-
 	return axStates;
 }
 

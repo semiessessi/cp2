@@ -46,8 +46,20 @@ pass "cbnf" switch
     }
     write "\n" ;
     
+    last = "" ;
+    
     for each production in language.productions
     {
+        //if production.name == last
+        {
+        }
+        //else
+        {
+            // write "\n" ;
+        }
+        
+        last = production.name ;
+        
         write production.input-name + " = " ;
         join = "" ;
         
