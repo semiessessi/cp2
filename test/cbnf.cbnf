@@ -7,7 +7,7 @@ comment "/*" "*/" ;
 
 lexeme identifier "[_a-zA-Z][_\\-a-zA-Z0-9]*" ;
 
-quote string """ """ "\" ;
+quote string "\"" "\"" "\\" ;
 
 grammar = statement* ;
 statement = production ;

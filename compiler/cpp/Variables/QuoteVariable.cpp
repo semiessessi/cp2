@@ -36,13 +36,16 @@ Variable* QuoteVariable::GetIndexed( const int iIndex ) const
     {
         case 0: return new StringVariable(
             "<temporary-quote-start>",
-            CBNFQuoteEscape( mxGrammar.GetQuotes()[ miIndex ].GetStart() ) );
+            SlashEscape( CBNFQuoteEscape(
+                mxGrammar.GetQuotes()[ miIndex ].GetStart() ) ) );
         case 1: return new StringVariable(
             "<temporary-quote-end>",
-            CBNFQuoteEscape( mxGrammar.GetQuotes()[ miIndex ].GetEnd() ) );
+            SlashEscape( CBNFQuoteEscape(
+                mxGrammar.GetQuotes()[ miIndex ].GetEnd() ) ) );
         case 2: return new StringVariable(
             "<temporary-quote-escape>",
-            CBNFQuoteEscape( mxGrammar.GetQuotes()[ miIndex ].GetEscape() ) );
+            SlashEscape( CBNFQuoteEscape(
+                mxGrammar.GetQuotes()[ miIndex ].GetEscape() ) ) );
         default: break;
     }
 
