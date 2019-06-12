@@ -463,7 +463,24 @@ ASTNode* Parse( const std::vector< Token >& axTokens, const Grammar& xGrammar )
                 xErrorToken.GetName(),
                 saxDeepestErrors[ 0 ]->GetExpectedName()
                     .xName.c_str() );
-            return nullptr;
+
+            // SE - TODO: tell if its terminal a bit better.
+            //if( ( saxDeepestErrors[ 0 ]->GetExpectedName().xName.size() > 2 )
+            //    && ( saxDeepestErrors[ 0 ]->GetExpectedName().xName[ 0 ] == '<' ) )
+            {
+                return nullptr;
+            }
+
+            // if there is only one problem... try and fix and continue
+            /*
+            std::vector< Token > axNewTokens( axTokens );
+            axNewTokens.insert(
+                axNewTokens.begin() + saxDeepestErrors[ 0 ]->GetCursor(),
+                Token( saxDeepestErrors[ 0 ]->GetExpectedName()
+                    .xName.c_str(), -1 ) );
+           
+            return Parse( axNewTokens, xGrammar );
+            */
         }
 
         Error( 3003, szFilename,
