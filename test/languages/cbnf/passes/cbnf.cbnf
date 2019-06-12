@@ -8,11 +8,23 @@ pass "cbnf" switch
 
     write "language \"" + language.name + "\" ;\n\n" ;
     
+    for each value in language.line-comments
+    {
+        write "comment \"" + value + "\" ;\n" ;
+    }
+    write "\n" ;
+    
     for each value in language.lexemes
     {
-        write "lexeme " + value.name + " " + value + "\n";
+        if value.is-optional
+        {
+        }
+        else
+        {
+            write "lexeme " + value.name + " " + value + " ;\n" ;
+        }
     }
-    write "\n\n";
+    write "\n" ;
     
     for each production in language.productions
     {

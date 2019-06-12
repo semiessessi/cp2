@@ -2,6 +2,7 @@
 
 #include "LexemeVariable.h"
 
+#include "../../../common/cpp/Escaping.h"
 #include "../../../common/cpp/Token.h"
 #include "../../../lexer/cpp/Lexer.h"
 #include "../../../parser/cpp/Grammar.h"
@@ -24,13 +25,21 @@ LexemeVariable::LexemeVariable(
 
 std::string LexemeVariable::GetValue() const
 {
-    return mxGrammar.GetLexemes()[ miIndex ].GetExpression();
+    return "\"" + SlashEscape( SlashEscape(
+        mxGrammar.GetLexemes()[ miIndex ].GetExpression() ) ) + "\"";
 }
 
 std::string LexemeVariable::GetNameValue() const
 {
     return InputNameFromOutputName(
         mxGrammar.GetLexemes()[ miIndex ].GetBaseToken().GetName() );
+}
+
+bool LexemeVariable::IsOptionalName() const
+{
+    return mxGrammar.GetLexemes()[ miIndex ].GetBaseToken().GetName()
+        == SimpleUnescape(
+            mxGrammar.GetLexemes()[ miIndex ].GetExpression() );
 }
 
 }

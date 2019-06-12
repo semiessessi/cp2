@@ -93,6 +93,9 @@
     <ClInclude Include="..\compiler\cpp\Variables\QuoteVariable.h">
       <Filter>compiler\Variables</Filter>
     </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Variables\PairVariable.h">
+      <Filter>compiler\Variables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\compiler\cpp\Compiler.cpp">
@@ -165,6 +168,9 @@
       <Filter>compiler\Variables</Filter>
     </ClCompile>
     <ClCompile Include="..\compiler\cpp\Variables\QuoteVariable.cpp">
+      <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Variables\PairVariable.cpp">
       <Filter>compiler\Variables</Filter>
     </ClCompile>
   </ItemGroup>

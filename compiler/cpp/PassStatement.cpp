@@ -208,6 +208,27 @@ Variable* PassStatement::EvaluateArrayExpression(
                     return new ArrayVariable(
                         "<temporary-language-strings>", axValues, true );
                 }
+
+                if( pxAST->GetChild( 2 )->GetProductionName() == "line-comments" )
+                {
+                    std::vector< Variable* > axValues;
+                    const Parser::Grammar& xGrammar
+                        = *( xContext.GetGrammar() );
+                    for( int i = 0; i < xGrammar.GetCommentCount(); ++i )
+                    {
+                        if( xGrammar.GetComments()[ i ].GetEnd() != nullptr )
+                        {
+                            continue;
+                        }
+
+                        axValues.push_back(
+                            new StringVariable(
+                                "<temporary-iline-comment>",
+                                xGrammar.GetComments()[ i ].GetStart() ) );
+                    }
+                    return new ArrayVariable(
+                        "<temporary-language-strings>", axValues, true );
+                }
                 // error?
             }
 

@@ -30,6 +30,7 @@ public:
     std::string GetValue() const override;
     std::string GetNameValue() const override;
 
+    virtual bool IsOptionalName() const override;
 
 private:
 

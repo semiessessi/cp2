@@ -40,6 +40,7 @@
     <ClInclude Include="..\compiler\cpp\Variables\LanguageVariable.h" />
     <ClInclude Include="..\compiler\cpp\Variables\LexemeVariable.h" />
     <ClInclude Include="..\compiler\cpp\Variables\NameVariable.h" />
+    <ClInclude Include="..\compiler\cpp\Variables\PairVariable.h" />
     <ClInclude Include="..\compiler\cpp\Variables\ParseVariable.h" />
     <ClInclude Include="..\compiler\cpp\Variables\ProductionVariable.h" />
     <ClInclude Include="..\compiler\cpp\Variables\QuoteVariable.h" />
@@ -66,6 +67,7 @@
     <ClCompile Include="..\compiler\cpp\Variables\LanguageVariable.cpp" />
     <ClCompile Include="..\compiler\cpp\Variables\LexemeVariable.cpp" />
     <ClCompile Include="..\compiler\cpp\Variables\NameVariable.cpp" />
+    <ClCompile Include="..\compiler\cpp\Variables\PairVariable.cpp" />
     <ClCompile Include="..\compiler\cpp\Variables\ParseVariable.cpp" />
     <ClCompile Include="..\compiler\cpp\Variables\ProductionVariable.cpp" />
     <ClCompile Include="..\compiler\cpp\Variables\QuoteVariable.cpp" />

@@ -17,6 +17,18 @@ static inline void RegexEscapeCharacter(
 		uOffset = xCopy.find( cCharaceter, uOffset );
 	}
 }
+
+static inline std::string SlashEscape( const std::string& xSource )
+{
+    std::string xCopy = xSource;
+
+    size_t uOffset = 0;
+    // always do \ first to avoid escaping explosion
+    RegexEscapeCharacter( '\\', uOffset, xCopy );
+
+    return xCopy;
+}
+
 static inline std::string RegexEscape( const std::string& xSource )
 {
 	std::string xCopy = xSource;

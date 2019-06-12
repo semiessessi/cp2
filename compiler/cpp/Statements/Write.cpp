@@ -5,6 +5,7 @@
 #include "../Context.h"
 #include "../../../common/cpp/ASTNode.h"
 #include "../../../common/cpp/Escaping.h"
+
 namespace CP2
 {
 namespace Compiler

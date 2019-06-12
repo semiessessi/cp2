@@ -2,47 +2,9 @@
 
 language "CBNF" ;
 
-lexeme "separators" separators
-lexeme "keywords" keywords
-lexeme "identifiers" identifiers
-lexeme "{" {
-lexeme "operators" operators
-lexeme "strings" strings
-lexeme "terminators" terminators
-lexeme "}" }
-lexeme identifier [_a-zA-Z][_-a-zA-Z0-9]*
-lexeme "?" ?
-lexeme "comment" comment
-lexeme "+" +
-lexeme ";" ;
-lexeme "quote" quote
-lexeme "lexeme" lexeme
-lexeme "=" =
-lexeme "..." ...
-lexeme "*" *
-lexeme "operators" operators
-lexeme "+" +
-lexeme "input-name" input-name
-lexeme "." .
-lexeme "name" name
-lexeme "productions" productions
-lexeme "language" language
-lexeme "keywords" keywords
-lexeme "identifiers" identifiers
-lexeme "terminators" terminators
-lexeme "separators" separators
-lexeme "strings" strings
-lexeme "quotes" quotes
-lexeme "lexemes" lexemes
-lexeme "line-comments" line-comments
-lexeme "names" names
-lexeme "block-comments" block-comments
-lexeme "is-optional" is-optional
-lexeme "is-non-empty" is-non-empty
-lexeme "is-list" is-list
-lexeme "true" true
-lexeme "false" false
+comment // ;
 
+lexeme identifier "[_a-zA-Z][_\\-a-zA-Z0-9]*" ;
 
 grammar = statement* ;
 statement = production ;

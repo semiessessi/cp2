@@ -25,6 +25,8 @@ public:
     virtual std::string GetValue() const;
 
     virtual std::string GetNameValue() const { return GetName(); }
+    virtual std::string GetStartValue() const { return GetValue(); }
+    virtual std::string GetEndValue() const { return GetValue(); }
 
     virtual Variable* GetIndexed( const int iIndex ) const;
     virtual int GetIndexedCount() const;
