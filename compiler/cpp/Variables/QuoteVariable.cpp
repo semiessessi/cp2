@@ -3,6 +3,7 @@
 #include "QuoteVariable.h"
 
 #include "StringVariable.h"
+#include "../../../common/cpp/Escaping.h"
 #include "../../../common/cpp/Token.h"
 #include "../../../lexer/cpp/Lexer.h"
 #include "../../../parser/cpp/Grammar.h"
@@ -25,7 +26,8 @@ QuoteVariable::QuoteVariable(
 
 std::string QuoteVariable::GetNameValue() const
 {
-    return mxGrammar.GetQuotes()[ miIndex ].GetName();
+    return InputNameFromOutputName(
+        mxGrammar.GetQuotes()[ miIndex ].GetName() );
 }
 
 Variable* QuoteVariable::GetIndexed( const int iIndex ) const
@@ -34,13 +36,13 @@ Variable* QuoteVariable::GetIndexed( const int iIndex ) const
     {
         case 0: return new StringVariable(
             "<temporary-quote-start>",
-            mxGrammar.GetQuotes()[ miIndex ].GetStart() );
+            CBNFQuoteEscape( mxGrammar.GetQuotes()[ miIndex ].GetStart() ) );
         case 1: return new StringVariable(
             "<temporary-quote-end>",
-            mxGrammar.GetQuotes()[ miIndex ].GetEnd() );
+            CBNFQuoteEscape( mxGrammar.GetQuotes()[ miIndex ].GetEnd() ) );
         case 2: return new StringVariable(
             "<temporary-quote-escape>",
-            mxGrammar.GetQuotes()[ miIndex ].GetEscape() );
+            CBNFQuoteEscape( mxGrammar.GetQuotes()[ miIndex ].GetEscape() ) );
         default: break;
     }
 

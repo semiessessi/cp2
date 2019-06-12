@@ -94,7 +94,6 @@ const Grammar& GetCBNFGrammar()
 
         GrammarProduction( "<string-expression>", GE( "<string>" ) ),
         GrammarProduction( "<string-expression>", GE( "<identifier>" ) ),
-        GrammarProduction( "<string-expression>", GE( "<boolean-expression>" ) ),
 
         GrammarProduction( "<string-expression>", GE( "<string-expression>" ) + GE( "+" ) + GE( "<string-expression>" ) ),
 
@@ -125,12 +124,14 @@ const Grammar& GetCBNFGrammar()
         GrammarProduction( "<array-expression>", GE( "language" ) + GE( "." ) + GE( "block-comments" ) ),
         GrammarProduction( "<array-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "block-comments" ) ), 
         GrammarProduction( "<array-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "names" ) ),
+        GrammarProduction( "<array-expression>", GE( "<identifier>" ) ),
 
         GrammarProduction( "<boolean-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "is-optional" ) ),
         GrammarProduction( "<boolean-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "is-non-empty" ) ),
         GrammarProduction( "<boolean-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "is-list" ) ),
         GrammarProduction( "<boolean-expression>", GE( "true" ) ),
         GrammarProduction( "<boolean-expression>", GE( "false" ) ),
+        GrammarProduction( "<boolean-expression>", GE( "<identifier>" ) ),
 
         // for non-production statements...
         GrammarProduction( "<terminal-list>", GE( "{" ) + !GE( "<terminal>" ) + GE( "}" ) ),

@@ -12,6 +12,15 @@ pass "cbnf" switch
     {
         write "comment \"" + value + "\" ;\n" ;
     }
+    for each value in language.block-comments
+    {
+        write "comment " ;
+        for each part in value
+        {
+            write "\"" + part + "\" " ;
+        }
+        write ";\n";
+    }
     write "\n" ;
     
     for each value in language.lexemes
@@ -23,6 +32,17 @@ pass "cbnf" switch
         {
             write "lexeme " + value.name + " " + value + " ;\n" ;
         }
+    }
+    write "\n" ;
+    
+    for each value in language.quotes
+    {
+        write "quote " + value.name + " " ;
+        for each part in value
+        {
+            write "\"" + part + "\" " ;
+        }
+        write ";\n" ;
     }
     write "\n" ;
     

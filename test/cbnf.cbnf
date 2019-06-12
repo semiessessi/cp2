@@ -2,9 +2,12 @@
 
 language "CBNF" ;
 
-comment // ;
+comment "//" ;
+comment "/*" "*/" ;
 
 lexeme identifier "[_a-zA-Z][_\\-a-zA-Z0-9]*" ;
+
+quote string """ """ "\" ;
 
 grammar = statement* ;
 statement = production ;
@@ -31,7 +34,6 @@ rule-expression = identifier "?" ;
 rule-expression = identifier "+" ;
 string-expression = string ;
 string-expression = identifier ;
-string-expression = boolean-expression ;
 string-expression = string-expression "+" string-expression ;
 string-expression = identifier "." "name" ;
 string-expression = "language" "." "name" ;
@@ -59,11 +61,13 @@ array-expression = identifier "." "line-comments" ;
 array-expression = "language" "." "block-comments" ;
 array-expression = identifier "." "block-comments" ;
 array-expression = identifier "." "names" ;
+array-expression = identifier ;
 boolean-expression = identifier "." "is-optional" ;
 boolean-expression = identifier "." "is-non-empty" ;
 boolean-expression = identifier "." "is-list" ;
 boolean-expression = "true" ;
 boolean-expression = "false" ;
+boolean-expression = identifier ;
 
 keywords
 {

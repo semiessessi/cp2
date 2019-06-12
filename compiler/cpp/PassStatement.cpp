@@ -11,6 +11,7 @@
 #include "Statements/Write.h"
 #include "Variables/ArrayVariable.h"
 #include "Variables/LexemeVariable.h"
+#include "Variables/PairVariable.h"
 #include "Variables/ProductionVariable.h"
 #include "Variables/QuoteVariable.h"
 #include "Variables/StringVariable.h"
@@ -61,6 +62,13 @@ PassStatement* PassStatement::Create( const ASTNode* const pxAST )
 Variable* PassStatement::EvaluateArrayExpression(
     const ASTNode* const pxAST, const Context& xContext )
 {
+    if( pxAST->GetChildCount() == 1 )
+    {
+        if( pxAST->GetChild( 0 )->GetProductionName() == "<identifier>" )
+        {
+            return xContext.GetVariable( pxAST->GetChild( 0 )->GetTokenValue() )->Clone();
+        }
+    }
     if( pxAST->GetChildCount() == 3 )
     {
         // special cases
@@ -223,11 +231,37 @@ Variable* PassStatement::EvaluateArrayExpression(
 
                         axValues.push_back(
                             new StringVariable(
-                                "<temporary-iline-comment>",
+                                "<temporary-line-comment>",
                                 xGrammar.GetComments()[ i ].GetStart() ) );
                     }
                     return new ArrayVariable(
                         "<temporary-language-strings>", axValues, true );
+                }
+
+                if( pxAST->GetChild( 2 )->GetProductionName() == "block-comments" )
+                {
+                    std::vector< Variable* > axValues;
+                    const Parser::Grammar& xGrammar
+                        = *( xContext.GetGrammar() );
+                    for( int i = 0; i < xGrammar.GetCommentCount(); ++i )
+                    {
+                        if( xGrammar.GetComments()[ i ].GetEnd() == nullptr )
+                        {
+                            continue;
+                        }
+
+                        const StringVariable xFirst( "<temporary-block-comment-start>",
+                            xGrammar.GetComments()[ i ].GetStart() );
+                        const StringVariable xLast( "<temporary-block-comment-end>",
+                            xGrammar.GetComments()[ i ].GetEnd() );
+                        axValues.push_back(
+                            new PairVariable(
+                                "<temporary-block-comment>",
+                                &xFirst,
+                                &xLast ) );
+                    }
+                    return new ArrayVariable(
+                        "<temporary-language-block-comments>", axValues, true );
                 }
                 // error?
             }
