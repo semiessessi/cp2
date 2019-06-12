@@ -44,10 +44,10 @@ pass "cbnf" switch
         }
         write ";\n" ;
     }
-    write "\n" ;
+    // handled by the spacing in the productions.
+    //write "\n" ;
     
     last = "" ;
-    boop = false ;
     
     for each production in language.productions
     {
