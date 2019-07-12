@@ -69,6 +69,7 @@ Variable* PassStatement::EvaluateArrayExpression(
             return xContext.GetVariable( pxAST->GetChild( 0 )->GetTokenValue() )->Clone();
         }
     }
+
     if( pxAST->GetChildCount() == 3 )
     {
         // special cases
@@ -76,6 +77,21 @@ Variable* PassStatement::EvaluateArrayExpression(
         {
             if( pxAST->GetChild( 0 )->GetProductionName() == "language" )
             {
+                if( pxAST->GetChild( 2 )->GetProductionName() == "passes" )
+                {
+                    std::vector< Variable* > axValues;
+                    const Parser::Grammar& xGrammar
+                        = *( xContext.GetGrammar() );
+                    for( int i = 0; i < xGrammar.GetLexemeCount(); ++i )
+                    {
+                        axValues.push_back(
+                            new LexemeVariable(
+                                "<temporary-lexeme>", xGrammar, i ) );
+                    }
+                    return new ArrayVariable(
+                        "<temporary-language-lexemes>", axValues, true );
+                }
+
                 if( pxAST->GetChild( 2 )->GetProductionName() == "productions" )
                 {
                     std::vector< Variable* > axProductions;

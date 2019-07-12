@@ -16,6 +16,7 @@ namespace Compiler
 {
 
 class Pass;
+class Passes;
 class Variable;
 
 class Context
@@ -25,7 +26,10 @@ public:
     ~Context();
 
     Context CreateChild();
-    static Context CreateForPass( const Pass& xPass, const Parser::Grammar& xGrammar );
+    static Context CreateForPass(
+        const Pass& xPass,
+        const Parser::Grammar& xGrammar,
+        const Passes& xPasses );
 
     void* GetCurrentFile() { return mpCurrentFile; }
     void SetCurrentFile( const std::string& xPath );
@@ -37,6 +41,7 @@ public:
     void UpdateVariable( const std::string& xName, const Variable* const pxVariable, const bool bLocal = false );
 
     const Parser::Grammar* GetGrammar() const { return mpxGrammar; }
+    const Passes* GetPasses() const { return mpxPasses; }
 
 private:
 
@@ -53,6 +58,7 @@ private:
     void* mpCurrentFile;
     Context* mpxParentContext;
     const Parser::Grammar* mpxGrammar;
+    const Passes* mpxPasses;
 };
 
 }

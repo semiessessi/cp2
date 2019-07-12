@@ -33,7 +33,10 @@ Context Context::CreateChild()
     return xNewContext;
 }
 
-Context Context::CreateForPass( const Pass& xPass, const Parser::Grammar& xGrammar )
+Context Context::CreateForPass(
+    const Pass& xPass,
+    const Parser::Grammar& xGrammar,
+    const Passes& xPasses )
 {
     Context xNewContext;
     xNewContext.mpxGrammar = &xGrammar;
@@ -41,6 +44,7 @@ Context Context::CreateForPass( const Pass& xPass, const Parser::Grammar& xGramm
         = new StringVariable( "pass-name", xPass.GetName() );
     xNewContext.mxVariables[ "language" ]
         = new LanguageVariable( xGrammar );
+    xNewContext.mpxPasses = &xPasses;
 
     return xNewContext;
 }

@@ -67,6 +67,8 @@ array-expression = "language" "." "line-comments" ;
 array-expression = identifier "." "line-comments" ;
 array-expression = "language" "." "block-comments" ;
 array-expression = identifier "." "block-comments" ;
+array-expression = "language" "." "passes" ;
+array-expression = identifier "." "passes" ;
 array-expression = identifier "." "names" ;
 array-expression = identifier ;
 

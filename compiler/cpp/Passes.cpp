@@ -36,7 +36,7 @@ void Passes::Execute( const Parser::Grammar& xGrammar )
 
             if( bMissing == false )
             {
-                xPassPair.second.Execute( xGrammar );
+                xPassPair.second.Execute( xGrammar, *this );
                 axCompletedPasses.push_back( xPassPair.first );
             }
         }

@@ -21,6 +21,7 @@ class Grammar;
 namespace Compiler
 {
 
+class Passes;
 class PassScope;
 
 class Pass
@@ -51,7 +52,7 @@ public:
     void GetRequiredPaths( std::vector< OutputFile >& xFiles );
     void GetRequiredPasses( std::vector< std::string >& xPassNames );
 
-    void Execute( const Parser::Grammar& xGrammar );
+    void Execute( const Parser::Grammar& xGrammar, const Passes& xPasses );
 
     const std::string& GetName() const { return mxName; }
 

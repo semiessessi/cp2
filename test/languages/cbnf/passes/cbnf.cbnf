@@ -140,5 +140,11 @@ pass "cbnf" switch
     {
         write "\t" + value + "\n" ;
     }
-    write "}\n";
+    write "}\n" ;
+    
+    // output passes?
+    for each compiler-pass in language.passes
+    {
+        
+    }
 }
