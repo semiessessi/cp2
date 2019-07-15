@@ -8,8 +8,11 @@ pass-statement      =   identifier "=" string-expression ";" ;
 pass-statement      =   identifier "=" boolean-expression ";" ;
 
 pass-statement      =   "{" pass-statement* "}" ;
+walk-statement      =   "{" walk-statement* "}" ;
+walk-statement      =   pass-statement ;
 
 pass-statement      =   "for" "each" identifier "in" array-expression pass-statements ;
+pass-statement      =   "walk" parse-expression walk-statements ;
 pass-statement      =   "if" boolean-expresion pass-statements ;
 pass-statement      =   "if" boolean-expresion pass-statements "else" pass-statements ;
 
@@ -20,5 +23,6 @@ pass-modifier       =   "switch" string ;
 pass-modifiers      =   pass-modifier* ;  
 
 pass-statements     =   "{" pass-statement* "}" ;
+walk-statements     =   "{" walk-statement* "}" ;
 
 pass-names          =   "{" string* "}" ;

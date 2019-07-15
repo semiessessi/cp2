@@ -39,6 +39,9 @@ public:
 
     void Execute( const Parser::Grammar& xGrammar );
 
+    const Pass& GetPass( const int iIndex ) const;
+    int GetPassCount() const { return static_cast< int >( mxPasses.size() ); }
+
 private:
 
     std::unordered_map< std::string, Pass > mxPasses;

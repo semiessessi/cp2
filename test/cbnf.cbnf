@@ -81,6 +81,8 @@ boolean-expression = "true" ;
 boolean-expression = "false" ;
 boolean-expression = identifier ;
 
+parse-expression = identifier "." "parse" ;
+
 keywords
 {
 	"keywords"
@@ -145,4 +147,133 @@ terminators
 strings
 {
 	string
+}
+pass ""separators""
+{
+}
+pass ""keywords""
+{
+}
+pass ""identifiers""
+{
+}
+pass ""{""
+{
+}
+pass ""operators""
+{
+}
+pass ""strings""
+{
+}
+pass ""terminators""
+{
+}
+pass ""}""
+{
+}
+pass "identifier"
+{
+}
+pass ""?""
+{
+}
+pass ""comment""
+{
+}
+pass ""+""
+{
+}
+pass "";""
+{
+}
+pass ""quote""
+{
+}
+pass ""lexeme""
+{
+}
+pass ""=""
+{
+}
+pass ""...""
+{
+}
+pass ""*""
+{
+}
+pass ""operators""
+{
+}
+pass ""+""
+{
+}
+pass ""input-name""
+{
+}
+pass "".""
+{
+}
+pass ""name""
+{
+}
+pass ""productions""
+{
+}
+pass ""language""
+{
+}
+pass ""keywords""
+{
+}
+pass ""identifiers""
+{
+}
+pass ""terminators""
+{
+}
+pass ""separators""
+{
+}
+pass ""strings""
+{
+}
+pass ""parse""
+{
+}
+pass ""quotes""
+{
+}
+pass ""lexemes""
+{
+}
+pass ""line-comments""
+{
+}
+pass ""==""
+{
+}
+pass ""names""
+{
+}
+pass ""block-comments""
+{
+}
+pass ""passes""
+{
+}
+pass ""is-optional""
+{
+}
+pass ""is-non-empty""
+{
+}
+pass ""is-list""
+{
+}
+pass ""true""
+{
+}
+pass ""false""
+{
 }

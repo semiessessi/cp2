@@ -77,10 +77,17 @@ const Grammar& GetCBNFGrammar()
                 + GE( "in" ) + GE( "<array-expression>" ) + GE( "<pass-statements>" ) ),
 
         GrammarProduction( "<pass-statement>",
+            GE( "walk" ) + GE( "<parse-expression>" )
+                + GE( "<walk-statements>" ) ),
+
+        GrammarProduction( "<pass-statement>",
             GE( "if" ) + GE( "<boolean-expression>" ) + GE( "<pass-statements>" )
                 + GE( "else" ) + GE( "<pass-statements>" ) ),
         GrammarProduction( "<pass-statement>",
             GE( "if" ) + GE( "<boolean-expression>" ) + GE( "<pass-statements>" ) ),
+
+        GrammarProduction( "<walk-statement>", GE( "{" ) + !GE( "<walk-statement>" ) + GE( "}" ) ),
+        GrammarProduction( "<walk-statement>", GE( "<pass-statement>" ) ),
 
         GrammarProduction( "<pass-modifier>", GE( "requires" ) + GE( "<pass-names>" ) ),
         GrammarProduction( "<pass-modifier>", GE( "switch" ) ),
@@ -89,6 +96,8 @@ const Grammar& GetCBNFGrammar()
 
         GrammarProduction( "<pass-statements>",
             GE( "{" ) + !GE( "<pass-statement>" ) + GE( "}" ) ),
+        GrammarProduction( "<walk-statements>",
+            GE( "{" ) + !GE( "<walk-statement>" ) + GE( "}" ) ),
 
         GrammarProduction( "<pass-names>", GE( "{" ) + !GE( "<string>" ) + GE( "}" ) ),
 
@@ -137,6 +146,8 @@ const Grammar& GetCBNFGrammar()
         GrammarProduction( "<boolean-expression>", GE( "true" ) ),
         GrammarProduction( "<boolean-expression>", GE( "false" ) ),
         GrammarProduction( "<boolean-expression>", GE( "<identifier>" ) ),
+
+        GrammarProduction( "<parse-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "parse" ) ),
 
         // for non-production statements...
         GrammarProduction( "<terminal-list>", GE( "{" ) + !GE( "<terminal>" ) + GE( "}" ) ),
@@ -187,7 +198,8 @@ const Grammar& GetCBNFGrammar()
         kxCBNFGrammar.AddKeyword( "\"quotes\"" );
         kxCBNFGrammar.AddKeyword( "\"lexemes\"" );
         kxCBNFGrammar.AddKeyword( "\"passes\"" );
-
+        kxCBNFGrammar.AddKeyword( "\"walk\"" );
+        kxCBNFGrammar.AddKeyword( "\"parse\"" );
 
         kxCBNFGrammar.AddTerminator( "\";\"" );
 

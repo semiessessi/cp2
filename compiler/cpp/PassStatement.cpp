@@ -12,6 +12,7 @@
 #include "Variables/ArrayVariable.h"
 #include "Variables/LexemeVariable.h"
 #include "Variables/PairVariable.h"
+#include "Variables/PassVariable.h"
 #include "Variables/ProductionVariable.h"
 #include "Variables/QuoteVariable.h"
 #include "Variables/StringVariable.h"
@@ -80,16 +81,16 @@ Variable* PassStatement::EvaluateArrayExpression(
                 if( pxAST->GetChild( 2 )->GetProductionName() == "passes" )
                 {
                     std::vector< Variable* > axValues;
-                    const Parser::Grammar& xGrammar
-                        = *( xContext.GetGrammar() );
-                    for( int i = 0; i < xGrammar.GetLexemeCount(); ++i )
+                    const Passes& xPasses
+                        = *( xContext.GetPasses() );
+                    for( int i = 0; i < xPasses.GetPassCount(); ++i )
                     {
                         axValues.push_back(
-                            new LexemeVariable(
-                                "<temporary-lexeme>", xGrammar, i ) );
+                            new PassVariable(
+                                "<temporary-pass>", xPasses, i ) );
                     }
                     return new ArrayVariable(
-                        "<temporary-language-lexemes>", axValues, true );
+                        "<temporary-language-passes>", axValues, true );
                 }
 
                 if( pxAST->GetChild( 2 )->GetProductionName() == "productions" )

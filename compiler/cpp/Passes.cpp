@@ -8,6 +8,22 @@ namespace CP2
 namespace Compiler
 {
 
+const Pass& Passes::GetPass( const int iIndex ) const
+{
+    int i = 0;
+    for( auto& xPair : mxPasses )
+    {
+        if( i == iIndex )
+        {
+            return xPair.second;
+        }
+        ++i;
+    }
+
+    static const Pass xPass;
+    return xPass;
+}
+
 void Passes::Execute( const Parser::Grammar& xGrammar )
 {
     std::vector< std::string > axCompletedPasses;

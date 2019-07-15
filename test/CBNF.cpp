@@ -132,6 +132,8 @@ const Grammar& GetCBNFGrammar()
 			GE( "false" ) ),
 		GrammarProduction("<boolean-expression>",
 			GE( "<identifier>" ) ),
+		GrammarProduction("<parse-expression>",
+			GE( "<identifier>" ) + GE( "." ) + GE( "parse" ) ),
 	});
 
 #undef GE

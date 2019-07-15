@@ -10,6 +10,8 @@
 namespace CP2
 {
 
+class ASTNode;
+
 namespace Compiler
 {
 
@@ -17,7 +19,16 @@ class ParseVariable
 : public Variable
 {
 public:
+    ParseVariable(
+        const std::string& xName,
+        const ASTNode* const pxNode );
+    ~ParseVariable();
 
+    Variable* Clone() const override { return new ParseVariable( GetName(), mpxNode ); }
+
+protected:
+
+    const ASTNode* mpxNode;
 };
 
 }

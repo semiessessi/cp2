@@ -145,6 +145,16 @@ pass "cbnf" switch
     // output passes?
     for each compiler-pass in language.passes
     {
+        write "pass " + "\"" + compiler-pass.name + "\"" ;
+        write "\n" ;
         
+        write "{\n" ;
+        
+        walk compiler-pass.parse
+        {
+            // SE - TODO: ...
+        }
+        
+        write "}\n" ;
     }
 }

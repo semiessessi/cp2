@@ -52,6 +52,8 @@ public:
     virtual Variable* GetLineComments() const;
     virtual Variable* GetBlockComments() const;
 
+    virtual Variable* GetParse() const;
+
     static void DeleteArray( const std::vector< Variable* >& xVariables );
 
 protected:

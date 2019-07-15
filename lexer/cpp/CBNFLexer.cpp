@@ -67,6 +67,8 @@ const std::vector< Rule >& CBNFLexerRules()
         Rule( "line-comments",					Token( "line-comments",	    32 ) ),
         Rule( "block-comments",					Token( "block-comments",	33 ) ),
         Rule( "passes",					        Token( "passes",	        34 ) ),
+        Rule( "walk",					        Token( "walk",	            35 ) ),
+        Rule( "parse",					        Token( "parse",	            36 ) ),
 
 		Rule( "[_a-zA-Z][_\\-a-zA-Z0-9]*",		Token( "<identifier>",		1000, true ) ),
 		//Rule( "\"(?:[^\\\"\\\\]|\\\\.)*\"",		Token( "<string>",			1001, true ) ),

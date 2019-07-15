@@ -50,3 +50,5 @@ boolean-expression          =   identifier "." "is-list" ;
 boolean-expression          =   "true" ;
 boolean-expression          =   "false" ;
 boolean-expression          =   identifier ;
+
+parse-expression            =   identifier "." "parse" ;

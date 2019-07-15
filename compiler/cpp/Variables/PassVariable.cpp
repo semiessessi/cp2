@@ -24,8 +24,7 @@ PassVariable::PassVariable(
 
 std::string PassVariable::GetNameValue() const
 {
-    // return mxPasses.GetPass( miIndex ).GetName();
-    return "<unknown-pass>";
+    return mxPasses.GetPass( miIndex ).GetName();
 }
 
 std::string PassVariable::GetInputName() const
