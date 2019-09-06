@@ -3,11 +3,13 @@
 #include "PassStatement.h"
 
 #include "Context.h"
+#include "Passes.h"
 #include "Statements/Assignment.h"
 #include "Statements/Conditional.h"
 #include "Statements/ForEach.h"
 #include "Statements/Output.h"
 #include "Statements/PassScope.h"
+#include "Statements/Walk.h"
 #include "Statements/Write.h"
 #include "Variables/ArrayVariable.h"
 #include "Variables/LexemeVariable.h"
@@ -39,6 +41,7 @@ const std::unordered_map<
     { "write", Write::Create },
     { "for", ForEach::Create },
     { "if", Conditional::Create },
+    { "walk", Walk::Create }
 };
 
 #undef BP
@@ -393,6 +396,13 @@ std::string PassStatement::EvaluateStringExpression(
                 pxAST->GetChild( 0 ), xContext )
                     ? "true" : "false";
         }
+        /*
+        else if( xProductionName == "<parse-expression>" )
+        {
+            return EvaluateParseExpression(
+                pxAST->GetChild( 0 ), xContext )->GetValue();
+        }
+        */
         else if( xProductionName == "<identifier>" )
         {
             const Variable* const pxVariable
@@ -413,6 +423,20 @@ std::string PassStatement::EvaluateStringExpression(
             // concatenating...
             return EvaluateStringExpression( pxAST->GetChild( 0 ), xContext )
                 + EvaluateStringExpression( pxAST->GetChild( 2 ), xContext );
+        }
+        else if( pxAST->GetChild( 1 )->GetProductionName() == "-" )
+        {
+            // concatenating...
+            const std::string xFirst =
+                EvaluateStringExpression( pxAST->GetChild( 0 ), xContext );
+            const std::string xSecond =
+                EvaluateStringExpression( pxAST->GetChild( 2 ), xContext );
+
+            if( xFirst.substr( xFirst.size() - xSecond.size(), xSecond.size() )
+                == xSecond )
+            {
+                return xFirst.substr( 0, xFirst.size() - xSecond.size() );
+            }
         }
         else if( pxAST->GetChild( 1 )->GetProductionName() == "." )
         {
@@ -440,6 +464,46 @@ std::string PassStatement::EvaluateStringExpression(
     }
 
     return "<error>";
+}
+
+Variable* PassStatement::EvaluateParseExpression(
+    const ASTNode* const pxAST, const Context& xContext )
+{
+    if( pxAST->GetChildCount() == 1 )
+    {
+        if( pxAST->GetChild( 0 )->GetProductionName() == "<identifier>" )
+        {
+            return xContext.GetVariable(
+                pxAST->GetChild( 0 )->GetTokenValue() )->Clone();
+        }
+    }
+
+    if( pxAST->GetChildCount() == 3 )
+    {
+        if( pxAST->GetChild( 1 )->GetProductionName() == "." )
+        {
+            if( pxAST->GetChild( 2 )->GetProductionName() == "parse" )
+            {
+                return xContext.GetVariable(
+                    pxAST->GetChild( 0 )->GetTokenValue() )->GetParse();
+            }
+
+            /*
+            if( pxAST->GetChild( 2 )->GetProductionName() == "name" )
+            {
+                const Variable* const pxParse = xContext.GetVariable(
+                    pxAST->GetChild( 0 )->GetTokenValue() );
+                return new StringVariable(
+                    "<temporary-string-variable>",
+                    pxParse->GetInputName() );
+            }
+            */
+        }
+    }
+
+    // error?
+
+    return nullptr;
 }
 
 }

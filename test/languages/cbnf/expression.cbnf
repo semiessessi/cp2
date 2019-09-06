@@ -52,3 +52,4 @@ boolean-expression          =   "false" ;
 boolean-expression          =   identifier ;
 
 parse-expression            =   identifier "." "parse" ;
+parse-expression            =   identifier ;

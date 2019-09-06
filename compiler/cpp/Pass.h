@@ -55,6 +55,7 @@ public:
     void Execute( const Parser::Grammar& xGrammar, const Passes& xPasses );
 
     const std::string& GetName() const { return mxName; }
+    const ASTNode* GetNode() const { return mpxOriginalNode; }
 
 private:
 
@@ -64,6 +65,7 @@ private:
     PassScope* mpxStatements;
     std::vector< std::string > maxRequiredPasses;
     std::string mxName;
+    const ASTNode* mpxOriginalNode;
 
 };
 

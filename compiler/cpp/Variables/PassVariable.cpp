@@ -3,6 +3,7 @@
 #include "PassVariable.h"
 
 #include "NameVariable.h"
+#include "ParseVariable.h"
 #include "../Passes.h"
 #include "../Pass.h"
 
@@ -30,6 +31,13 @@ std::string PassVariable::GetNameValue() const
 std::string PassVariable::GetInputName() const
 {
     return InputNameFromOutputName( GetNameValue() );
+}
+
+Variable* PassVariable::GetParse() const
+{
+    return new ParseVariable(
+        "<temporary-parse-variable>",
+        mxPasses.GetPass( miIndex ).GetNode() );
 }
 
 }

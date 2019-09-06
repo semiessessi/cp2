@@ -33,6 +33,10 @@ keywords
     "lexemes"
     "block-comments"
     "line-comments"
+    "passes"
+    "parse"
+    "walk"
+    "as"
 }
 
 identifiers
@@ -47,6 +51,7 @@ operators
     "}"
     "*"
     "+"
+    "-"
     "?"
     "."
     "=="

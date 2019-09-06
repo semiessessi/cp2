@@ -78,6 +78,7 @@ const Grammar& GetCBNFGrammar()
 
         GrammarProduction( "<pass-statement>",
             GE( "walk" ) + GE( "<parse-expression>" )
+                + GE( "as" ) + GE( "<identifier>" )
                 + GE( "<walk-statements>" ) ),
 
         GrammarProduction( "<pass-statement>",
@@ -104,7 +105,10 @@ const Grammar& GetCBNFGrammar()
         GrammarProduction( "<string-expression>", GE( "<string>" ) ),
         GrammarProduction( "<string-expression>", GE( "<identifier>" ) ),
 
-        GrammarProduction( "<string-expression>", GE( "<string-expression>" ) + GE( "+" ) + GE( "<string-expression>" ) ),
+        GrammarProduction( "<string-expression>", GE( "<string-expression>" )
+            + GE( "+" ) + GE( "<string-expression>" ) ),
+        GrammarProduction( "<string-expression>", GE( "<string-expression>" )
+            + GE( "-" ) + GE( "<string-expression>" ) ),
 
         GrammarProduction( "<string-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "name" ) ),
         GrammarProduction( "<string-expression>", GE( "language" ) + GE( "." ) + GE( "name" ) ),
@@ -148,6 +152,7 @@ const Grammar& GetCBNFGrammar()
         GrammarProduction( "<boolean-expression>", GE( "<identifier>" ) ),
 
         GrammarProduction( "<parse-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "parse" ) ),
+        GrammarProduction( "<parse-expression>", GE( "<identifier>" ) ),
 
         // for non-production statements...
         GrammarProduction( "<terminal-list>", GE( "{" ) + !GE( "<terminal>" ) + GE( "}" ) ),
@@ -200,6 +205,7 @@ const Grammar& GetCBNFGrammar()
         kxCBNFGrammar.AddKeyword( "\"passes\"" );
         kxCBNFGrammar.AddKeyword( "\"walk\"" );
         kxCBNFGrammar.AddKeyword( "\"parse\"" );
+        kxCBNFGrammar.AddKeyword( "\"as\"" );
 
         kxCBNFGrammar.AddTerminator( "\";\"" );
 
@@ -210,6 +216,7 @@ const Grammar& GetCBNFGrammar()
         kxCBNFGrammar.AddOperator( "\"}\"" );
         kxCBNFGrammar.AddOperator( "\"*\"" );
         kxCBNFGrammar.AddOperator( "\"+\"" );
+        kxCBNFGrammar.AddOperator( "\"-\"" );
         kxCBNFGrammar.AddOperator( "\"?\"" );
         kxCBNFGrammar.AddOperator( "\".\"" );
         kxCBNFGrammar.AddOperator( "\"==\"" );

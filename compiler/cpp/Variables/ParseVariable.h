@@ -26,6 +26,12 @@ public:
 
     Variable* Clone() const override { return new ParseVariable( GetName(), mpxNode ); }
 
+    std::string GetValue() const override;
+    std::string GetNameValue() const override;
+    bool IsMultipleName() const override;
+
+    const ASTNode* GetNode() const { return mpxNode; }
+
 protected:
 
     const ASTNode* mpxNode;

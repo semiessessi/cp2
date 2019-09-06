@@ -19,6 +19,12 @@ class Pass;
 class Passes;
 class Variable;
 
+struct ParseWalkState
+{
+    bool bStopped;
+    bool bSkipped;
+};
+
 class Context
 {
 public:
@@ -43,6 +49,10 @@ public:
     const Parser::Grammar* GetGrammar() const { return mpxGrammar; }
     const Passes* GetPasses() const { return mpxPasses; }
 
+    const ParseWalkState& GetWalkState() const { return mxPassWalkState; }
+
+    void WalkBreak() { mxPassWalkState.bStopped = true; }
+    void WalkContinue() { mxPassWalkState.bSkipped = true; }
 private:
 
     Context();
@@ -59,6 +69,8 @@ private:
     Context* mpxParentContext;
     const Parser::Grammar* mpxGrammar;
     const Passes* mpxPasses;
+
+    ParseWalkState mxPassWalkState;
 };
 
 }

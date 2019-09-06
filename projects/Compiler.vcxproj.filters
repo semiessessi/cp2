@@ -13,6 +13,9 @@
     <Filter Include="compiler\Variables">
       <UniqueIdentifier>{db0941fd-366a-4bec-ae01-edd6ad35cc48}</UniqueIdentifier>
     </Filter>
+    <Filter Include="compiler\Statements\Walk">
+      <UniqueIdentifier>{640d6bc0-d98f-4c65-a4d9-e798f7d64442}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\cpp\Report.h">
@@ -99,6 +102,18 @@
     <ClInclude Include="..\compiler\cpp\Variables\PassVariable.h">
       <Filter>compiler\Variables</Filter>
     </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Statements\Walk.h">
+      <Filter>compiler\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\WalkStatement.h">
+      <Filter>compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Statements\Walk\WrappedPassStatement.h">
+      <Filter>compiler\Statements\Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\compiler\cpp\Statements\Walk\WalkScope.h">
+      <Filter>compiler\Statements\Walk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\compiler\cpp\Compiler.cpp">
@@ -178,6 +193,18 @@
     </ClCompile>
     <ClCompile Include="..\compiler\cpp\Variables\PassVariable.cpp">
       <Filter>compiler\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Statements\Walk.cpp">
+      <Filter>compiler\Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\WalkStatement.cpp">
+      <Filter>compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Statements\Walk\WrappedPassStatement.cpp">
+      <Filter>compiler\Statements\Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compiler\cpp\Statements\Walk\WalkScope.cpp">
+      <Filter>compiler\Statements\Walk</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

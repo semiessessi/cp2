@@ -69,6 +69,7 @@ const std::vector< Rule >& CBNFLexerRules()
         Rule( "passes",					        Token( "passes",	        34 ) ),
         Rule( "walk",					        Token( "walk",	            35 ) ),
         Rule( "parse",					        Token( "parse",	            36 ) ),
+        Rule( "as",					            Token( "as",	            37 ) ),
 
 		Rule( "[_a-zA-Z][_\\-a-zA-Z0-9]*",		Token( "<identifier>",		1000, true ) ),
 		//Rule( "\"(?:[^\\\"\\\\]|\\\\.)*\"",		Token( "<string>",			1001, true ) ),
@@ -83,7 +84,7 @@ const std::vector< Rule >& CBNFLexerRules()
         Rule( "\\+",							Token( "+",					2007 ) ),
         Rule( "\\.",							Token( ".",					2008 ) ),
         Rule( "\\=\\=",							Token( "==",				2009 ) ),
-		
+        Rule( "\\-",							Token( "-",					2010 ) ),
 	};
 
 	return lsaxLexerRules;

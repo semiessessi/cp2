@@ -31,6 +31,8 @@ public:
 
     std::string GetInputName() const override;
 
+    Variable* GetParse() const override;
+
 private:
 
     const Passes& mxPasses;

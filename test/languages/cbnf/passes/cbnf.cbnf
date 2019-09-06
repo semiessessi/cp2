@@ -145,14 +145,53 @@ pass "cbnf" switch
     // output passes?
     for each compiler-pass in language.passes
     {
-        write "pass " + "\"" + compiler-pass.name + "\"" ;
+        write "\npass " + "\"" + compiler-pass.name + "\"" ;
         write "\n" ;
         
         write "{\n" ;
         
-        walk compiler-pass.parse
+        tab-prefix = "" ;
+        walk compiler-pass.parse as node
         {
-            // SE - TODO: ...
+            if node.is-list
+            {
+            }
+            else
+            {
+                if node == "."
+                {
+                    write "." ;
+                }
+                else
+                {
+                    if node == ";"
+                    {
+                        write node + "\n" + tab-prefix ;
+                    }
+                    else
+                    {
+                        if node == "{"
+                        {
+                            write "\n" + tab-prefix ;
+                            tab-prefix = tab-prefix + "    " ;
+                        }
+                        if node == "}"
+                        {
+                            tab-prefix = tab-prefix - "    " ;
+                        }
+                        write node + " " ;
+                        if node == "{"
+                        {
+                            write "\n" + tab-prefix ;
+                        }
+                        if node == "}"
+                        {
+                            write "\n" + tab-prefix;
+                        }
+                        
+                    }
+                }
+            }
         }
         
         write "}\n" ;

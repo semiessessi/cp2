@@ -28,6 +28,8 @@ public:
     virtual std::string GetStartValue() const { return GetValue(); }
     virtual std::string GetEndValue() const { return GetValue(); }
 
+    virtual void SetName( const std::string& xName ) { mxName = xName; }
+
     virtual Variable* GetIndexed( const int iIndex ) const;
     virtual int GetIndexedCount() const;
 

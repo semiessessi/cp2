@@ -107,6 +107,7 @@ void Context::UpdateVariable(
     }
 
     Variable* const pxNew = pxVariable->Clone();
+    pxNew->SetName( xName );
     delete mxVariables[ xName ];
     mxVariables[ xName ] = pxNew;
 }
@@ -115,7 +116,10 @@ Context::Context()
 : mpCurrentFile( nullptr )
 , mpxParentContext( nullptr )
 , mpxGrammar( nullptr )
+, mpxPasses( nullptr )
 {
+    mxPassWalkState.bSkipped = false;
+    mxPassWalkState.bStopped = false;
 }
 
 Context::Context( const Context& xOther )
@@ -125,11 +129,15 @@ Context::Context( const Context& xOther )
 , mpCurrentFile( xOther.mpCurrentFile )
 , mpxParentContext( xOther.mpxParentContext )
 , mpxGrammar( xOther.mpxGrammar )
+, mpxPasses( xOther.mpxPasses )
 {
     for( auto xPair : xOther.mxVariables )
     {
         mxVariables[ xPair.first ] = xPair.second->Clone();
     }
+
+    mxPassWalkState.bSkipped = xOther.mxPassWalkState.bSkipped;
+    mxPassWalkState.bStopped = xOther.mxPassWalkState.bStopped;
 }
 
 Context::Context( const Context* const pxOther )
@@ -139,7 +147,10 @@ Context::Context( const Context* const pxOther )
 , mpCurrentFile( pxOther->mpCurrentFile )
 , mpxParentContext( nullptr )
 , mpxGrammar( pxOther->mpxGrammar )
+, mpxPasses( pxOther->mpxPasses )
 {
+    mxPassWalkState.bSkipped = pxOther->mxPassWalkState.bSkipped;
+    mxPassWalkState.bStopped = pxOther->mxPassWalkState.bStopped;
 }
 
 Context& Context::operator=( const Context& xOther )
@@ -149,11 +160,15 @@ Context& Context::operator=( const Context& xOther )
     mpCurrentFile = xOther.mpCurrentFile;
     mpxParentContext = xOther.mpxParentContext;
     mpxGrammar = xOther.mpxGrammar;
+    mpxPasses = xOther.mpxPasses;
 
     for( auto xPair : xOther.mxVariables )
     {
         mxVariables[ xPair.first ] = xPair.second->Clone();
     }
+
+    mxPassWalkState.bSkipped = xOther.mxPassWalkState.bSkipped;
+    mxPassWalkState.bStopped = xOther.mxPassWalkState.bStopped;
 
     return *this;
 }

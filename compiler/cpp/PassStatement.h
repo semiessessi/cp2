@@ -41,6 +41,7 @@ protected:
     static Variable* EvaluateArrayExpression( const ASTNode* const pxAST, const Context& xContext );
     static bool EvaluateBooleanExpression( const ASTNode* const pxAST, const Context& xContext );
     static std::string EvaluateStringExpression( const ASTNode* const pxAST, const Context& xContext );
+    static Variable* EvaluateParseExpression( const ASTNode* const pxAST, const Context& xContext );
 };
 
 }

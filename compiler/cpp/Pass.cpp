@@ -15,6 +15,7 @@ Pass::Pass( const std::string& xName )
 : mbIsSwitch( false )
 , mpxStatements( nullptr )
 , mxName( xName )
+, mpxOriginalNode( nullptr )
 {
 
 }
@@ -26,6 +27,7 @@ Pass::Pass( const Pass& xPass )
     : nullptr )
 , maxRequiredPasses( xPass.maxRequiredPasses )
 , mxName( xPass.mxName )
+, mpxOriginalNode( xPass.mpxOriginalNode )
 {
 
 }
@@ -43,6 +45,7 @@ Pass& Pass::operator =( const Pass& xPass )
         : nullptr;
     maxRequiredPasses = xPass.maxRequiredPasses;
     mxName = xPass.mxName;
+    mpxOriginalNode = xPass.mpxOriginalNode;
     return *this;
 }
 
@@ -59,6 +62,7 @@ void Pass::AddRequiredPass( const std::string& xPassName )
 
 void Pass::Compile( const ASTNode* const pxAST )
 {
+    mpxOriginalNode = pxAST;
     delete mpxStatements;
     mpxStatements = static_cast< PassScope* >(
         PassStatement::Create( pxAST ) );
