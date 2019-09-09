@@ -97,7 +97,7 @@ void DoParserTests()
 
 	CP2_PARSER_TEST_SIMPLE_WARNING( "no tokens", kaxNoTokens, kxSimpleAGrammar, 3501 );
 
-	CP2_PARSER_TEST_SIMPLE_ERROR( "unexpected token", kaxATokensShortWithD, kxSimpleAGrammar, 3003 );
+	CP2_PARSER_TEST_SIMPLE_ERROR( "unexpected token", kaxATokensShortWithD, kxSimpleAGrammar, 3002 );
 }
 
 #undef GE
