@@ -1,0 +1,26 @@
+// Copyright (c) 2018-2019 Cranium Software
+
+function-definition					=
+	function-specifier*						// specifiers
+	type?									// return type (optional)
+	identifier								// name
+	"(" parameter-definition-list? ")"		// parameters
+	"="?									// sugar (optional)
+	function-statement ; 					// body
+
+// how functions interact with the rest of the language
+universal-statement					= function-definition ;
+
+function-specifier					= "pure" ;
+//function-specifier					= identifier ;
+
+parameter-definition-list 			= parameter-definition ;
+parameter-definition-list 			= parameter-definition "," parameter-definition-list ;
+
+parameter-definition				= type? identifier ;
+
+function-statement-scope			= "{" function-statement* "}" ;
+
+function-statement					= universal-statement ;
+function-statement					= function-statement-scope ;
+function-statement					= "return" expression? ";" ;
