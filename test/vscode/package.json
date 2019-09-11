@@ -1,0 +1,25 @@
+{
+    "name": "cbnf",
+    "displayName": "CBNF",
+    "description": "CBNF for Visual Studio Code",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.38.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "CBNF",
+            "aliases": ["CBNF", "CBNF"],
+            "extensions": [".CBNF"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "CBNF",
+            "scopeName": "source.CBNF",
+            "path": "./syntaxes/cbnf.tmLanguage.json"
+        }]
+    }
+}
