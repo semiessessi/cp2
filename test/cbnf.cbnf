@@ -48,6 +48,7 @@ string-expression = identifier "." "input-name" ;
 string-expression = string-expression "." "lower-case" ;
 string-expression = string-expression "." "quote-stripped" ;
 string-expression = string-expression "." "regex-escaped" ;
+string-expression = string-expression "." "double-regex-escaped" ;
 
 array-expression = "language" "." "productions" ;
 array-expression = identifier "." "productions" ;
@@ -128,6 +129,7 @@ keywords
 	"lower-case"
 	"quote-stripped"
 	"regex-escaped"
+	"double-regex-escaped"
 }
 
 identifiers
@@ -163,7 +165,6 @@ strings
 }
 
 pass "cpp"
-{
 
 { 
     output language .name + ".cpp" ;
@@ -186,33 +187,31 @@ pass "cpp"
                 if production-name .is-non-empty 
                 { 
                     write "+" ;
-                    } 
+                } 
                 else 
                 { 
                     write "!" ;
-                    } 
                 } 
+            } 
             else 
             { 
                 if production-name .is-optional 
                 { 
                     write "~" ;
-                    } 
                 } 
+            } 
             write "GE( \"" + production-name + "\" ) " ;
             join = "+ " ;
-            } 
-        write "),\n" ;
         } 
+        write "),\n" ;
+    } 
     write "\t});\n\n" ;
     write "#undef GE\n\n" ;
     write "\treturn kx" + language .name + "Grammar;\n" ;
     write "\}\n" ;
-    } 
-}
+} 
 
 pass "cbnf"
-{
 
 { 
     output language .name + ".cbnf" ;
@@ -221,27 +220,27 @@ pass "cbnf"
     for each value in language .line-comments 
     { 
         write "comment \"" + value + "\" ;\n" ;
-        } 
+    } 
     for each value in language .block-comments 
     { 
         write "comment " ;
         for each part in value 
         { 
             write "\"" + part + "\" " ;
-            } 
-        write ";\n" ;
         } 
+        write ";\n" ;
+    } 
     write "\n" ;
     for each value in language .lexemes 
     { 
         if value .is-optional 
         { 
-            } 
+        } 
         else 
         { 
             write "lexeme " + value .name + " " + value + " ;\n" ;
-            } 
         } 
+    } 
     write "\n" ;
     for each value in language .quotes 
     { 
@@ -249,19 +248,19 @@ pass "cbnf"
         for each part in value 
         { 
             write "\"" + part + "\" " ;
-            } 
-        write ";\n" ;
         } 
+        write ";\n" ;
+    } 
     last = "" ;
     for each production in language .productions 
     { 
         if production .input-name == last 
         { 
-            } 
+        } 
         else 
         { 
             write "\n" ;
-            } 
+        } 
         last = production .input-name ;
         write production .input-name + " = " ;
         join = "" ;
@@ -274,120 +273,122 @@ pass "cbnf"
                 if production-name .is-non-empty 
                 { 
                     write "+" ;
-                    } 
+                } 
                 else 
                 { 
                     write "*" ;
-                    } 
                 } 
+            } 
             else 
             { 
                 if production-name .is-optional 
                 { 
                     write "?" ;
-                    } 
                 } 
-            join = " " ;
             } 
-        write " ;\n" ;
+            join = " " ;
         } 
+        write " ;\n" ;
+    } 
     write "\n" ;
     write "keywords\n" ;
     write "{\n" ;
     for each value in language .keywords 
     { 
         write "\t" + value + "\n" ;
-        } 
+    } 
     write "}\n\n" ;
     write "identifiers\n" ;
     write "{\n" ;
     for each value in language .identifiers 
     { 
         write "\t" + value + "\n" ;
-        } 
+    } 
     write "}\n\n" ;
     write "operators\n" ;
     write "{\n" ;
     for each value in language .operators 
     { 
         write "\t" + value + "\n" ;
-        } 
+    } 
     write "}\n\n" ;
     write "separators\n" ;
     write "{\n" ;
     for each value in language .separators 
     { 
         write "\t" + value + "\n" ;
-        } 
+    } 
     write "}\n\n" ;
     write "terminators\n" ;
     write "{\n" ;
     for each value in language .terminators 
     { 
         write "\t" + value + "\n" ;
-        } 
+    } 
     write "}\n\n" ;
     write "strings\n" ;
     write "{\n" ;
     for each value in language .strings 
     { 
         write "\t" + value + "\n" ;
-        } 
+    } 
     write "}\n" ;
     for each compiler-pass in language .passes 
     { 
-        write "\npass " + "\"" + compiler-pass .name + "\"" ;
-        write "\n" ;
-        write "{\n" ;
+        write "\npass " + "\"" + compiler-pass .name + "\"\n" ;
         tab-prefix = "" ;
+        current-prefix = "" ;
         walk compiler-pass .parse as node 
         { 
             if node .is-list 
             { 
-                } 
+            } 
             else 
             { 
                 if node == "." 
                 { 
                     write "." ;
-                    } 
+                } 
                 else 
                 { 
                     if node == ";" 
                     { 
-                        write node + "\n" + tab-prefix ;
-                        } 
+                        write node + "\n" ;
+                        current-prefix = tab-prefix ;
+                    } 
                     else 
                     { 
                         if node == "{" 
                         { 
-                            write "\n" + tab-prefix ;
+                            write "\n" ;
+                            current-prefix = tab-prefix ;
                             tab-prefix = tab-prefix + "    " ;
-                            } 
+                        } 
                         if node == "}" 
                         { 
                             tab-prefix = tab-prefix - "    " ;
-                            } 
-                        write node + " " ;
+                            current-prefix = tab-prefix ;
+                        } 
+                        write current-prefix + node + " " ;
+                        current-prefix = "" ;
                         if node == "{" 
                         { 
-                            write "\n" + tab-prefix ;
-                            } 
+                            write "\n" ;
+                            current-prefix = tab-prefix ;
+                        } 
                         if node == "}" 
                         { 
-                            write "\n" + tab-prefix ;
-                            } 
+                            write "\n" ;
+                            current-prefix = tab-prefix ;
                         } 
                     } 
                 } 
             } 
-        write "}\n" ;
         } 
     } 
-}
+} 
 
 pass "vscode"
-{
 
 { 
     lower-case-name = language .name .lower-case ;
@@ -403,7 +404,7 @@ pass "vscode"
     for each value in language .line-comments 
     { 
         write "\t\t\"lineComment\": \"" + value + "\",\n" ;
-        } 
+    } 
     for each value in language .block-comments 
     { 
         write "\t\t\"blockComment\": [" ;
@@ -411,10 +412,10 @@ pass "vscode"
         for each part in value 
         { 
             blockString = blockString + " \"" + part + "\"," ;
-            } 
+        } 
         write blockString - "," ;
         write " ]\n" ;
-        } 
+    } 
     write "\t}\n" ;
     write "}\n" ;
     output "vscode/package.json" ;
@@ -467,10 +468,9 @@ pass "vscode"
     for each keyword in language .keywords 
     { 
         stripped = keyword .quote-stripped ;
-        stripped = stripped .regex-escaped ;
+        stripped = stripped .double-regex-escaped ;
         keywordMatcher = keywordMatcher + stripped + "|" ;
-        } 
+    } 
     write keywordMatcher - "|" ;
     write ")\\\\b\"\n" + "            }]\n" + "        },\n" + "        \"strings\": {\n" + "            \"name\": \"string.quotes.1." + lower-case-name + "\",\n" + "            \"begin\": \"\\\"\",\n" + "            \"end\": \"\\\"\",\n" + "            \"patterns\": [\n" + "                {\n" + "                    \"name\": \"constant.character.escape.1." + lower-case-name + "\",\n" + "                    \"match\": \"\\\\\\\\.\"\n" + "                }\n" + "            ]\n" + "        }\n" + "    },\n" + "    \"scopeName\": \"source." + lower-case-name + "\"\n" + "}\n" ;
-    } 
-}
+} 

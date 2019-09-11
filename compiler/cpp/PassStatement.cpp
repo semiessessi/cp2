@@ -488,6 +488,11 @@ std::string PassStatement::EvaluateStringExpression(
                 {
                     return pxVariable->RegexEscape();
                 }
+
+                if( pxAST->GetChild( 2 )->GetProductionName() == "double-regex-escaped" )
+                {
+                    return pxVariable->DoubleRegexEscape();
+                }
             }
         }
     }

@@ -40,6 +40,7 @@ keywords
     "lower-case"
     "quote-stripped"
     "regex-escaped"
+    "double-regex-escaped"
 }
 
 identifiers

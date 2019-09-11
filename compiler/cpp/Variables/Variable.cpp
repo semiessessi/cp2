@@ -155,7 +155,12 @@ std::string Variable::StripQuotes() const
 
 std::string Variable::RegexEscape() const
 {
-    // SE - TODO: less for a specific case.
+    return CP2::SlashEscape(
+            CP2::RegexEscape( GetValue() ) );
+}
+
+std::string Variable::DoubleRegexEscape() const
+{
     return CP2::SlashEscape(
         CP2::SlashEscape(
             CP2::RegexEscape( GetValue() ) ) );

@@ -243,7 +243,7 @@ pass "vscode" switch
     for each keyword in language.keywords
     {
         stripped = keyword.quote-stripped ;
-        stripped = stripped.regex-escaped ;
+        stripped = stripped.double-regex-escaped ;
         keywordMatcher = keywordMatcher + stripped + "|" ;
     }
     write keywordMatcher - "|" ;

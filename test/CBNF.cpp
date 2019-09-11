@@ -72,6 +72,8 @@ const Grammar& GetCBNFGrammar()
 			GE( "<string-expression>" ) + GE( "." ) + GE( "quote-stripped" ) ),
 		GrammarProduction("<string-expression>",
 			GE( "<string-expression>" ) + GE( "." ) + GE( "regex-escaped" ) ),
+		GrammarProduction("<string-expression>",
+			GE( "<string-expression>" ) + GE( "." ) + GE( "double-regex-escaped" ) ),
 		GrammarProduction("<array-expression>",
 			GE( "language" ) + GE( "." ) + GE( "productions" ) ),
 		GrammarProduction("<array-expression>",

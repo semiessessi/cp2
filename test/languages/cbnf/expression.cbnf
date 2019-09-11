@@ -18,6 +18,7 @@ string-expression           =   identifier "." "input-name" ;
 string-expression           =   string-expression "." "lower-case" ;
 string-expression           =   string-expression "." "quote-stripped" ;
 string-expression           =   string-expression "." "regex-escaped" ;
+string-expression           =   string-expression "." "double-regex-escaped" ;
 
 array-expression            =   "language" "." "productions" ;
 array-expression            =   identifier "." "productions" ;   
