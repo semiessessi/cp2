@@ -24,18 +24,18 @@ pass "vscode" switch
     // SE - TODO: does it handle multiple comments?!?
     for each value in language.block-comments
     {
-        write "\t\t\"blockComment\": [\"" ;
+        write "\t\t\"blockComment\": [" ;
         blockString = "";
         for each part in value
         {
-            blockString = blockString + part + "," ;
+            blockString = blockString + " \"" + part + "\"," ;
         }
         write blockString - "," ;
 
-        write "\", ]\n" ;
+        write " ]\n" ;
     }
 
-    write "}\n" ;
+    write "\t},\n" ;
 
     // SE - TODO: something better for these other things
 
@@ -56,9 +56,9 @@ pass "vscode" switch
     output "vscode/package.json" ;
 
     write "{\n" ;
-    write "    \"name\": \"cbnf\",\n" ;
-    write "    \"displayName\": \"CBNF\",\n" ;
-    write "    \"description\": \"CBNF for Visual Studio Code\",\n" ;
+    write "    \"name\": \"" + language.name + "\",\n" ;
+    write "    \"displayName\": \"" + language.name + "\",\n" ;
+    write "    \"description\": \"" + language.name + " for Visual Studio Code\",\n" ;
     write "    \"version\": \"0.0.1\",\n" ;
     write "    \"engines\": {\n" ;
     write "        \"vscode\": \"^1.38.0\"\n" ;
@@ -234,7 +234,7 @@ pass "vscode" switch
         + "            }]\n"
         + "        },\n"
         + "        \"strings\": {\n"
-        + "            \"name\": \"string.quoted.1." + language.name + "\",\n"
+        + "            \"name\": \"string.quotes.1." + language.name + "\",\n"
         + "            \"begin\": \"\\\"\",\n"
         + "            \"end\": \"\\\"\",\n"
         + "            \"patterns\": [\n"
