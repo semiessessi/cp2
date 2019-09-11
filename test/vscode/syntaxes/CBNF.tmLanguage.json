@@ -1,0 +1,32 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "CBNF",
+    "patterns": [
+        {
+            "include": "#keywords"
+        },
+        {
+            "include": "#strings"
+        }
+    ],
+    "repository": {
+        "keywords": {
+            "patterns": [{
+                "name": "keyword.cbnf",
+                "match": "\\b(keywords|identifiers|operators|separators|terminators|strings|language|comment|quote|lexeme|pass|requires|output|switch|write|name|for|each|in|productions|names|is\\-optional|is\\-non\\-empty|is\\-list|true|false|input\\-name|quotes|lexemes|block\\-comments|line\\-comments|passes|parse|walk|as|lower\\-case|quote\\-stripped|regex\\-escaped)\\b"
+            }]
+        },
+        "strings": {
+            "name": "string.quotes.1.cbnf",
+            "begin": "\"",
+            "end": "\"",
+            "patterns": [
+                {
+                    "name": "constant.character.escape.1.cbnf",
+                    "match": "\\\\."
+                }
+            ]
+        }
+    },
+    "scopeName": "source.cbnf"
+}

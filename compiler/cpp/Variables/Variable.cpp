@@ -2,7 +2,11 @@
 
 #include "Variable.h"
 
+#include "../../../common/cpp/Escaping.h"
 #include "../../../common/cpp/Report.h"
+
+#include <algorithm>
+#include <locale>
 
 namespace CP2
 {
@@ -123,5 +127,39 @@ void Variable::DeleteArray( const std::vector< Variable* >& xVariables )
         delete pxVariable;
     }
 }
+
+std::string Variable::GetLowerCase() const
+{
+    std::string xCopy = GetValue();
+    std::transform( xCopy.begin(), xCopy.end(), xCopy.begin(),
+    []( char c )
+    {
+        return std::tolower( c, std::locale() );
+    });
+
+    return xCopy;
+}
+
+std::string Variable::StripQuotes() const
+{
+    const std::string xValue = GetValue();
+    if( ( xValue.size() > 0 )
+        && ( xValue.front() == '\"' )
+        && ( xValue.back() == '\"' ) )
+    {
+        return xValue.substr( 1, xValue.size() - 2 );
+    }
+
+    return xValue;
+}
+
+std::string Variable::RegexEscape() const
+{
+    // SE - TODO: less for a specific case.
+    return CP2::SlashEscape(
+        CP2::SlashEscape(
+            CP2::RegexEscape( GetValue() ) ) );
+}
+
 }
 }

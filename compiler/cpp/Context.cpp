@@ -6,6 +6,9 @@
 #include "Variables/LanguageVariable.h"
 #include "Variables/StringVariable.h"
 
+#include "../../common/cpp/Report.h"
+
+#include <direct.h>
 #include <cstdio>
 
 namespace CP2
@@ -54,7 +57,23 @@ void Context::SetCurrentFile( const std::string& xPath )
     void* pFile = GetFileFromPath( xPath );
     if( pFile == nullptr )
     {
+        // SE - TODO: create folders better
+        const size_t uIndex = xPath.find_last_of( "\\/" );
+        if( std::string::npos != uIndex )
+        {
+            _mkdir( xPath.substr( 0, uIndex ).c_str() );
+        }
+
         pFile = fopen( xPath.c_str(), "wb" );
+
+        if( pFile == nullptr )
+        {
+            CP2::Error( 0, "", 0, 0, "Writing to %s failed!", xPath.c_str() );
+        }
+        else
+        {
+            CP2::Message( "Writing %s...", xPath.c_str() );
+        }
     }
 
     if( pFile != nullptr )
