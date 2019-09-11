@@ -1,5 +1,5 @@
 {
-    "name": "CBNF",
+    "name": "cbnf",
     "displayName": "CBNF",
     "description": "CBNF for Visual Studio Code",
     "version": "0.0.1",
@@ -11,14 +11,14 @@
     ],
     "contributes": {
         "languages": [{
-            "id": "CBNF",
-            "aliases": ["CBNF", "CBNF"],
-            "extensions": [".CBNF"],
+            "id": "cbnf",
+            "aliases": ["CBNF", "cbnf"],
+            "extensions": [".cbnf"],
             "configuration": "./language-configuration.json"
         }],
         "grammars": [{
             "language": "CBNF",
-            "scopeName": "source.CBNF",
+            "scopeName": "source.cbnf",
             "path": "./syntaxes/cbnf.tmLanguage.json"
         }]
     }

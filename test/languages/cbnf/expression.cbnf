@@ -10,10 +10,13 @@ string-expression           =   identifier ;
 //string-expression           =   "(" string-expression ")" ;
 
 string-expression           =   string-expression "+" string-expression ;
+string-expression           =   string-expression "-" string-expression ;
 
 string-expression           =   identifier "." "name" ;
 string-expression           =   "language" "." "name" ;
 string-expression           =   identifier "." "input-name" ;
+string-expression           =   string-expression "." "lower-case" ;
+string-expression           =   string-expression "." "quote-stripped" ;
 
 array-expression            =   "language" "." "productions" ;
 array-expression            =   identifier "." "productions" ;   

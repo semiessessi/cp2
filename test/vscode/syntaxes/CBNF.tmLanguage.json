@@ -12,21 +12,21 @@
     "repository": {
         "keywords": {
             "patterns": [{
-                "name": "keyword.CBNF",
-                "match": "\\b(if|while|for|return)\\b"
+                "name": "keyword.cbnf",
+                "match": "\\b(keywords|identifiers|operators|separators|terminators|strings|language|comment|quote|lexeme|pass|requires|output|switch|write|name|for|each|in|productions|names|is-optional|is-non-empty|is-list|true|false|input-name|quotes|lexemes|block-comments|line-comments|passes|parse|walk|as|lower-case|quote-stripped)\\b"
             }]
         },
         "strings": {
-            "name": "string.quoted.1.CBNF",
+            "name": "string.quotes.1.cbnf",
             "begin": "\"",
             "end": "\"",
             "patterns": [
                 {
-                    "name": "constant.character.escape.1.CBNF",
+                    "name": "constant.character.escape.1.cbnf",
                     "match": "\\\\."
                 }
             ]
         }
     },
-    "scopeName": "source.CBNF"
+    "scopeName": "source.cbnf"
 }

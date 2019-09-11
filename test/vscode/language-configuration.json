@@ -4,8 +4,5 @@
 		"blockComment": [ "/*", "*/" ]
 	},
 	"brackets": [
-	],
-	"autoClosingPairs": [
-	],
-	"surroundingPairs": [	]
+	]
 }

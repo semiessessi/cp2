@@ -2,6 +2,9 @@
 
 pass "vscode" switch
 {
+    // SE - TODO: parsing isn't great at mixing "+" and "." etc.
+    lower-case-name = language.name.lower-case ;
+    
     output "vscode/.vscodeignore" ;
 
     write ".vscode/**\n" ;
@@ -42,21 +45,22 @@ pass "vscode" switch
     // symbols used as brackets
     write "\t\"brackets\": [\n" ;
         // ["(", ")"]
-    write "\t],\n" ;
+    write "\t]\n"; //,\n" ;
     // symbols that are auto closed when typing
-    write "\t\"autoClosingPairs\": [\n" ;
+    //write "\t\"autoClosingPairs\": [\n" ;
         //["'", "'"]
-    write "\t],\n" ;
+    //write "\t],\n" ;
     // symbols that that can be used to surround a selection
-    write "\t\"surroundingPairs\": [" ;
+    //write "\t\"surroundingPairs\": [" ;
         //["'", "'"]
-    write "\t\]\n" ;
+    //write "\t\]\n" ;
     write "}\n" ;
 
     output "vscode/package.json" ;
 
     write "{\n" ;
-    write "    \"name\": \"" + language.name + "\",\n" ;
+    write "    \"name\": \"" + language.name.lower-case ; // SE - TODO: + here causes pain
+    write "\",\n" ;
     write "    \"displayName\": \"" + language.name + "\",\n" ;
     write "    \"description\": \"" + language.name + " for Visual Studio Code\",\n" ;
     write "    \"version\": \"0.0.1\",\n" ;
@@ -68,15 +72,19 @@ pass "vscode" switch
     write "    ],\n" ;
     write "    \"contributes\": {\n" ;
     write "        \"languages\": [{\n" ;
-    write "            \"id\": \"" + language.name + "\",\n" ;
-    write "            \"aliases\": [\"" + language.name + "\", \"" + language.name + "\"],\n" ;
-    write "            \"extensions\": [\"." + language.name + "\"],\n" ;
+    write "            \"id\": \"" + language.name.lower-case ;
+    write "\",\n" ;
+    write "            \"aliases\": [\"" + language.name + "\", \"" + lower-case-name + "\"],\n" ;
+    write "            \"extensions\": [\"." + language.name.lower-case ;
+    write "\"],\n" ;
     write "            \"configuration\": \"./language-configuration.json\"\n" ;
     write "        }],\n" ;
     write "        \"grammars\": [{\n" ;
     write "            \"language\": \"" + language.name + "\",\n" ;
-    write "            \"scopeName\": \"source." + language.name + "\",\n" ;
-    write "            \"path\": \"./syntaxes/cbnf.tmLanguage.json\"\n" ;
+    write "            \"scopeName\": \"source." + language.name.lower-case ;
+    write "\",\n" ;
+    write "            \"path\": \"./syntaxes/" + language.name.lower-case ; 
+    write ".tmLanguage.json\"\n" ;
     write "        }]\n" ;
     write "    }\n" ;
     write "}\n" ;
@@ -213,7 +221,7 @@ pass "vscode" switch
         + "    ]\n"
         + "}" ;
 
-    output "vscode/syntaxes/" + language.name + ".tmLanguage.json" ;
+    output "vscode/syntaxes/" + lower-case-name + ".tmLanguage.json" ;
 
     write "{\n"
         + "    \"$schema\": \"https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json\",\n"
@@ -229,22 +237,30 @@ pass "vscode" switch
         + "    \"repository\": {\n"
         + "        \"keywords\": {\n"
         + "            \"patterns\": [{\n"
-        + "                \"name\": \"keyword." + language.name + "\",\n"
-        + "                \"match\": \"\\\\b(if|while|for|return)\\\\b\"\n"
+        + "                \"name\": \"keyword." + lower-case-name + "\",\n"
+        + "                \"match\": \"\\\\b(" ;
+    keywordMatcher = "" ;
+    for each keyword in language.keywords
+    {
+        stripped = keyword.quote-stripped;
+        keywordMatcher = keywordMatcher + stripped + "|" ;
+    }
+    write keywordMatcher - "|" ;
+    write ")\\\\b\"\n"
         + "            }]\n"
         + "        },\n"
         + "        \"strings\": {\n"
-        + "            \"name\": \"string.quotes.1." + language.name + "\",\n"
+        + "            \"name\": \"string.quotes.1." + lower-case-name + "\",\n"
         + "            \"begin\": \"\\\"\",\n"
         + "            \"end\": \"\\\"\",\n"
         + "            \"patterns\": [\n"
         + "                {\n"
-        + "                    \"name\": \"constant.character.escape.1." + language.name + "\",\n"
+        + "                    \"name\": \"constant.character.escape.1." + lower-case-name + "\",\n"
         + "                    \"match\": \"\\\\\\\\.\"\n"
         + "                }\n"
         + "            ]\n"
         + "        }\n"
         + "    },\n"
-        + "    \"scopeName\": \"source." + language.name + "\"\n"
+        + "    \"scopeName\": \"source." + lower-case-name + "\"\n"
         + "}\n" ;
 }

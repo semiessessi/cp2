@@ -41,9 +41,12 @@ rule-expression = identifier "+" ;
 string-expression = string ;
 string-expression = identifier ;
 string-expression = string-expression "+" string-expression ;
+string-expression = string-expression "-" string-expression ;
 string-expression = identifier "." "name" ;
 string-expression = "language" "." "name" ;
 string-expression = identifier "." "input-name" ;
+string-expression = string-expression "." "lower-case" ;
+string-expression = string-expression "." "quote-stripped" ;
 
 array-expression = "language" "." "productions" ;
 array-expression = identifier "." "productions" ;
@@ -121,6 +124,8 @@ keywords
 	"parse"
 	"walk"
 	"as"
+	"lower-case"
+	"quote-stripped"
 }
 
 identifiers
@@ -383,6 +388,7 @@ pass "vscode"
 {
 
 { 
+    lower-case-name = language .name .lower-case ;
     output "vscode/.vscodeignore" ;
     write ".vscode/**\n" ;
     write ".vscode-test/**\n" ;
@@ -409,15 +415,12 @@ pass "vscode"
         } 
     write "\t},\n" ;
     write "\t\"brackets\": [\n" ;
-    write "\t],\n" ;
-    write "\t\"autoClosingPairs\": [\n" ;
-    write "\t],\n" ;
-    write "\t\"surroundingPairs\": [" ;
-    write "\t\]\n" ;
+    write "\t]\n" ;
     write "}\n" ;
     output "vscode/package.json" ;
     write "{\n" ;
-    write "    \"name\": \"" + language .name + "\",\n" ;
+    write "    \"name\": \"" + language .name .lower-case ;
+    write "\",\n" ;
     write "    \"displayName\": \"" + language .name + "\",\n" ;
     write "    \"description\": \"" + language .name + " for Visual Studio Code\",\n" ;
     write "    \"version\": \"0.0.1\",\n" ;
@@ -429,15 +432,19 @@ pass "vscode"
     write "    ],\n" ;
     write "    \"contributes\": {\n" ;
     write "        \"languages\": [{\n" ;
-    write "            \"id\": \"" + language .name + "\",\n" ;
-    write "            \"aliases\": [\"" + language .name + "\", \"" + language .name + "\"],\n" ;
-    write "            \"extensions\": [\"." + language .name + "\"],\n" ;
+    write "            \"id\": \"" + language .name .lower-case ;
+    write "\",\n" ;
+    write "            \"aliases\": [\"" + language .name + "\", \"" + lower-case-name + "\"],\n" ;
+    write "            \"extensions\": [\"." + language .name .lower-case ;
+    write "\"],\n" ;
     write "            \"configuration\": \"./language-configuration.json\"\n" ;
     write "        }],\n" ;
     write "        \"grammars\": [{\n" ;
     write "            \"language\": \"" + language .name + "\",\n" ;
-    write "            \"scopeName\": \"source." + language .name + "\",\n" ;
-    write "            \"path\": \"./syntaxes/cbnf.tmLanguage.json\"\n" ;
+    write "            \"scopeName\": \"source." + language .name .lower-case ;
+    write "\",\n" ;
+    write "            \"path\": \"./syntaxes/" + language .name .lower-case ;
+    write ".tmLanguage.json\"\n" ;
     write "        }]\n" ;
     write "    }\n" ;
     write "}\n" ;
@@ -454,7 +461,15 @@ pass "vscode"
     write "# Welcome to your VS Code Extension\n" + "\n" + "## What's in the folder\n" + "\n" + "* This folder contains all of the files necessary for your extension.\n" + "* `package.json` - this is the manifest file in which you declare your language support and define the location of the grammar file that has been copied into your extension.\n" + "* `syntaxes/" + language .name + ".tmLanguage.json` - this is the Text mate grammar file that is used for tokenization.\n" + "* `language-configuration.json` - this is the language configuration, defining the tokens that are used for comments and brackets.\n" + "\n" + "## Get up and running straight away\n" + "\n" + "* Make sure the language configuration settings in `language-configuration.json` are accurate.\n" + "* Press `F5` to open a new window with your extension loaded.\n" + "* Create a new file with a file name suffix matching your language.\n" + "* Verify that syntax highlighting works and that the language configuration settings are working.\n" + "\n" + "## Make changes\n" + "\n" + "* You can relaunch the extension from the debug toolbar after making changes to the files listed above.\n" + "* You can also reload (`Ctrl+R` or `Cmd+R` on Mac) the VS Code window with your extension to load your changes.\n" + "\n" + "## Add more language features\n" + "\n" + "* To add features such as intellisense, hovers and validators check out the VS Code extenders documentation at https://code.visualstudio.com/docs\n" + "\n" + "## Install your extension\n" + "\n" + "* To start using your extension with Visual Studio Code copy it into the `<user home>/.vscode/extensions` folder and restart Code.\n" + "* To share your extension with the world, read on https://code.visualstudio.com/docs about publishing an extension.\n" ;
     output "vscode/.vscode/launch.json" ;
     write "// A launch configuration that launches the extension inside a new window\n" + "// Use IntelliSense to learn about possible attributes.\n" + "// Hover to view descriptions of existing attributes.\n" + "// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387\n" + "{\n" + "	\"version\": \"0.2.0\",\n" + "    \"configurations\": [\n" + "        {\n" + "            \"name\": \"Extension\",\n" + "            \"type\": \"extensionHost\",\n" + "            \"request\": \"launch\",\n" + "            \"runtimeExecutable\": \"${execPath}\",\n" + "            \"args\": [\n" + "                \"--extensionDevelopmentPath=${workspaceFolder}\"\n" + "            ]\n" + "        }\n" + "    ]\n" + "}" ;
-    output "vscode/syntaxes/" + language .name + ".tmLanguage.json" ;
-    write "{\n" + "    \"$schema\": \"https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json\",\n" + "    \"name\": \"" + language .name + "\",\n" + "    \"patterns\": [\n" + "        {\n" + "            \"include\": \"#keywords\"\n" + "        },\n" + "        {\n" + "            \"include\": \"#strings\"\n" + "        }\n" + "    ],\n" + "    \"repository\": {\n" + "        \"keywords\": {\n" + "            \"patterns\": [{\n" + "                \"name\": \"keyword." + language .name + "\",\n" + "                \"match\": \"\\\\b(if|while|for|return)\\\\b\"\n" + "            }]\n" + "        },\n" + "        \"strings\": {\n" + "            \"name\": \"string.quoted.1." + language .name + "\",\n" + "            \"begin\": \"\\\"\",\n" + "            \"end\": \"\\\"\",\n" + "            \"patterns\": [\n" + "                {\n" + "                    \"name\": \"constant.character.escape.1." + language .name + "\",\n" + "                    \"match\": \"\\\\\\\\.\"\n" + "                }\n" + "            ]\n" + "        }\n" + "    },\n" + "    \"scopeName\": \"source." + language .name + "\"\n" + "}\n" ;
+    output "vscode/syntaxes/" + lower-case-name + ".tmLanguage.json" ;
+    write "{\n" + "    \"$schema\": \"https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json\",\n" + "    \"name\": \"" + language .name + "\",\n" + "    \"patterns\": [\n" + "        {\n" + "            \"include\": \"#keywords\"\n" + "        },\n" + "        {\n" + "            \"include\": \"#strings\"\n" + "        }\n" + "    ],\n" + "    \"repository\": {\n" + "        \"keywords\": {\n" + "            \"patterns\": [{\n" + "                \"name\": \"keyword." + lower-case-name + "\",\n" + "                \"match\": \"\\\\b(" ;
+    keywordMatcher = "" ;
+    for each keyword in language .keywords 
+    { 
+        stripped = keyword .quote-stripped ;
+        keywordMatcher = keywordMatcher + stripped + "|" ;
+        } 
+    write keywordMatcher - "|" ;
+    write ")\\\\b\"\n" + "            }]\n" + "        },\n" + "        \"strings\": {\n" + "            \"name\": \"string.quotes.1." + lower-case-name + "\",\n" + "            \"begin\": \"\\\"\",\n" + "            \"end\": \"\\\"\",\n" + "            \"patterns\": [\n" + "                {\n" + "                    \"name\": \"constant.character.escape.1." + lower-case-name + "\",\n" + "                    \"match\": \"\\\\\\\\.\"\n" + "                }\n" + "            ]\n" + "        }\n" + "    },\n" + "    \"scopeName\": \"source." + lower-case-name + "\"\n" + "}\n" ;
     } 
 }

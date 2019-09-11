@@ -37,6 +37,8 @@ keywords
     "parse"
     "walk"
     "as"
+    "lower-case"
+    "quote-stripped"
 }
 
 identifiers

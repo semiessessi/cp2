@@ -58,6 +58,9 @@ public:
 
     static void DeleteArray( const std::vector< Variable* >& xVariables );
 
+    std::string GetLowerCase() const;
+    std::string StripQuotes() const;
+
 protected:
 
     static std::string InputNameFromOutputName( const std::string& xOutputName );
