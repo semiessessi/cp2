@@ -47,6 +47,7 @@ string-expression = "language" "." "name" ;
 string-expression = identifier "." "input-name" ;
 string-expression = string-expression "." "lower-case" ;
 string-expression = string-expression "." "quote-stripped" ;
+string-expression = string-expression "." "regex-escaped" ;
 
 array-expression = "language" "." "productions" ;
 array-expression = identifier "." "productions" ;
@@ -126,6 +127,7 @@ keywords
 	"as"
 	"lower-case"
 	"quote-stripped"
+	"regex-escaped"
 }
 
 identifiers
@@ -413,9 +415,7 @@ pass "vscode"
         write blockString - "," ;
         write " ]\n" ;
         } 
-    write "\t},\n" ;
-    write "\t\"brackets\": [\n" ;
-    write "\t]\n" ;
+    write "\t}\n" ;
     write "}\n" ;
     output "vscode/package.json" ;
     write "{\n" ;
@@ -440,7 +440,7 @@ pass "vscode"
     write "            \"configuration\": \"./language-configuration.json\"\n" ;
     write "        }],\n" ;
     write "        \"grammars\": [{\n" ;
-    write "            \"language\": \"" + language .name + "\",\n" ;
+    write "            \"language\": \"" + lower-case-name + "\",\n" ;
     write "            \"scopeName\": \"source." + language .name .lower-case ;
     write "\",\n" ;
     write "            \"path\": \"./syntaxes/" + language .name .lower-case ;
@@ -467,6 +467,7 @@ pass "vscode"
     for each keyword in language .keywords 
     { 
         stripped = keyword .quote-stripped ;
+        stripped = stripped .regex-escaped ;
         keywordMatcher = keywordMatcher + stripped + "|" ;
         } 
     write keywordMatcher - "|" ;

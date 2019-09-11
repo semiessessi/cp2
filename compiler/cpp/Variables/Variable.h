@@ -60,6 +60,7 @@ public:
 
     std::string GetLowerCase() const;
     std::string StripQuotes() const;
+    std::string RegexEscape() const;
 
 protected:
 

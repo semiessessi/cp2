@@ -38,14 +38,14 @@ pass "vscode" switch
         write " ]\n" ;
     }
 
-    write "\t},\n" ;
+    write "\t}\n" ;
 
     // SE - TODO: something better for these other things
 
     // symbols used as brackets
-    write "\t\"brackets\": [\n" ;
+    //write "\t\"brackets\": [\n" ;
         // ["(", ")"]
-    write "\t]\n"; //,\n" ;
+    //write "\t]\n"; //,\n" ;
     // symbols that are auto closed when typing
     //write "\t\"autoClosingPairs\": [\n" ;
         //["'", "'"]
@@ -80,7 +80,7 @@ pass "vscode" switch
     write "            \"configuration\": \"./language-configuration.json\"\n" ;
     write "        }],\n" ;
     write "        \"grammars\": [{\n" ;
-    write "            \"language\": \"" + language.name + "\",\n" ;
+    write "            \"language\": \"" + lower-case-name + "\",\n" ;
     write "            \"scopeName\": \"source." + language.name.lower-case ;
     write "\",\n" ;
     write "            \"path\": \"./syntaxes/" + language.name.lower-case ; 
@@ -242,7 +242,8 @@ pass "vscode" switch
     keywordMatcher = "" ;
     for each keyword in language.keywords
     {
-        stripped = keyword.quote-stripped;
+        stripped = keyword.quote-stripped ;
+        stripped = stripped.regex-escaped ;
         keywordMatcher = keywordMatcher + stripped + "|" ;
     }
     write keywordMatcher - "|" ;

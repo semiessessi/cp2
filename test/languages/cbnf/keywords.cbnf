@@ -39,6 +39,7 @@ keywords
     "as"
     "lower-case"
     "quote-stripped"
+    "regex-escaped"
 }
 
 identifiers

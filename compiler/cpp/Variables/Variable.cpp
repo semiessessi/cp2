@@ -2,6 +2,7 @@
 
 #include "Variable.h"
 
+#include "../../../common/cpp/Escaping.h"
 #include "../../../common/cpp/Report.h"
 
 #include <algorithm>
@@ -150,6 +151,14 @@ std::string Variable::StripQuotes() const
     }
 
     return xValue;
+}
+
+std::string Variable::RegexEscape() const
+{
+    // SE - TODO: less for a specific case.
+    return CP2::SlashEscape(
+        CP2::SlashEscape(
+            CP2::RegexEscape( GetValue() ) ) );
 }
 
 }

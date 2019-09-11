@@ -483,6 +483,11 @@ std::string PassStatement::EvaluateStringExpression(
                 {
                     return pxVariable->StripQuotes();
                 }
+
+                if( pxAST->GetChild( 2 )->GetProductionName() == "regex-escaped" )
+                {
+                    return pxVariable->RegexEscape();
+                }
             }
         }
     }
