@@ -6,6 +6,7 @@ comment "//" ;
 comment "/*" "*/" ;
 
 lexeme identifier "[_a-zA-Z][_\\-a-zA-Z0-9]*" ;
+lexeme integer "0-9*" ;
 
 quote string "\"" "\"" "\\" ;
 
@@ -40,6 +41,9 @@ rule-expression = identifier "+" ;
 
 string-expression = string ;
 string-expression = identifier ;
+
+integer-expression = integer ;
+
 string-expression = string-expression "+" string-expression ;
 string-expression = string-expression "-" string-expression ;
 string-expression = identifier "." "name" ;
@@ -49,6 +53,7 @@ string-expression = string-expression "." "lower-case" ;
 string-expression = string-expression "." "quote-stripped" ;
 string-expression = string-expression "." "regex-escaped" ;
 string-expression = string-expression "." "double-regex-escaped" ;
+string-expression = array-expression "[" integer-expression "]" ;
 
 array-expression = "language" "." "productions" ;
 array-expression = identifier "." "productions" ;
@@ -142,6 +147,8 @@ operators
 	"="
 	"{"
 	"}"
+	"["
+	"]"
 	"*"
 	"+"
 	"-"
@@ -463,7 +470,12 @@ pass "vscode"
     output "vscode/.vscode/launch.json" ;
     write "// A launch configuration that launches the extension inside a new window\n" + "// Use IntelliSense to learn about possible attributes.\n" + "// Hover to view descriptions of existing attributes.\n" + "// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387\n" + "{\n" + "	\"version\": \"0.2.0\",\n" + "    \"configurations\": [\n" + "        {\n" + "            \"name\": \"Extension\",\n" + "            \"type\": \"extensionHost\",\n" + "            \"request\": \"launch\",\n" + "            \"runtimeExecutable\": \"${execPath}\",\n" + "            \"args\": [\n" + "                \"--extensionDevelopmentPath=${workspaceFolder}\"\n" + "            ]\n" + "        }\n" + "    ]\n" + "}" ;
     output "vscode/syntaxes/" + lower-case-name + ".tmLanguage.json" ;
-    write "{\n" + "    \"$schema\": \"https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json\",\n" + "    \"name\": \"" + language .name + "\",\n" + "    \"patterns\": [\n" + "        {\n" + "            \"include\": \"#keywords\"\n" + "        },\n" + "        {\n" + "            \"include\": \"#strings\"\n" + "        }\n" + "    ],\n" + "    \"repository\": {\n" + "        \"keywords\": {\n" + "            \"patterns\": [{\n" + "                \"name\": \"keyword." + lower-case-name + "\",\n" + "                \"match\": \"\\\\b(" ;
+    write "{\n" + "    \"$schema\": \"https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json\",\n" + "    \"name\": \"" + language .name + "\",\n" + "    \"patterns\": [\n" + "        {\n" + "            \"include\": \"#keywords\"\n" + "        },\n" ;
+    for each string in language .quotes 
+    { 
+        write "        {\n" + "            \"include\": \"#" + string .name + "\"\n" + "        }\n" ;
+    } 
+    write "    ],\n" + "    \"repository\": {\n" + "        \"keywords\": {\n" + "            \"patterns\": [{\n" + "                \"name\": \"keyword." + lower-case-name + "\",\n" + "                \"match\": \"\\\\b(" ;
     keywordMatcher = "" ;
     for each keyword in language .keywords 
     { 
@@ -472,5 +484,12 @@ pass "vscode"
         keywordMatcher = keywordMatcher + stripped + "|" ;
     } 
     write keywordMatcher - "|" ;
-    write ")\\\\b\"\n" + "            }]\n" + "        },\n" + "        \"strings\": {\n" + "            \"name\": \"string.quotes.1." + lower-case-name + "\",\n" + "            \"begin\": \"\\\"\",\n" + "            \"end\": \"\\\"\",\n" + "            \"patterns\": [\n" + "                {\n" + "                    \"name\": \"constant.character.escape.1." + lower-case-name + "\",\n" + "                    \"match\": \"\\\\\\\\.\"\n" + "                }\n" + "            ]\n" + "        }\n" + "    },\n" + "    \"scopeName\": \"source." + lower-case-name + "\"\n" + "}\n" ;
+    write ")\\\\b\"\n" + "            }]\n" + "        },\n" ;
+    stringValues = "" ;
+    for each string in language .quotes 
+    { 
+        stringValues = stringValues + "        \"" + string .name + "\": {\n" + "            \"name\": \"string.quotes." + string .name + "." + lower-case-name + "\",\n" + "            \"begin\": \"\\\"\",\n" + "            \"end\": \"\\\"\",\n" + "            \"patterns\": [\n" + "                {\n" + "                    \"name\": \"constant.character.escape." + string .name + "." + lower-case-name + "\",\n" + "                    \"match\": \"\\\\\\\\.\"\n" + "                }\n" + "            ]\n" + "        }\n" ;
+    } 
+    write stringValues ;
+    write "    },\n" + "    \"scopeName\": \"source." + lower-case-name + "\"\n" + "}\n" ;
 } 

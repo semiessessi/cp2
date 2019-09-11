@@ -37,6 +37,7 @@ public:
 	const int GetProductionCount() const { return static_cast< int >( maxProductions.size() ); }
 	const GrammarProduction& GetProduction( const int iIndex ) const { return maxProductions[ iIndex ]; }
 	std::vector< GrammarProduction > GetTopLevelProductions() const;
+    const std::vector< GrammarProduction >& GetTopLevelProductionsCached() const;
 	const std::vector< GrammarProduction >& GetProductions() const { return maxProductions; }
 
     std::vector< GrammarProduction > GetOriginalProductions( const std::string& xName ) const;
@@ -117,6 +118,7 @@ private:
     mutable std::unordered_map< std::string, std::vector< GrammarProduction > > mxRefactoredProductionCache;
     // removed const to allow merging
 	/*const */std::vector< GrammarProduction > maxProductions;
+    mutable std::vector< GrammarProduction > maxTopProductions;
 
 	std::vector< Lexer::Quote > maxQuoteRules;
 	std::vector< Lexer::Comment > maxCommentRules;

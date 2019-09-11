@@ -496,6 +496,20 @@ std::string PassStatement::EvaluateStringExpression(
             }
         }
     }
+    else if( pxAST->GetChildCount() == 4 )
+    {
+        if( pxAST->GetChild( 1 )->GetProductionName() == "[" )
+        {
+            Variable* const pxIndexSource =
+                EvaluateArrayExpression( pxAST->GetChild( 0 ), xContext );
+            if( pxIndexSource != nullptr )
+            {
+                Variable* const pxResult = pxIndexSource->GetIndexed(
+                    atoi( pxAST->GetChild( 2 )->GetTokenValue().c_str() ) );
+                return pxResult->GetValue();
+            }
+        }
+    }
 
     return "<error>";
 }

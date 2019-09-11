@@ -6,7 +6,7 @@
             "include": "#keywords"
         },
         {
-            "include": "#strings"
+            "include": "#string"
         }
     ],
     "repository": {
@@ -16,13 +16,13 @@
                 "match": "\\b(keywords|identifiers|operators|separators|terminators|strings|language|comment|quote|lexeme|pass|requires|output|switch|write|name|for|each|in|productions|names|is\\-optional|is\\-non\\-empty|is\\-list|true|false|input\\-name|quotes|lexemes|block\\-comments|line\\-comments|passes|parse|walk|as|lower\\-case|quote\\-stripped|regex\\-escaped|double\\-regex\\-escaped)\\b"
             }]
         },
-        "strings": {
-            "name": "string.quotes.1.cbnf",
+        "string": {
+            "name": "string.quotes.string.cbnf",
             "begin": "\"",
             "end": "\"",
             "patterns": [
                 {
-                    "name": "constant.character.escape.1.cbnf",
+                    "name": "constant.character.escape.string.cbnf",
                     "match": "\\\\."
                 }
             ]

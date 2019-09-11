@@ -36,7 +36,6 @@ public:
 	, mbNonEmpty( false )
     , mbSubstitution( false )
 	{
-
 	}
 
 	GrammarExpression( /*const */GrammarExpression* const pxLeft, /*const */GrammarExpression* const pxRight )
@@ -48,7 +47,6 @@ public:
 	, mbNonEmpty( false )
     , mbSubstitution( false )
 	{
-
 	}
 
 	GrammarExpression( const GrammarExpression& xOther )
@@ -60,8 +58,18 @@ public:
 	, mbNonEmpty( xOther.mbNonEmpty )
     , mbSubstitution( xOther.mbSubstitution )
 	{
-
 	}
+
+    GrammarExpression( GrammarExpression&& xOther )
+    : mxSymbolName( std::move( xOther.mxSymbolName ) )
+    , mpxLeft( xOther.mpxLeft )
+    , mpxRight( xOther.mpxRight )
+    , mbList( xOther.mbList )
+    , mbOptional( xOther.mbOptional )
+    , mbNonEmpty( xOther.mbNonEmpty )
+    , mbSubstitution( xOther.mbSubstitution )
+    {
+    }
 
 	~GrammarExpression()
 	{

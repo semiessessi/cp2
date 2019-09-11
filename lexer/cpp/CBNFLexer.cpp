@@ -77,8 +77,9 @@ const std::vector< Rule >& CBNFLexerRules()
 
 		Rule( "[_a-zA-Z][_\\-a-zA-Z0-9]*",		Token( "<identifier>",		    1000, true ) ),
 		//Rule( "\"(?:[^\\\"\\\\]|\\\\.)*\"",		Token( "<string>",			1001, true ) ),
+        Rule( "[0-9]*",		                    Token( "<integer>",		        1002, true ) ),
 
-		Rule( "\\=",							Token( "=",					    2000 ) ),
+		Rule( "\\=",							Token( "=",					     2000 ) ),
 		Rule( "\\;",							Token( ";",					    2001 ) ),
 		Rule( "\\*",							Token( "*",					    2002 ) ),
 		Rule( "\\?",							Token( "?",					    2003 ) ),

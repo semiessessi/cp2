@@ -229,11 +229,14 @@ pass "vscode" switch
         + "    \"patterns\": [\n"
         + "        {\n"
         + "            \"include\": \"#keywords\"\n"
-        + "        },\n"
-        + "        {\n"
-        + "            \"include\": \"#strings\"\n"
-        + "        }\n"
-        + "    ],\n"
+        + "        },\n" ;
+    for each string in language.quotes
+    {
+        write "        {\n"
+            + "            \"include\": \"#" + string.name + "\"\n"
+            + "        }\n" ;
+    }
+    write "    ],\n"
         + "    \"repository\": {\n"
         + "        \"keywords\": {\n"
         + "            \"patterns\": [{\n"
@@ -249,19 +252,25 @@ pass "vscode" switch
     write keywordMatcher - "|" ;
     write ")\\\\b\"\n"
         + "            }]\n"
-        + "        },\n"
-        + "        \"strings\": {\n"
-        + "            \"name\": \"string.quotes.1." + lower-case-name + "\",\n"
-        + "            \"begin\": \"\\\"\",\n"
-        + "            \"end\": \"\\\"\",\n"
-        + "            \"patterns\": [\n"
-        + "                {\n"
-        + "                    \"name\": \"constant.character.escape.1." + lower-case-name + "\",\n"
-        + "                    \"match\": \"\\\\\\\\.\"\n"
-        + "                }\n"
-        + "            ]\n"
-        + "        }\n"
-        + "    },\n"
+        + "        },\n" ;
+    stringValues = "";
+    for each string in language.quotes
+    {
+        stringValues = stringValues
+            + "        \"" + string.name + "\": {\n"
+            + "            \"name\": \"string.quotes." + string.name + "." + lower-case-name + "\",\n"
+            + "            \"begin\": \"" + string[ 0 ].regex-escaped + "\",\n"
+            + "            \"end\": \"" + string[ 1 ].regex-escaped + "\",\n"
+            + "            \"patterns\": [\n"
+            + "                {\n"
+            + "                    \"name\": \"constant.character.escape." + string.name + "." + lower-case-name + "\",\n"
+            + "                    \"match\": \"" + string[ 2 ].double-regex-escaped + ".\"\n"
+            + "                }\n"
+            + "            ]\n"
+            + "        },\n" ;
+    }
+    write stringValues - ",\n" ;
+    write "    },\n"
         + "    \"scopeName\": \"source." + lower-case-name + "\"\n"
         + "}\n" ;
 }
