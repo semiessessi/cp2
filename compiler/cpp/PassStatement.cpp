@@ -440,14 +440,28 @@ std::string PassStatement::EvaluateStringExpression(
         }
         else if( pxAST->GetChild( 1 )->GetProductionName() == "." )
         {
-            const Variable* pxVariable
-                = xContext.GetVariable(
-                    pxAST->GetChild( 0 )->GetTokenValue() );
+            const StringVariable xStringVariable =
+                StringVariable( "<string-expression>",
+                    EvaluateStringExpression( pxAST->GetChild( 0 ), xContext ) );
+            const Variable* pxVariable = nullptr;
+            if( ( pxAST->GetChild( 0 )->GetProductionName() == "<identifier>" )
+                || ( pxAST->GetChild( 0 )->GetProductionName() == "language" ) )
+            {
+                pxVariable
+                    = xContext.GetVariable(
+                        pxAST->GetChild( 0 )->GetTokenValue() );
+            }
+            else
+            {
+                pxVariable = &xStringVariable;
+            }
+
             if( pxVariable == nullptr )
             {
                 pxVariable = xContext.GetVariable(
                     pxAST->GetChild( 0 )->GetTokenName() );
             }
+
             if( pxVariable )
             {
                 if( pxAST->GetChild( 2 )->GetProductionName() == "name" )
@@ -458,6 +472,26 @@ std::string PassStatement::EvaluateStringExpression(
                 if( pxAST->GetChild( 2 )->GetProductionName() == "input-name" )
                 {
                     return pxVariable->GetInputName();
+                }
+
+                if( pxAST->GetChild( 2 )->GetProductionName() == "lower-case" )
+                {
+                    return pxVariable->GetLowerCase();
+                }
+
+                if( pxAST->GetChild( 2 )->GetProductionName() == "quote-stripped" )
+                {
+                    return pxVariable->StripQuotes();
+                }
+
+                if( pxAST->GetChild( 2 )->GetProductionName() == "regex-escaped" )
+                {
+                    return pxVariable->RegexEscape();
+                }
+
+                if( pxAST->GetChild( 2 )->GetProductionName() == "double-regex-escaped" )
+                {
+                    return pxVariable->DoubleRegexEscape();
                 }
             }
         }

@@ -1,0 +1,267 @@
+// Copyright (c) 2017-2019 Cranium Software
+
+pass "vscode" switch
+{
+    // SE - TODO: parsing isn't great at mixing "+" and "." etc.
+    lower-case-name = language.name.lower-case ;
+    
+    output "vscode/.vscodeignore" ;
+
+    write ".vscode/**\n" ;
+    write ".vscode-test/**\n" ;
+    write ".gitignore\n" ;
+    write "vsc-extension-quickstart.md\n" ;
+    write "\n" ;
+
+    output "vscode/language-configuration.json" ;
+
+    write "{\n" ;
+    write "\t\"comments\": {\n" ;
+
+    // SE - TODO: does it handle multiple comments?!?
+    for each value in language.line-comments
+    {
+        write "\t\t\"lineComment\": \"" + value + "\",\n" ;
+    }
+
+    // SE - TODO: does it handle multiple comments?!?
+    for each value in language.block-comments
+    {
+        write "\t\t\"blockComment\": [" ;
+        blockString = "";
+        for each part in value
+        {
+            blockString = blockString + " \"" + part + "\"," ;
+        }
+        write blockString - "," ;
+
+        write " ]\n" ;
+    }
+
+    write "\t}\n" ;
+
+    // SE - TODO: something better for these other things
+
+    // symbols used as brackets
+    //write "\t\"brackets\": [\n" ;
+        // ["(", ")"]
+    //write "\t]\n"; //,\n" ;
+    // symbols that are auto closed when typing
+    //write "\t\"autoClosingPairs\": [\n" ;
+        //["'", "'"]
+    //write "\t],\n" ;
+    // symbols that that can be used to surround a selection
+    //write "\t\"surroundingPairs\": [" ;
+        //["'", "'"]
+    //write "\t\]\n" ;
+    write "}\n" ;
+
+    output "vscode/package.json" ;
+
+    write "{\n" ;
+    write "    \"name\": \"" + language.name.lower-case ; // SE - TODO: + here causes pain
+    write "\",\n" ;
+    write "    \"displayName\": \"" + language.name + "\",\n" ;
+    write "    \"description\": \"" + language.name + " for Visual Studio Code\",\n" ;
+    write "    \"version\": \"0.0.1\",\n" ;
+    write "    \"engines\": {\n" ;
+    write "        \"vscode\": \"^1.38.0\"\n" ;
+    write "    },\n" ;
+    write "    \"categories\": [\n" ;
+    write "        \"Programming Languages\"\n" ;
+    write "    ],\n" ;
+    write "    \"contributes\": {\n" ;
+    write "        \"languages\": [{\n" ;
+    write "            \"id\": \"" + language.name.lower-case ;
+    write "\",\n" ;
+    write "            \"aliases\": [\"" + language.name + "\", \"" + lower-case-name + "\"],\n" ;
+    write "            \"extensions\": [\"." + language.name.lower-case ;
+    write "\"],\n" ;
+    write "            \"configuration\": \"./language-configuration.json\"\n" ;
+    write "        }],\n" ;
+    write "        \"grammars\": [{\n" ;
+    write "            \"language\": \"" + lower-case-name + "\",\n" ;
+    write "            \"scopeName\": \"source." + language.name.lower-case ;
+    write "\",\n" ;
+    write "            \"path\": \"./syntaxes/" + language.name.lower-case ; 
+    write ".tmLanguage.json\"\n" ;
+    write "        }]\n" ;
+    write "    }\n" ;
+    write "}\n" ;
+
+    output "vscode/CHANGELOG.md" ;
+
+    write "# Change Log\n\n" ;
+    write "All notable changes to the \""
+        + language.name
+        + "\" extension will be documented in this file.\n\n" ;
+    write "Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.\n\n" ;
+    write "## [Unreleased]\n\n" ;
+    write "- Initial release\n" ;
+
+    output "vscode/README.md" ;
+
+    write "# " + language.name + " README\n\n" ;
+
+    write "This is the README for your extension \""
+        + language.name
+        + "\". After writing up a brief description, we recommend including the following sections.\n\n"
+        + "## Features\n"
+        + "\n"
+        + "Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.\n"
+        + "\n"
+        + "For example if there is an image subfolder under your extension project workspace:\n"
+        + "\n"
+        + "\!\[feature X\]\(images/feature-x.png\)\n"
+        + "\n"
+        + "> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.\n"
+        + "\n"
+        + "## Requirements\n"
+        + "\n"
+        + "If you have any requirements or dependencies, add a section describing those and how to install and configure them.\n"
+        + "\n"
+        + "## Extension Settings\n"
+        + "\n"
+        + "Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.\n"
+        + "\n"
+        + "For example:\n"
+        + "\n"
+        + "This extension contributes the following settings:\n"
+        + "\n"
+        + "* `myExtension.enable`: enable/disable this extension\n"
+        + "* `myExtension.thing`: set to `blah` to do something\n"
+        + "\n"
+        + "## Known Issues\n"
+        + "\n"
+        + "Calling out known issues can help limit users opening duplicate issues against your extension.\n"
+        + "\n"
+        + "## Release Notes\n"
+        + "\n"
+        + "Users appreciate release notes as you update your extension.\n"
+        + "\n"
+        + "### 1.0.0\n"
+        + "\n"
+        + "Initial release of ...\n"
+        + "\n"
+        + "### 1.0.1\n"
+        + "\n"
+        + "Fixed issue #.\n"
+        + "\n"
+        + "### 1.1.0\n"
+        + "\n"
+        + "Added features X, Y, and Z.\n"
+        + "\n"
+        + "-----------------------------------------------------------------------------------------------------------\n"
+        + "\n"
+        + "## Working with Markdown\n"
+        + "\n"
+        + "**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:\n"
+        + "\n"
+        + "* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)\n"
+        + "* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)\n"
+        + "* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets\n"
+        + "\n"
+        + "### For more information\n"
+        + "\n"
+        + "* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)\n"
+        + "* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)\n"
+        + "\n"
+        + "**Enjoy!**\n" ;
+
+    output "vscode/vsc-extension-quickstart.md" ;
+
+    write "# Welcome to your VS Code Extension\n"
+        + "\n"
+        + "## What's in the folder\n"
+        + "\n"
+        + "* This folder contains all of the files necessary for your extension.\n"
+        + "* `package.json` - this is the manifest file in which you declare your language support and define the location of the grammar file that has been copied into your extension.\n"
+        + "* `syntaxes/" + language.name + ".tmLanguage.json` - this is the Text mate grammar file that is used for tokenization.\n"
+        + "* `language-configuration.json` - this is the language configuration, defining the tokens that are used for comments and brackets.\n"
+        + "\n"
+        + "## Get up and running straight away\n"
+        + "\n"
+        + "* Make sure the language configuration settings in `language-configuration.json` are accurate.\n"
+        + "* Press `F5` to open a new window with your extension loaded.\n"
+        + "* Create a new file with a file name suffix matching your language.\n"
+        + "* Verify that syntax highlighting works and that the language configuration settings are working.\n"
+        + "\n"
+        + "## Make changes\n"
+        + "\n"
+        + "* You can relaunch the extension from the debug toolbar after making changes to the files listed above.\n"
+        + "* You can also reload (`Ctrl+R` or `Cmd+R` on Mac) the VS Code window with your extension to load your changes.\n"
+        + "\n"
+        + "## Add more language features\n"
+        + "\n"
+        + "* To add features such as intellisense, hovers and validators check out the VS Code extenders documentation at https://code.visualstudio.com/docs\n"
+        + "\n"
+        + "## Install your extension\n"
+        + "\n"
+        + "* To start using your extension with Visual Studio Code copy it into the `<user home>/.vscode/extensions` folder and restart Code.\n"
+        + "* To share your extension with the world, read on https://code.visualstudio.com/docs about publishing an extension.\n" ;
+
+    output "vscode/.vscode/launch.json" ;
+
+    write "// A launch configuration that launches the extension inside a new window\n"
+        + "// Use IntelliSense to learn about possible attributes.\n"
+        + "// Hover to view descriptions of existing attributes.\n"
+        + "// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387\n"
+        + "{\n"
+        + "	\"version\": \"0.2.0\",\n"
+        + "    \"configurations\": [\n"
+        + "        {\n"
+        + "            \"name\": \"Extension\",\n"
+        + "            \"type\": \"extensionHost\",\n"
+        + "            \"request\": \"launch\",\n"
+        + "            \"runtimeExecutable\": \"${execPath}\",\n"
+        + "            \"args\": [\n"
+        + "                \"--extensionDevelopmentPath=${workspaceFolder}\"\n"
+        + "            ]\n"
+        + "        }\n"
+        + "    ]\n"
+        + "}" ;
+
+    output "vscode/syntaxes/" + lower-case-name + ".tmLanguage.json" ;
+
+    write "{\n"
+        + "    \"$schema\": \"https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json\",\n"
+        + "    \"name\": \"" + language.name + "\",\n"
+        + "    \"patterns\": [\n"
+        + "        {\n"
+        + "            \"include\": \"#keywords\"\n"
+        + "        },\n"
+        + "        {\n"
+        + "            \"include\": \"#strings\"\n"
+        + "        }\n"
+        + "    ],\n"
+        + "    \"repository\": {\n"
+        + "        \"keywords\": {\n"
+        + "            \"patterns\": [{\n"
+        + "                \"name\": \"keyword." + lower-case-name + "\",\n"
+        + "                \"match\": \"\\\\b(" ;
+    keywordMatcher = "" ;
+    for each keyword in language.keywords
+    {
+        stripped = keyword.quote-stripped ;
+        stripped = stripped.double-regex-escaped ;
+        keywordMatcher = keywordMatcher + stripped + "|" ;
+    }
+    write keywordMatcher - "|" ;
+    write ")\\\\b\"\n"
+        + "            }]\n"
+        + "        },\n"
+        + "        \"strings\": {\n"
+        + "            \"name\": \"string.quotes.1." + lower-case-name + "\",\n"
+        + "            \"begin\": \"\\\"\",\n"
+        + "            \"end\": \"\\\"\",\n"
+        + "            \"patterns\": [\n"
+        + "                {\n"
+        + "                    \"name\": \"constant.character.escape.1." + lower-case-name + "\",\n"
+        + "                    \"match\": \"\\\\\\\\.\"\n"
+        + "                }\n"
+        + "            ]\n"
+        + "        }\n"
+        + "    },\n"
+        + "    \"scopeName\": \"source." + lower-case-name + "\"\n"
+        + "}\n" ;
+}
