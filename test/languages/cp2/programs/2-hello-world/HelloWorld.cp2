@@ -1,0 +1,6 @@
+import cstd;
+
+entrypoint hello()
+{
+	cstd.puts( "Hello World!" );
+}

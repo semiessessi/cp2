@@ -3,17 +3,24 @@
 string-expression           =   string ;
 string-expression           =   identifier ;
 
-//integer-expression        =   integer ;
+integer-expression          =   integer ;
 
 //string-expression           =   "(" boolean-expression ")" ;
 //string-expression           =   "(" integer-expression ")" ;
 //string-expression           =   "(" string-expression ")" ;
 
 string-expression           =   string-expression "+" string-expression ;
+string-expression           =   string-expression "-" string-expression ;
 
 string-expression           =   identifier "." "name" ;
 string-expression           =   "language" "." "name" ;
 string-expression           =   identifier "." "input-name" ;
+string-expression           =   string-expression "." "lower-case" ;
+string-expression           =   string-expression "." "quote-stripped" ;
+string-expression           =   string-expression "." "regex-escaped" ;
+string-expression           =   string-expression "." "double-regex-escaped" ;
+
+string-expression           =   array-expression "[" integer-expression "]" ;
 
 array-expression            =   "language" "." "productions" ;
 array-expression            =   identifier "." "productions" ;   

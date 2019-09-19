@@ -1,0 +1,10 @@
+// Copyright (c) 2018-2019 Cranium Software
+
+type							= "byte" ;
+type           					= identifier ;
+
+type							= type "[" integer "]" ;
+
+type-specifier					= typeclass ;
+
+type-definition					= type-specifier* "type" identifier "=" type ; 

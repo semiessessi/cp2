@@ -43,6 +43,17 @@ std::vector< GrammarProduction > Grammar::GetTopLevelProductions() const
 	return axTopLevelProductions;
 }
 
+// GetTopLevelProductionsCached
+const std::vector< GrammarProduction >& Grammar::GetTopLevelProductionsCached() const
+{
+    if( maxTopProductions.size() == 0 )
+    {
+        maxTopProductions = GetTopLevelProductions();
+    }
+
+    return maxTopProductions;
+}
+
 std::vector< GrammarProduction > Grammar::GetOriginalProductions(
     const std::string& xName ) const
 {

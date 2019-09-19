@@ -145,12 +145,10 @@ pass "cbnf" switch
     // output passes?
     for each compiler-pass in language.passes
     {
-        write "\npass " + "\"" + compiler-pass.name + "\"" ;
-        write "\n" ;
-        
-        write "{\n" ;
+        write "\npass " + "\"" + compiler-pass.name + "\"\n" ;
         
         tab-prefix = "" ;
+        current-prefix = "" ;
         walk compiler-pass.parse as node
         {
             if node.is-list
@@ -166,34 +164,38 @@ pass "cbnf" switch
                 {
                     if node == ";"
                     {
-                        write node + "\n" + tab-prefix ;
+                        write node + "\n" ;
+                        current-prefix = tab-prefix ;
                     }
                     else
                     {
                         if node == "{"
                         {
-                            write "\n" + tab-prefix ;
+                            write "\n" ;
+                            current-prefix = tab-prefix ;
                             tab-prefix = tab-prefix + "    " ;
                         }
                         if node == "}"
                         {
                             tab-prefix = tab-prefix - "    " ;
+                            current-prefix = tab-prefix ;
                         }
-                        write node + " " ;
+                        write current-prefix + node + " " ;
+                        current-prefix = "" ;
                         if node == "{"
                         {
-                            write "\n" + tab-prefix ;
+                            write "\n" ;
+                            current-prefix = tab-prefix ;
                         }
                         if node == "}"
                         {
-                            write "\n" + tab-prefix;
+                            write "\n";
+                            current-prefix = tab-prefix ;
                         }
                         
                     }
                 }
             }
         }
-        
-        write "}\n" ;
     }
 }

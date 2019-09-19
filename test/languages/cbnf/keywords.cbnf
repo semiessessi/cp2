@@ -37,6 +37,10 @@ keywords
     "parse"
     "walk"
     "as"
+    "lower-case"
+    "quote-stripped"
+    "regex-escaped"
+    "double-regex-escaped"
 }
 
 identifiers
@@ -49,6 +53,8 @@ operators
     "="
     "{"
     "}"
+    "["
+    "]"
     "*"
     "+"
     "-"

@@ -262,7 +262,7 @@ static inline bool ParseName(
 	const bool bOptional = axNames[ j ].bOptional;
 
 	// do we have any productions for this thing?
-	const std::vector< GrammarProduction > axNewProductions =
+	const std::vector< GrammarProduction >& axNewProductions =
 		xGrammar.GetProductionsForParsing( xName );
 
 	// handle catch all ...
@@ -393,7 +393,7 @@ ASTNode* Parse( const std::vector< Token >& axTokens, const Grammar& xGrammar )
     ResetDeepestErrors();
 
 	const std::vector< GrammarProduction > axTopLevelProductions =
-		xGrammar.GetTopLevelProductions();
+		xGrammar.GetTopLevelProductionsCached();
 	const char* const szFilename = axTokens.size()
 		? ( ( axTokens[ 0 ].GetFilename() != nullptr )
 			? axTokens[ 0 ].GetFilename()

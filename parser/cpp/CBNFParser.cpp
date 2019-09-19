@@ -102,6 +102,8 @@ const Grammar& GetCBNFGrammar()
 
         GrammarProduction( "<pass-names>", GE( "{" ) + !GE( "<string>" ) + GE( "}" ) ),
 
+        GrammarProduction( "<integer-expression>", GE( "<integer>" ) ),
+
         GrammarProduction( "<string-expression>", GE( "<string>" ) ),
         GrammarProduction( "<string-expression>", GE( "<identifier>" ) ),
 
@@ -113,6 +115,12 @@ const Grammar& GetCBNFGrammar()
         GrammarProduction( "<string-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "name" ) ),
         GrammarProduction( "<string-expression>", GE( "language" ) + GE( "." ) + GE( "name" ) ),
         GrammarProduction( "<string-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "input-name" ) ),
+        GrammarProduction( "<string-expression>", GE( "<string-expression>" ) + GE( "." ) + GE( "lower-case" ) ),
+        GrammarProduction( "<string-expression>", GE( "<string-expression>" ) + GE( "." ) + GE( "quote-stripped" ) ),
+        GrammarProduction( "<string-expression>", GE( "<string-expression>" ) + GE( "." ) + GE( "regex-escaped" ) ),
+        GrammarProduction( "<string-expression>", GE( "<string-expression>" ) + GE( "." ) + GE( "double-regex-escaped" ) ),
+
+        GrammarProduction( "<string-expression>", GE( "<array-expression>" ) + GE( "[" ) + GE( "<integer-expression>" ) + GE( "]" ) ),
 
         GrammarProduction( "<array-expression>", GE( "language" ) + GE( "." ) + GE( "productions" ) ),
         GrammarProduction( "<array-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "productions" ) ),
@@ -166,6 +174,7 @@ const Grammar& GetCBNFGrammar()
 		kxCBNFGrammar.AddBlockComment( "/*", "*/" );
 		kxCBNFGrammar.AddQuote( "<string>", "\"", "\"", "\\" );
 		kxCBNFGrammar.AddLexeme( "<identifier>", "[_a-zA-Z][_\\-a-zA-Z0-9]*" );
+        kxCBNFGrammar.AddLexeme( "<integer>", "[0-9]*" );
 		kxCBNFGrammar.SetName( "CBNF" );
 
         // SE - TODO: consistency with quotes vs <>
@@ -206,14 +215,20 @@ const Grammar& GetCBNFGrammar()
         kxCBNFGrammar.AddKeyword( "\"walk\"" );
         kxCBNFGrammar.AddKeyword( "\"parse\"" );
         kxCBNFGrammar.AddKeyword( "\"as\"" );
+        kxCBNFGrammar.AddKeyword( "\"lower-case\"" );
+        kxCBNFGrammar.AddKeyword( "\"quote-stripped\"" );
+        kxCBNFGrammar.AddKeyword( "\"regex-escaped\"" );
+        kxCBNFGrammar.AddKeyword( "\"double-regex-escaped\"" );
 
         kxCBNFGrammar.AddTerminator( "\";\"" );
-
+            
         kxCBNFGrammar.AddIdentifier( "identifier" );
 
         kxCBNFGrammar.AddOperator( "\"=\"" );
         kxCBNFGrammar.AddOperator( "\"{\"" );
         kxCBNFGrammar.AddOperator( "\"}\"" );
+        kxCBNFGrammar.AddOperator( "\"[\"" );
+        kxCBNFGrammar.AddOperator( "\"]\"" );
         kxCBNFGrammar.AddOperator( "\"*\"" );
         kxCBNFGrammar.AddOperator( "\"+\"" );
         kxCBNFGrammar.AddOperator( "\"-\"" );
