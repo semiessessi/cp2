@@ -6,6 +6,9 @@
             "include": "#keywords"
         },
         {
+            "include": "#line-comment"
+        },
+        {
             "include": "#string"
         }
     ],
@@ -23,10 +26,16 @@
             "patterns": [
                 {
                     "name": "constant.character.escape.string.cbnf",
-                    "match": "\\\\."
+                    "match": "\\\\\\\\."
                 }
             ]
+        },
+        "line-comment": {
+            "name": "comment.line.cbnf",
+            "begin": "//",
+            "end": "\n",
+            "patterns": []
         }
-    },
+},
     "scopeName": "source.cbnf"
 }

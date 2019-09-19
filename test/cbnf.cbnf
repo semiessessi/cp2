@@ -470,7 +470,7 @@ pass "vscode"
     output "vscode/.vscode/launch.json" ;
     write "// A launch configuration that launches the extension inside a new window\n" + "// Use IntelliSense to learn about possible attributes.\n" + "// Hover to view descriptions of existing attributes.\n" + "// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387\n" + "{\n" + "	\"version\": \"0.2.0\",\n" + "    \"configurations\": [\n" + "        {\n" + "            \"name\": \"Extension\",\n" + "            \"type\": \"extensionHost\",\n" + "            \"request\": \"launch\",\n" + "            \"runtimeExecutable\": \"${execPath}\",\n" + "            \"args\": [\n" + "                \"--extensionDevelopmentPath=${workspaceFolder}\"\n" + "            ]\n" + "        }\n" + "    ]\n" + "}" ;
     output "vscode/syntaxes/" + lower-case-name + ".tmLanguage.json" ;
-    write "{\n" + "    \"$schema\": \"https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json\",\n" + "    \"name\": \"" + language .name + "\",\n" + "    \"patterns\": [\n" + "        {\n" + "            \"include\": \"#keywords\"\n" + "        },\n" ;
+    write "{\n" + "    \"$schema\": \"https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json\",\n" + "    \"name\": \"" + language .name + "\",\n" + "    \"patterns\": [\n" + "        {\n" + "            \"include\": \"#keywords\"\n" + "        },\n" + "        {\n" + "            \"include\": \"#line-comment\"\n" + "        },\n" ;
     for each string in language .quotes 
     { 
         write "        {\n" + "            \"include\": \"#" + string .name + "\"\n" + "        }\n" ;
@@ -485,11 +485,28 @@ pass "vscode"
     } 
     write keywordMatcher - "|" ;
     write ")\\\\b\"\n" + "            }]\n" + "        },\n" ;
-    stringValues = "" ;
-    for each string in language .quotes 
+    string-values = "" ;
+    for each string-definition in language .quotes 
     { 
-        stringValues = stringValues + "        \"" + string .name + "\": {\n" + "            \"name\": \"string.quotes." + string .name + "." + lower-case-name + "\",\n" + "            \"begin\": \"\\\"\",\n" + "            \"end\": \"\\\"\",\n" + "            \"patterns\": [\n" + "                {\n" + "                    \"name\": \"constant.character.escape." + string .name + "." + lower-case-name + "\",\n" + "                    \"match\": \"\\\\\\\\.\"\n" + "                }\n" + "            ]\n" + "        }\n" ;
+        first-quote = string-definition [ 0 ] ;
+        second-quote = string-definition [ 1 ] ;
+        escape = string-definition [ 2 ] ;
+        string-values = string-values + "        \"" + string-definition .name + "\": {\n" + "            \"name\": \"string.quotes." + string-definition .name + "." + lower-case-name + "\",\n" + "            \"begin\": \"" ;
+        string-values = string-values + first-quote ;
+        string-values = string-values + "\",\n" + "            \"end\": \"" ;
+        string-values = string-values + second-quote ;
+        string-values = string-values + "\",\n" + "            \"patterns\": [\n" + "                {\n" + "                    \"name\": \"constant.character.escape." + string-definition .name + "." + lower-case-name + "\",\n" + "                    \"match\": \"" ;
+        string-values = string-values + escape .regex-escaped ;
+        string-values = string-values + ".\"\n" + "                }\n" + "            ]\n" + "        },\n" ;
     } 
-    write stringValues ;
-    write "    },\n" + "    \"scopeName\": \"source." + lower-case-name + "\"\n" + "}\n" ;
+    write string-values ;
+    line-comment-values = "" ;
+    for each line-comment in language .line-comments 
+    { 
+        line-comment-values = line-comment-values + "        \"line-comment\": {\n" + "            \"name\": \"comment.line." + lower-case-name + "\",\n" + "            \"begin\": \"" ;
+        line-comment-values = line-comment-values + line-comment ;
+        line-comment-values = line-comment-values + "\",\n" + "            \"end\": \"\\n\",\n" + "            \"patterns\": []\n" + "        },\n" ;
+    } 
+    write line-comment-values - ",\n" ;
+    write "\n" + "},\n" + "    \"scopeName\": \"source." + lower-case-name + "\"\n" + "}\n" ;
 } 

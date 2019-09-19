@@ -90,8 +90,8 @@ const std::vector< Rule >& CBNFLexerRules()
         Rule( "\\.",							Token( ".",					    2008 ) ),
         Rule( "\\=\\=",							Token( "==",				    2009 ) ),
         Rule( "\\-",							Token( "-",					    2010 ) ),
-        Rule( "\\[",						    Token( "{",				        2011 ) ),
-        Rule( "\\]",						    Token( "}",				        2012 ) ),
+        Rule( "\\[",						    Token( "[",				        2011 ) ),
+        Rule( "\\]",						    Token( "]",				        2012 ) ),
 	};
 
 	return lsaxLexerRules;

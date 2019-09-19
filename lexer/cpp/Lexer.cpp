@@ -113,8 +113,10 @@ static inline const char* FindNewCursor(
 	for( int i = 0; i < static_cast< int >( axQuotes.size() ); ++i )
 	{
 		const Quote& xQuote = axQuotes[ i ];
-		// are we at the start of this quote? then grab it and return it...
-		if( strncmp( szNewCursor, xQuote.GetStart(), xQuote.GetStartLength() ) == 0 )
+		// are we at the start of this quote? then grab it and return it... 
+        const int iCompareResult = strncmp(
+            szNewCursor, xQuote.GetStart(), xQuote.GetStartLength() );
+		if( iCompareResult == 0 )
 		{
 			iQuote = i;
 			// advance past the quote start
