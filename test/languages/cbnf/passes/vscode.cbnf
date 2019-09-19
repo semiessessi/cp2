@@ -232,6 +232,9 @@ pass "vscode" switch
         + "        },\n"
 		+ "        {\n"
         + "            \"include\": \"#line-comment\"\n"
+        + "        },\n"
+		+ "        {\n"
+        + "            \"include\": \"#block-comment\"\n"
         + "        },\n" ;
     for each string in language.quotes
     {
@@ -263,7 +266,7 @@ pass "vscode" switch
     {
         first-quote = string-definition[ 0 ] ;
         second-quote = string-definition[ 1 ] ;
-        escape = string-definition[ 2 ] ;
+        escape = string-definition[ 2 ].regex-escaped ;
         string-values = string-values
             + "        \"" + string-definition.name + "\": {\n"
             + "            \"name\": \"string.quotes." + string-definition.name + "." + lower-case-name + "\",\n"
@@ -281,7 +284,7 @@ pass "vscode" switch
             + "                    \"name\": \"constant.character.escape." + string-definition.name + "." + lower-case-name + "\",\n"
             + "                    \"match\": \"" ;
 		string-values = string-values
-			+ escape.regex-escaped ;
+			+ escape ;
 		string-values = string-values
 			+ ".\"\n"
             + "                }\n"
@@ -308,7 +311,32 @@ pass "vscode" switch
             + "            \"patterns\": []\n"
             + "        },\n" ;
     }  
-    write line-comment-values - ",\n" ;
+    // SE - TODO: optional comma if there are block-comments or not 
+    write line-comment-values ; // - ",\n" ;
+    // write "\n" ;
+	
+	block-comment-values = "";
+    for each block-comment in language.block-comments
+    {
+		// SE - TODO: some better names for multiple line comment types
+		// add integer addition/increments for this perhaps...
+        block-comment-values = block-comment-values
+			+ "        \"block-comment\": {\n"
+            + "            \"name\": \"comment.block." + lower-case-name + "\",\n"
+            + "            \"begin\": \"" ;
+		block-comment-values = block-comment-values
+			+ block-comment[ 0 ].double-regex-escaped ;
+		block-comment-values = block-comment-values 
+			+ "\",\n"
+            + "            \"end\": \""
+			+ block-comment[ 1 ].double-regex-escaped ;
+		block-comment-values = block-comment-values 
+			+ "\",\n"
+            + "            \"patterns\": []\n"
+            + "        },\n" ;
+    }  
+    write block-comment-values - ",\n" ;
+	
     write "\n"
 		+ "},\n"
         + "    \"scopeName\": \"source." + lower-case-name + "\"\n"

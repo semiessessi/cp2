@@ -9,6 +9,9 @@
             "include": "#line-comment"
         },
         {
+            "include": "#block-comment"
+        },
+        {
             "include": "#string"
         }
     ],
@@ -34,6 +37,12 @@
             "name": "comment.line.cbnf",
             "begin": "//",
             "end": "\n",
+            "patterns": []
+        },
+        "block-comment": {
+            "name": "comment.block.cbnf",
+            "begin": "/\\*",
+            "end": "\\*/",
             "patterns": []
         }
 },
