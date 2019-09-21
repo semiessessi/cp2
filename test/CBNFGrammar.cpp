@@ -2,7 +2,7 @@
 
 #define GE( ... ) GrammarExpression( __VA_ARGS__ )
 
-const Grammar& GetkxCBNFGrammarGrammar()
+const Grammar& GetCBNFGrammar()
 {
 	static Grammar kxkxCBNFGrammarGrammar(
 	{
@@ -157,7 +157,7 @@ const Grammar& GetkxCBNFGrammarGrammar()
 		kxCBNFGrammar.SetName( "CBNF" );
 		kxCBNFGrammar.AddLineComment( "//" );
 		kxCBNFGrammar.AddBlockComment( "/*", "*/" );
-		kxCBNFGrammar.AddQuote( "string","\"","\"","\\" );
+		kxCBNFGrammar.AddQuote( "<string>","\"","\"","\\" );
 	}
 #undef GE
 
