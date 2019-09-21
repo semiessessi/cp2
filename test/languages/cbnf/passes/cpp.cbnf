@@ -72,10 +72,64 @@ pass "cpp" switch
         end = string[ 1 ] ;
         escape = string[ 2 ] ;
         write "\t\t" + grammar-variable + ".AddQuote( \""
-            + string.input-name + "\","
-            + "\"" + start + "\","
-            + "\"" + end + "\","
+            + string.input-name + "\", "
+            + "\"" + start + "\", "
+            + "\"" + end + "\", "
             + "\"" + escape + "\" );\n" ;
+    }
+
+    for each value in language.lexemes
+    {
+        if value.is-optional
+        {
+        }
+        else
+        {
+            write "\t\t" + grammar-variable + ".AddLexeme( \""
+                + value.name + "\", \""
+                + value.quote-stripped ;
+            write "\" );\n" ;
+        }
+    }
+
+    for each keyword in language.keywords
+    {
+        write "\t\t" + grammar-variable + ".AddKeyword( \"\\\""
+            + keyword.quote-stripped ;
+        write "\\\"\" );\n" ;
+    }
+
+    for each operator in language.operators
+    {
+        write "\t\t" + grammar-variable + ".AddOperator( \"\\\""
+            + operator.quote-stripped ;
+        write  "\\\"\" );\n" ;
+    }
+
+    for each terminator in language.terminators
+    {
+        write "\t\t" + grammar-variable + ".AddTerminator( \"\\\""
+            + terminator.quote-stripped ;
+        write  "\\\"\" );\n" ;
+    }
+
+    for each separator in language.separators
+    {
+        write "\t\t" + grammar-variable + ".AddSeparator( \"\\\""
+            + separator.quote-stripped ;
+        write  "\\\"\" );\n" ;
+    }
+
+    for each string in language.strings
+    {
+        write "\t\t" + grammar-variable + ".AddString( \""
+            + string + "\" );\n" ;
+    }
+
+    for each identifier in language.identifiers
+    {
+        write "\t\t" + grammar-variable + ".AddIdentifier( \""
+            + identifier + "\" );\n" ;
     }
 
     write "\t}\n" ;
