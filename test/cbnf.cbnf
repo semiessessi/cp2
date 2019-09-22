@@ -6,7 +6,7 @@ comment "//" ;
 comment "/*" "*/" ;
 
 lexeme identifier "[_a-zA-Z][_\\-a-zA-Z0-9]*" ;
-lexeme integer "0-9*" ;
+lexeme integer "[0-9]*" ;
 
 quote string "\"" "\"" "\\" ;
 
@@ -174,17 +174,18 @@ strings
 pass "cpp"
 
 { 
-    output language .name + "Grammar.cpp" ;
+    output language .name + "Parser.cpp" ;
     write "// CP2::Parser definition for " + language .name + "\n\n" ;
-    write "#define GE( ... ) GrammarExpression( __VA_ARGS__ )\n\n" ;
+    write "#include \"Grammar.h\"\n#include \"Parser.h\"\n\n" ;
+    write "#define GE( ... ) CP2::Parser::GrammarExpression( __VA_ARGS__ )\n\n" ;
     grammar-variable = "kx" + language .name + "Grammar" ;
-    write "const Grammar& Get" + language .name + "Grammar()\n" ;
+    write "const CP2::Parser::Grammar& Get" + language .name + "Grammar()\n" ;
     write "{\n" ;
-    write "\tstatic Grammar kx" + grammar-variable + "Grammar(\n" ;
+    write "\tstatic CP2::Parser::Grammar " + grammar-variable + "(\n" ;
     write "\t{\n" ;
     for each production in language .productions 
     { 
-        write "\t\tGrammarProduction(\"" + production .name + "\",\n" ;
+        write "\t\tCP2::Parser::GrammarProduction(\"" + production .name + "\",\n" ;
         write "\t\t\t" ;
         join = "" ;
         for each production-name in production .names 
@@ -275,6 +276,8 @@ pass "cpp"
     write "#undef GE\n\n" ;
     write "\treturn " + grammar-variable + ";\n" ;
     write "\}\n" ;
+    write "CP2::ASTNode* " + language .name + "Parse( const std::vector< Token >& axTokens )\n" + "{\n" + "\treturn CP2::Parser::Parse( axTokens, Get" + language .name + "Grammar() );\n" + "}\n" ;
+    write "\n" ;
 } 
 
 pass "cbnf"
@@ -545,16 +548,7 @@ pass "vscode"
     { 
         write "        {\n" + "            \"include\": \"#" + string .name + "\"\n" + "        }\n" ;
     } 
-    write "    ],\n" + "    \"repository\": {\n" + "        \"keywords\": {\n" + "            \"patterns\": [{\n" + "                \"name\": \"keyword." + lower-case-name + "\",\n" + "                \"match\": \"\\\\b(" ;
-    keywordMatcher = "" ;
-    for each keyword in language .keywords 
-    { 
-        stripped = keyword .quote-stripped ;
-        stripped = stripped .double-regex-escaped ;
-        keywordMatcher = keywordMatcher + stripped + "|" ;
-    } 
-    write keywordMatcher - "|" ;
-    write ")\\\\b\"\n" + "            }]\n" + "        },\n" ;
+    write "    ],\n" + "    \"repository\": {\n" ;
     for each value in language .lexemes 
     { 
         if value .is-optional 
@@ -568,6 +562,16 @@ pass "vscode"
             write ")\\\\b\"\n" + "            }]\n" + "        },\n" ;
         } 
     } 
+    write "        \"keywords\": {\n" + "            \"patterns\": [{\n" + "                \"name\": \"keyword." + lower-case-name + "\",\n" + "                \"match\": \"\\\\b(" ;
+    keywordMatcher = "" ;
+    for each keyword in language .keywords 
+    { 
+        stripped = keyword .quote-stripped ;
+        stripped = stripped .double-regex-escaped ;
+        keywordMatcher = keywordMatcher + stripped + "|" ;
+    } 
+    write keywordMatcher - "|" ;
+    write ")\\\\b\"\n" + "            }]\n" + "        },\n" ;
     string-values = "" ;
     for each string-definition in language .quotes 
     { 

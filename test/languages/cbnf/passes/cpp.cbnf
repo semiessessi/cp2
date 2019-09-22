@@ -2,21 +2,23 @@
 
 pass "cpp" switch
 {
-    output language.name + "Grammar.cpp" ;
+    output language.name + "Parser.cpp" ;
     
     write "// CP2::Parser definition for " + language.name + "\n\n" ;
     
-    write "#define GE( ... ) GrammarExpression( __VA_ARGS__ )\n\n" ;
+    write "#include \"Grammar.h\"\n#include \"Parser.h\"\n\n" ;
+
+    write "#define GE( ... ) CP2::Parser::GrammarExpression( __VA_ARGS__ )\n\n" ;
 
     grammar-variable = "kx" + language.name + "Grammar" ;
-    write "const Grammar& Get" + language.name + "Grammar()\n" ;
+    write "const CP2::Parser::Grammar& Get" + language.name + "Grammar()\n" ;
     write "{\n" ;
-    write "\tstatic Grammar kx" + grammar-variable + "Grammar(\n" ;
+    write "\tstatic CP2::Parser::Grammar " + grammar-variable + "(\n" ;
     write "\t{\n" ;
 
     for each production in language.productions
     {
-        write "\t\tGrammarProduction(\"" + production.name + "\",\n" ;
+        write "\t\tCP2::Parser::GrammarProduction(\"" + production.name + "\",\n" ;
         write "\t\t\t" ;
         join = "" ;
         
@@ -138,4 +140,11 @@ pass "cpp" switch
     
     write "\treturn " + grammar-variable + ";\n" ;
     write "\}\n" ;
+
+    write "CP2::ASTNode* " + language.name + "Parse( const std::vector< Token >& axTokens )\n"
+        + "{\n"
+        + "\treturn CP2::Parser::Parse( axTokens, Get" + language.name + "Grammar() );\n"
+        + "}\n" ;
+
+    write "\n" ;
 }

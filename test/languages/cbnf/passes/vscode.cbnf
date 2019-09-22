@@ -258,23 +258,7 @@ pass "vscode" switch
             + "        }\n" ;
     }
     write "    ],\n"
-        + "    \"repository\": {\n"
-        + "        \"keywords\": {\n"
-        + "            \"patterns\": [{\n"
-        + "                \"name\": \"keyword." + lower-case-name + "\",\n"
-        + "                \"match\": \"\\\\b(" ;
-		
-    keywordMatcher = "" ;
-    for each keyword in language.keywords
-    {
-        stripped = keyword.quote-stripped ;
-        stripped = stripped.double-regex-escaped ;
-        keywordMatcher = keywordMatcher + stripped + "|" ;
-    }
-    write keywordMatcher - "|" ;
-    write ")\\\\b\"\n"
-        + "            }]\n"
-        + "        },\n" ;
+        + "    \"repository\": {\n" ;
 
     // SE - TODO: make this better, obvs.
     for each value in language.lexemes
@@ -297,6 +281,23 @@ pass "vscode" switch
                 + "        },\n" ;
         }
     }
+
+    write "        \"keywords\": {\n"
+        + "            \"patterns\": [{\n"
+        + "                \"name\": \"keyword." + lower-case-name + "\",\n"
+        + "                \"match\": \"\\\\b(" ;
+		
+    keywordMatcher = "" ;
+    for each keyword in language.keywords
+    {
+        stripped = keyword.quote-stripped ;
+        stripped = stripped.double-regex-escaped ;
+        keywordMatcher = keywordMatcher + stripped + "|" ;
+    }
+    write keywordMatcher - "|" ;
+    write ")\\\\b\"\n"
+        + "            }]\n"
+        + "        },\n" ;
 
     string-values = "";
     for each string-definition in language.quotes
