@@ -153,10 +153,10 @@ void ASTNode::DebugPrintRecursive( std::string& xWorkingString ) const
 std::vector< ASTNode* > ASTNode::DeepDuplicate( const std::vector< ASTNode* >& xA )
 {
 	std::vector< ASTNode* > xReturnValue;
-
-	for( ASTNode* pxNode : xA )
+    xReturnValue.resize( xA.size() );
+	for( size_t i = 0; i < xA.size(); ++i )
 	{
-		xReturnValue.push_back( new ASTNode( pxNode ) );
+		xReturnValue[ i ] = new ASTNode( xA[ i ] );
 	}
 
 	return xReturnValue;

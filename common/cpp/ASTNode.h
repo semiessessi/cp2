@@ -28,7 +28,7 @@ struct ParseError
 };
 
 class ASTNode
-    : public PoolAllocated< ASTNode >
+: public PoolAllocated< ASTNode >
 {
 
 public:
