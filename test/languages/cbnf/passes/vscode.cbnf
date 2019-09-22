@@ -236,6 +236,21 @@ pass "vscode" switch
 		+ "        {\n"
         + "            \"include\": \"#block-comment\"\n"
         + "        },\n" ;
+    
+    // SE - TODO: make this better, obvs.
+    for each value in language.lexemes
+    {
+        if value.is-optional
+        {
+        }
+        else
+        {
+            stripped = value.name.quote-stripped ;
+            write "        {\n"
+                + "            \"include\": \"#" + stripped + "\"\n"
+                + "        },\n" ;
+        }
+    }
     for each string in language.quotes
     {
         write "        {\n"
@@ -260,7 +275,29 @@ pass "vscode" switch
     write ")\\\\b\"\n"
         + "            }]\n"
         + "        },\n" ;
-		
+
+    // SE - TODO: make this better, obvs.
+    for each value in language.lexemes
+    {
+        if value.is-optional
+        {
+        }
+        else
+        {
+            stripped = value.name.quote-stripped ;
+            write "        \"" + stripped + "\": {\n"
+                + "            \"patterns\": [{\n"
+                + "                \"name\": \"lexeme." + stripped
+                + "." + lower-case-name + "\",\n"
+                + "                \"match\": \"\\\\b(" ;
+
+            write value.quote-stripped ;
+            write ")\\\\b\"\n"
+                + "            }]\n"
+                + "        },\n" ;
+        }
+    }
+
     string-values = "";
     for each string-definition in language.quotes
     {

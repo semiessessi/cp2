@@ -12,6 +12,12 @@
             "include": "#block-comment"
         },
         {
+            "include": "#identifier"
+        },
+        {
+            "include": "#integer"
+        },
+        {
             "include": "#string"
         }
     ],
@@ -22,6 +28,18 @@
                 "match": "\\b(keywords|identifiers|operators|separators|terminators|strings|language|comment|quote|lexeme|pass|requires|output|switch|write|name|for|each|in|productions|names|is\\-optional|is\\-non\\-empty|is\\-list|true|false|input\\-name|quotes|lexemes|block\\-comments|line\\-comments|passes|parse|walk|as|lower\\-case|quote\\-stripped|regex\\-escaped|double\\-regex\\-escaped)\\b"
             }]
         },
+        "identifier": {
+            "patterns": [{
+                "name": "lexeme.identifier.cbnf",
+                "match": "\\b([_a-zA-Z][_\\-a-zA-Z0-9]*)\\b"
+            }]
+        },
+        "integer": {
+            "patterns": [{
+                "name": "lexeme.integer.cbnf",
+                "match": "\\b(0-9*)\\b"
+            }]
+        },
         "string": {
             "name": "string.quotes.string.cbnf",
             "begin": "\"",
@@ -29,7 +47,7 @@
             "patterns": [
                 {
                     "name": "constant.character.escape.string.cbnf",
-                    "match": "\\\\\\\\."
+                    "match": "\\\\."
                 }
             ]
         },

@@ -530,6 +530,17 @@ pass "vscode"
     write "// A launch configuration that launches the extension inside a new window\n" + "// Use IntelliSense to learn about possible attributes.\n" + "// Hover to view descriptions of existing attributes.\n" + "// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387\n" + "{\n" + "	\"version\": \"0.2.0\",\n" + "    \"configurations\": [\n" + "        {\n" + "            \"name\": \"Extension\",\n" + "            \"type\": \"extensionHost\",\n" + "            \"request\": \"launch\",\n" + "            \"runtimeExecutable\": \"${execPath}\",\n" + "            \"args\": [\n" + "                \"--extensionDevelopmentPath=${workspaceFolder}\"\n" + "            ]\n" + "        }\n" + "    ]\n" + "}" ;
     output "vscode/syntaxes/" + lower-case-name + ".tmLanguage.json" ;
     write "{\n" + "    \"$schema\": \"https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json\",\n" + "    \"name\": \"" + language .name + "\",\n" + "    \"patterns\": [\n" + "        {\n" + "            \"include\": \"#keywords\"\n" + "        },\n" + "        {\n" + "            \"include\": \"#line-comment\"\n" + "        },\n" + "        {\n" + "            \"include\": \"#block-comment\"\n" + "        },\n" ;
+    for each value in language .lexemes 
+    { 
+        if value .is-optional 
+        { 
+        } 
+        else 
+        { 
+            stripped = value .name .quote-stripped ;
+            write "        {\n" + "            \"include\": \"#" + stripped + "\"\n" + "        },\n" ;
+        } 
+    } 
     for each string in language .quotes 
     { 
         write "        {\n" + "            \"include\": \"#" + string .name + "\"\n" + "        }\n" ;
@@ -544,6 +555,19 @@ pass "vscode"
     } 
     write keywordMatcher - "|" ;
     write ")\\\\b\"\n" + "            }]\n" + "        },\n" ;
+    for each value in language .lexemes 
+    { 
+        if value .is-optional 
+        { 
+        } 
+        else 
+        { 
+            stripped = value .name .quote-stripped ;
+            write "        \"" + stripped + "\": {\n" + "            \"patterns\": [{\n" + "                \"name\": \"lexeme." + stripped + "." + lower-case-name + "\",\n" + "                \"match\": \"\\\\b(" ;
+            write value .quote-stripped ;
+            write ")\\\\b\"\n" + "            }]\n" + "        },\n" ;
+        } 
+    } 
     string-values = "" ;
     for each string-definition in language .quotes 
     { 
