@@ -161,8 +161,8 @@ const CP2::Parser::Grammar& GetCBNFGrammar()
 		kxCBNFGrammar.AddLineComment( "//" );
 		kxCBNFGrammar.AddBlockComment( "/*", "*/" );
 		kxCBNFGrammar.AddQuote( "<string>", "\"", "\"", "\\" );
-		kxCBNFGrammar.AddLexeme( "identifier", "[_a-zA-Z][_\\-a-zA-Z0-9]*" );
-		kxCBNFGrammar.AddLexeme( "integer", "[0-9]*" );
+		kxCBNFGrammar.AddLexeme( "<identifier>", "[_a-zA-Z][_\\-a-zA-Z0-9]*" );
+		kxCBNFGrammar.AddLexeme( "<integer>", "[0-9]*" );
 		kxCBNFGrammar.AddKeyword( "\"keywords\"" );
 		kxCBNFGrammar.AddKeyword( "\"identifiers\"" );
 		kxCBNFGrammar.AddKeyword( "\"operators\"" );
@@ -221,7 +221,7 @@ const CP2::Parser::Grammar& GetCBNFGrammar()
 
 	return kxCBNFGrammar;
 }
-CP2::ASTNode* CBNFParse( const std::vector< Token >& axTokens )
+CP2::ASTNode* CBNFParse( const std::vector< CP2::Token >& axTokens )
 {
 	return CP2::Parser::Parse( axTokens, GetCBNFGrammar() );
 }

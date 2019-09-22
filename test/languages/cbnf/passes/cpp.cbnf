@@ -87,8 +87,8 @@ pass "cpp" switch
         }
         else
         {
-            write "\t\t" + grammar-variable + ".AddLexeme( \""
-                + value.name + "\", \""
+            write "\t\t" + grammar-variable + ".AddLexeme( \"<"
+                + value.name + ">\", \""
                 + value.quote-stripped ;
             write "\" );\n" ;
         }
@@ -141,7 +141,7 @@ pass "cpp" switch
     write "\treturn " + grammar-variable + ";\n" ;
     write "\}\n" ;
 
-    write "CP2::ASTNode* " + language.name + "Parse( const std::vector< Token >& axTokens )\n"
+    write "CP2::ASTNode* " + language.name + "Parse( const std::vector< CP2::Token >& axTokens )\n"
         + "{\n"
         + "\treturn CP2::Parser::Parse( axTokens, Get" + language.name + "Grammar() );\n"
         + "}\n" ;

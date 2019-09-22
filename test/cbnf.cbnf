@@ -240,7 +240,7 @@ pass "cpp"
         } 
         else 
         { 
-            write "\t\t" + grammar-variable + ".AddLexeme( \"" + value .name + "\", \"" + value .quote-stripped ;
+            write "\t\t" + grammar-variable + ".AddLexeme( \"<" + value .name + ">\", \"" + value .quote-stripped ;
             write "\" );\n" ;
         } 
     } 
@@ -276,7 +276,7 @@ pass "cpp"
     write "#undef GE\n\n" ;
     write "\treturn " + grammar-variable + ";\n" ;
     write "\}\n" ;
-    write "CP2::ASTNode* " + language .name + "Parse( const std::vector< Token >& axTokens )\n" + "{\n" + "\treturn CP2::Parser::Parse( axTokens, Get" + language .name + "Grammar() );\n" + "}\n" ;
+    write "CP2::ASTNode* " + language .name + "Parse( const std::vector< CP2::Token >& axTokens )\n" + "{\n" + "\treturn CP2::Parser::Parse( axTokens, Get" + language .name + "Grammar() );\n" + "}\n" ;
     write "\n" ;
 } 
 
