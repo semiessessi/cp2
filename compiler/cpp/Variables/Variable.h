@@ -66,6 +66,7 @@ public:
 protected:
 
     static std::string InputNameFromOutputName( const std::string& xOutputName );
+    static std::string DecorateName( const std::string& xInputName );
 
 private:
 

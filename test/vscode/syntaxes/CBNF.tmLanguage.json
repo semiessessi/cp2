@@ -12,10 +12,28 @@
             "include": "#block-comment"
         },
         {
+            "include": "#identifier"
+        },
+        {
+            "include": "#integer"
+        },
+        {
             "include": "#string"
         }
     ],
     "repository": {
+        "identifier": {
+            "patterns": [{
+                "name": "lexeme.identifier.cbnf",
+                "match": "\\b([_a-zA-Z][_\\-a-zA-Z0-9]*)\\b"
+            }]
+        },
+        "integer": {
+            "patterns": [{
+                "name": "lexeme.integer.cbnf",
+                "match": "\\b([0-9]*)\\b"
+            }]
+        },
         "keywords": {
             "patterns": [{
                 "name": "keyword.cbnf",
@@ -29,7 +47,7 @@
             "patterns": [
                 {
                     "name": "constant.character.escape.string.cbnf",
-                    "match": "\\\\\\\\."
+                    "match": "\\\\."
                 }
             ]
         },

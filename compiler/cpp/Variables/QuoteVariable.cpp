@@ -30,6 +30,13 @@ std::string QuoteVariable::GetNameValue() const
         mxGrammar.GetQuotes()[ miIndex ].GetName() );
 }
 
+std::string QuoteVariable::GetInputName() const
+{
+    return
+        DecorateName(
+            mxGrammar.GetQuotes()[ miIndex ].GetName() );
+}
+
 Variable* QuoteVariable::GetIndexed( const int iIndex ) const
 {
     switch( iIndex )

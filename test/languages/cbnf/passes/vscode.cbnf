@@ -236,6 +236,21 @@ pass "vscode" switch
 		+ "        {\n"
         + "            \"include\": \"#block-comment\"\n"
         + "        },\n" ;
+    
+    // SE - TODO: make this better, obvs.
+    for each value in language.lexemes
+    {
+        if value.is-optional
+        {
+        }
+        else
+        {
+            stripped = value.name.quote-stripped ;
+            write "        {\n"
+                + "            \"include\": \"#" + stripped + "\"\n"
+                + "        },\n" ;
+        }
+    }
     for each string in language.quotes
     {
         write "        {\n"
@@ -243,8 +258,31 @@ pass "vscode" switch
             + "        }\n" ;
     }
     write "    ],\n"
-        + "    \"repository\": {\n"
-        + "        \"keywords\": {\n"
+        + "    \"repository\": {\n" ;
+
+    // SE - TODO: make this better, obvs.
+    for each value in language.lexemes
+    {
+        if value.is-optional
+        {
+        }
+        else
+        {
+            stripped = value.name.quote-stripped ;
+            write "        \"" + stripped + "\": {\n"
+                + "            \"patterns\": [{\n"
+                + "                \"name\": \"lexeme." + stripped
+                + "." + lower-case-name + "\",\n"
+                + "                \"match\": \"\\\\b(" ;
+
+            write value.quote-stripped ;
+            write ")\\\\b\"\n"
+                + "            }]\n"
+                + "        },\n" ;
+        }
+    }
+
+    write "        \"keywords\": {\n"
         + "            \"patterns\": [{\n"
         + "                \"name\": \"keyword." + lower-case-name + "\",\n"
         + "                \"match\": \"\\\\b(" ;
@@ -260,13 +298,13 @@ pass "vscode" switch
     write ")\\\\b\"\n"
         + "            }]\n"
         + "        },\n" ;
-		
+
     string-values = "";
     for each string-definition in language.quotes
     {
         first-quote = string-definition[ 0 ] ;
         second-quote = string-definition[ 1 ] ;
-        escape = string-definition[ 2 ].regex-escaped ;
+        escape = string-definition[ 2 ] ;
         string-values = string-values
             + "        \"" + string-definition.name + "\": {\n"
             + "            \"name\": \"string.quotes." + string-definition.name + "." + lower-case-name + "\",\n"
@@ -286,7 +324,7 @@ pass "vscode" switch
 		string-values = string-values
 			+ escape ;
 		string-values = string-values
-			+ ".\"\n"
+			+ "\\\\.\"\n"
             + "                }\n"
             + "            ]\n"
             + "        },\n" ;

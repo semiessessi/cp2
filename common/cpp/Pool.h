@@ -23,7 +23,7 @@ class Pool
 
 public:
 
-	Pool( const unsigned int uInitialSize = 65536 )
+	Pool( const unsigned int uInitialSize = 262144 )
 	: maaxData()
 	, muAllocated( 0 )
 	, muCapacity( uInitialSize )

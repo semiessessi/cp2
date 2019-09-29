@@ -2,20 +2,23 @@
 
 pass "cpp" switch
 {
-    output language.name + ".cpp" ;
+    output language.name + "Parser.cpp" ;
     
     write "// CP2::Parser definition for " + language.name + "\n\n" ;
     
-    write "#define GE( ... ) GrammarExpression( __VA_ARGS__ )\n\n" ;
+    write "#include \"Grammar.h\"\n#include \"Parser.h\"\n\n" ;
 
-    write "const Grammar& Get" + language.name + "Grammar()\n" ;
+    write "#define GE( ... ) CP2::Parser::GrammarExpression( __VA_ARGS__ )\n\n" ;
+
+    grammar-variable = "kx" + language.name + "Grammar" ;
+    write "const CP2::Parser::Grammar& Get" + language.name + "Grammar()\n" ;
     write "{\n" ;
-    write "\tstatic Grammar kx" + language.name + "Grammar(\n" ;
+    write "\tstatic CP2::Parser::Grammar " + grammar-variable + "(\n" ;
     write "\t{\n" ;
 
     for each production in language.productions
     {
-        write "\t\tGrammarProduction(\"" + production.name + "\",\n" ;
+        write "\t\tCP2::Parser::GrammarProduction(\"" + production.name + "\",\n" ;
         write "\t\t\t" ;
         join = "" ;
         
@@ -49,8 +52,99 @@ pass "cpp" switch
 
     write "\t});\n\n" ;
     
+    write "\tif( " + grammar-variable + ".GetCommentCount() == 0 )\n"
+        + "\t{\n"
+        + "\t\t" + grammar-variable + ".SetName( \"" + language.name + "\" );\n" ;
+    
+    for each line-comment in language.line-comments
+    {
+        write "\t\t" + grammar-variable + ".AddLineComment( \"" + line-comment + "\" );\n" ;
+    }
+
+    for each block-comment in language.block-comments
+    {
+        start = block-comment[ 0 ] ;
+        end = block-comment[ 1 ] ;
+        write "\t\t" + grammar-variable + ".AddBlockComment( \"" + start + "\", \"" + end + "\" );\n" ;
+    }
+
+    for each string in language.quotes
+    {
+        start = string[ 0 ] ;
+        end = string[ 1 ] ;
+        escape = string[ 2 ] ;
+        write "\t\t" + grammar-variable + ".AddQuote( \""
+            + string.input-name + "\", "
+            + "\"" + start + "\", "
+            + "\"" + end + "\", "
+            + "\"" + escape + "\" );\n" ;
+    }
+
+    for each value in language.lexemes
+    {
+        if value.is-optional
+        {
+        }
+        else
+        {
+            write "\t\t" + grammar-variable + ".AddLexeme( \"<"
+                + value.name + ">\", \""
+                + value.quote-stripped ;
+            write "\" );\n" ;
+        }
+    }
+
+    for each keyword in language.keywords
+    {
+        write "\t\t" + grammar-variable + ".AddKeyword( \"\\\""
+            + keyword.quote-stripped ;
+        write "\\\"\" );\n" ;
+    }
+
+    for each operator in language.operators
+    {
+        write "\t\t" + grammar-variable + ".AddOperator( \"\\\""
+            + operator.quote-stripped ;
+        write  "\\\"\" );\n" ;
+    }
+
+    for each terminator in language.terminators
+    {
+        write "\t\t" + grammar-variable + ".AddTerminator( \"\\\""
+            + terminator.quote-stripped ;
+        write  "\\\"\" );\n" ;
+    }
+
+    for each separator in language.separators
+    {
+        write "\t\t" + grammar-variable + ".AddSeparator( \"\\\""
+            + separator.quote-stripped ;
+        write  "\\\"\" );\n" ;
+    }
+
+    for each string in language.strings
+    {
+        write "\t\t" + grammar-variable + ".AddString( \""
+            + string + "\" );\n" ;
+    }
+
+    for each identifier in language.identifiers
+    {
+        write "\t\t" + grammar-variable + ".AddIdentifier( \""
+            + identifier + "\" );\n" ;
+    }
+
+    write "\t}\n" ;
+
     write "#undef GE\n\n" ;
     
-    write "\treturn kx" + language.name + "Grammar;\n" ;
+    write "\treturn " + grammar-variable + ";\n" ;
     write "\}\n" ;
+
+    write "CP2::ASTNode* " + language.name + "Parse( const std::vector< CP2::Token >& axTokens )\n"
+        + "{\n"
+        + "\treturn CP2::Parser::Parse( axTokens, Get" + language.name + "Grammar() );\n"
+        + "}\n" ;
+
+    write "\n" ;
 }

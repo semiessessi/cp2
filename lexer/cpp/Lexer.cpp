@@ -159,7 +159,7 @@ static inline const char* FindNewCursor(
 }
 
 static inline void UpdateLongest( const int i,
-	const std::string& xValue, std::string& xLongestValue,
+	const std::string_view& xValue, std::string& xLongestValue,
 	int& iLongestLength, int& iLongestRule )
 {
 	const int iNewLength = static_cast< int >( xValue.length() );
@@ -193,8 +193,8 @@ static inline bool MatchRules(
 		if( ( iCachedStringLength != 0 )
 			&& ( iCachedStringLength > iLongestLength ) )
 		{
-			const std::string xValue(
-				szCursor, szCursor + iCachedStringLength );
+			const std::string_view xValue(
+				szCursor, iCachedStringLength );
 			if( axStrings[ i ] == xValue )
 			{
 				UpdateLongest( static_cast< int >( i ),
@@ -313,7 +313,9 @@ static inline std::vector< std::basic_regex< char > > BuildRegexCache(
 		else
 		{
 			axRegexes.push_back( std::basic_regex< char >(
-				axRules[ i ].GetExpression().c_str() ) );
+				axRules[ i ].GetExpression().c_str(),
+				std::regex_constants::optimize
+					| std::regex_constants::nosubs ) );
 		}
 	}
 

@@ -54,6 +54,17 @@ std::string Variable::InputNameFromOutputName(
     return std::string( "\"" ) + xOutputName + "\"";
 }
 
+std::string Variable::DecorateName(
+    const std::string& xInputName )
+{
+    if( xInputName.front() == '<' )
+    {
+        return xInputName;
+    }
+
+    return std::string( "<" ) + xInputName + ">";
+}
+
 Variable* Variable::GetKeywords() const
 {
     CP2::Error( 6004, "???", 0, 0, "Bad member access on variable %s, which is not a language", mxName.c_str() );

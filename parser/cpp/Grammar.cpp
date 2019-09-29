@@ -54,28 +54,28 @@ const std::vector< GrammarProduction >& Grammar::GetTopLevelProductionsCached() 
     return maxTopProductions;
 }
 
-std::vector< GrammarProduction > Grammar::GetOriginalProductions(
+const std::vector< GrammarProduction >& Grammar::GetOriginalProductions(
     const std::string& xName ) const
 {
     auto it = mxProductionCache.find( xName );
-    if( it == mxProductionCache.end() )
+    if( it != mxProductionCache.end() )
     {
-        std::vector< GrammarProduction > axProductions;
-        const int iProductionCount = GetProductionCount();
+		return it->second;
+	}
 
-        for( int i = 0; i < iProductionCount; ++i )
+    std::vector< GrammarProduction > axProductions;
+    const int iProductionCount = GetProductionCount();
+
+    for( int i = 0; i < iProductionCount; ++i )
+    {
+        const GrammarProduction& xProduction = GetProduction( i );
+        if( xProduction.GetName() == xName )
         {
-            const GrammarProduction& xProduction = GetProduction( i );
-            if( xProduction.GetName() == xName )
-            {
-                axProductions.push_back( xProduction );
-            }
+            axProductions.push_back( xProduction );
         }
-
-
-        mxProductionCache[ xName ] = axProductions;
     }
 
+    mxProductionCache[ xName ] = axProductions;
     return mxProductionCache[ xName ];
 }
 
@@ -84,48 +84,48 @@ const std::vector< GrammarProduction >&
         const std::string& xName ) const
 {
 	auto it = mxRefactoredProductionCache.find( xName );
-	if( it == mxRefactoredProductionCache.end() )
+	if( it != mxRefactoredProductionCache.end() )
 	{
-        std::vector< GrammarProduction > axProductions
-            = GetOriginalProductions( xName );
-
-        // refactor the productions so that recursion avoidance is possible.
-        // this kind of ruins the idea of getting what we put in.. but meh
-
-        // because we have at this point all of the productions for this name
-        // we have enough to eliminate the first level of left recursion
-        // ... however to remove more will require a bit omre data.
-        std::vector< GrammarProduction > axRefactoredProductions;
-        const size_t iUnfactoredProductionCount
-            = axProductions.size();
-        for( int i = 0; i < iUnfactoredProductionCount; ++i )
-        {
-            const GrammarProduction& xProduction = axProductions[ i ];
-            if( xProduction.IsLeftRecursive() )
-            {
-                for( int j = 0; j < iUnfactoredProductionCount; ++j )
-                {
-                    const GrammarProduction& xSubstitution = axProductions[ j ];
-                    if( xSubstitution.IsLeftRecursive() == false )
-                    {
-                        // create a new production with the substitution
-                        const GrammarProduction xSubstitutedProduction(
-                            xProduction.CreateLeftmostSubstitution(
-                                xProduction, xSubstitution.GetExpression() ) );
-                        axRefactoredProductions.push_back( xSubstitutedProduction );
-                    }
-                }
-
-                continue;
-            }
-
-            axRefactoredProductions.push_back( xProduction );
-        }
-
-
-        mxRefactoredProductionCache[ xName ] = axRefactoredProductions;
+		return it->second;
 	}
 
+    std::vector< GrammarProduction > axProductions
+        = GetOriginalProductions( xName );
+
+    // refactor the productions so that recursion avoidance is possible.
+    // this kind of ruins the idea of getting what we put in.. but meh
+
+    // because we have at this point all of the productions for this name
+    // we have enough to eliminate the first level of left recursion
+    // ... however to remove more will require a bit omre data.
+    std::vector< GrammarProduction > axRefactoredProductions;
+    const size_t iUnfactoredProductionCount
+        = axProductions.size();
+    for( int i = 0; i < iUnfactoredProductionCount; ++i )
+    {
+        const GrammarProduction& xProduction = axProductions[ i ];
+        if( xProduction.IsLeftRecursive() )
+        {
+            for( int j = 0; j < iUnfactoredProductionCount; ++j )
+            {
+                const GrammarProduction& xSubstitution = axProductions[ j ];
+                if( xSubstitution.IsLeftRecursive() == false )
+                {
+                    // create a new production with the substitution
+                    const GrammarProduction xSubstitutedProduction(
+                        xProduction.CreateLeftmostSubstitution(
+                            xProduction, xSubstitution.GetExpression() ) );
+                    axRefactoredProductions.push_back( xSubstitutedProduction );
+                }
+            }
+
+            continue;
+        }
+
+        axRefactoredProductions.push_back( xProduction );
+    }
+
+    mxRefactoredProductionCache[ xName ] = axRefactoredProductions;
 	return mxRefactoredProductionCache[ xName ];
 }
 

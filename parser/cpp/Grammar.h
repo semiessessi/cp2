@@ -40,7 +40,7 @@ public:
     const std::vector< GrammarProduction >& GetTopLevelProductionsCached() const;
 	const std::vector< GrammarProduction >& GetProductions() const { return maxProductions; }
 
-    std::vector< GrammarProduction > GetOriginalProductions( const std::string& xName ) const;
+    const std::vector< GrammarProduction >& GetOriginalProductions( const std::string& xName ) const;
 	const std::vector< GrammarProduction >& GetProductionsForParsing(
         const std::string& xName ) const;
 

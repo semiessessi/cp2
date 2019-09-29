@@ -28,6 +28,7 @@ public:
     Variable* Clone() const override { return new QuoteVariable( GetName(), mxGrammar, miIndex ); }
 
     std::string GetNameValue() const override;
+    std::string GetInputName() const override;
 
     Variable* GetIndexed( const int iIndex ) const override;
     int GetIndexedCount() const override { return 3; }
