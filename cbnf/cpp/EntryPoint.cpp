@@ -189,7 +189,8 @@ int main( const int iArgumentCount, const char* const* const pszArguments )
         xCompilerPasses.Merge( xPasses );
     }
 
-    // SE - TEMP: ...
+    // SE - TEMP: ... ultimately the output should be the thing that executes passes
+    // but for now this speeds up working on CBNF itself...
     xCompilerPasses.Execute( xCompleteGrammar );
 
 	if( CP2::GetErrorCount() )
