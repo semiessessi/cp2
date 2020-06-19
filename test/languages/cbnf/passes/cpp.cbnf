@@ -2,6 +2,16 @@
 
 pass "cpp" switch
 {
+	output language.name + "Lexer.cpp" ;
+	
+	write "// CP2::Lexer definition for " + language.name + "\n\n" ;
+	write "#include \"CBNFLexer.h\"\n#include \"Lexer.h\"\n\n" ;
+	write "namespace CP2\n{\nnamespace Lexer\n{\n" ;
+	
+	// TODO ... actual shit :)
+	
+	write "}\n}\n" ;
+	
     output language.name + "Parser.cpp" ;
     
     write "// CP2::Parser definition for " + language.name + "\n\n" ;
