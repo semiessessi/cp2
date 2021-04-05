@@ -377,6 +377,7 @@ bool PassStatement::EvaluateBooleanExpression(
     return false;
 }
 
+static int giSSICounter = 1;
 std::string PassStatement::EvaluateStringExpression(
     const ASTNode* const pxAST, const Context& xContext )
 {
@@ -403,6 +404,11 @@ std::string PassStatement::EvaluateStringExpression(
                 pxAST->GetChild( 0 ), xContext )->GetValue();
         }
         */
+        else if (xProductionName == "ssi-counter")
+        {
+            return std::to_string(giSSICounter++);
+            // error, unidentified variable.
+        }
         else if( xProductionName == "<identifier>" )
         {
             const Variable* const pxVariable

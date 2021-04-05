@@ -113,6 +113,7 @@ const Grammar& GetCBNFGrammar()
             + GE( "-" ) + GE( "<string-expression>" ) ),
 
         GrammarProduction( "<string-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "name" ) ),
+        GrammarProduction( "<string-expression>", GE( "ssi-counter" ) ),
         GrammarProduction( "<string-expression>", GE( "language" ) + GE( "." ) + GE( "name" ) ),
         GrammarProduction( "<string-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "input-name" ) ),
         GrammarProduction( "<string-expression>", GE( "<string-expression>" ) + GE( "." ) + GE( "lower-case" ) ),

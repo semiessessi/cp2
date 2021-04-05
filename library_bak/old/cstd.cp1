@@ -1,0 +1,92 @@
+import float32;
+import int8;
+import int32;
+import int64;
+
+// namespace cstd
+// {
+
+// stdlib.h
+// SE - TODO: assume size_t is an int64...
+type int64 size_t;
+
+type
+{
+    int32 quot;
+    int32 rem;
+} div_t;
+
+type
+{
+    int32 quot;
+    int32 rem;
+} ldiv_t;
+
+type
+{
+    int64 quot;
+    int64 rem;
+} lldiv_t;
+
+// SE - hack around bad namespaces for types atm... :(
+namespace cstd
+{
+
+extern int32 abort();
+extern int32 abs( int32 iValue );
+extern int32 atexit( address pfnFunction ); // SE - hmm ... function pointers?
+extern float32 atof( address szString );
+// SE - these fuckers tend to vary with platform (!)
+// ... but I don't want to pollute my beautiful little toy with these ugly real world
+// considerations of needing to interop with C properly...
+extern int32 atoi( address szString );
+//extern int32 atol( address szString );
+//extern int64 atoll( address szString );
+extern int32 atquickexit( address pfnFunction ); // SE - hmm ... function pointers?
+extern address bsearch( address pKey, address pBase, size_t iNum, size_t iSize, address pfnCompareFunction );
+extern address calloc( size_t iCount, size_t iSize );
+extern div_t div( int32 iNumerator, int32 iDenominator );
+extern int32 exit( int32 iStatusCode );
+extern int32 free( address pMemory );
+extern address getenv( address szName );
+extern int32 labs( int32 n );
+extern ldiv_t ldiv( int32 iNumerator, int32 iDenominator );
+extern int64 llabs( int64 n );
+extern lldiv_t lldiv( int64 iNumerator, int64 iDenominator );
+extern address malloc( size_t iSize );
+extern int32 mblen( address szString, size_t iMax );
+extern size_t mbstowcs( address wszDest, address szSource, size_t iMax );
+
+// stdio.h
+extern int32 clearerr();
+extern int32 fclose( address pFile );
+extern int32 feof( address pFile );
+extern int32 ferror( address pFile );
+extern int32 fflush( address pFile );
+extern int32 fgetc( address pFile );
+extern int32 fgetpos( address pFile, address pPos );
+extern address fgets( address szString, int32 limit, address pFile );
+extern address fopen( address szPath, address szMode );
+// fprintf
+extern int32 fputc( int32 iChar, address pFile );
+extern int32 fputs( address szString, address pFile );
+extern int32 fread( address pDestination, int32 size, int32 count, address pFile );
+extern address freopen( address szPath, address szMode, address pFile );
+// fscanf
+extern int32 fseek( address pFile, int32 offset, int32 origin );
+extern int32 fsetpos( address pFile, address pPos );
+extern int32 ftell( address pFile );
+extern int32 fwrite( address pSource, int32 size, int32 count, address pFile );
+extern int32 getc( address pFile );
+extern int32 getchar();
+extern int32 perror( address szString );
+extern int32 putchar( int32 iChar );
+extern int32 puts( address szString );
+extern address realloc( address pMemory, size_t iSize );
+extern int32 remove( address szFilename );
+extern int32 rewind( address pFile );
+// scanf
+// printf
+extern address tmpfile();
+extern address tmpnam( address szDestination );
+}

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30802.117
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lexer", "Lexer.vcxproj", "{3C33E63D-A5FB-4985-BF26-C86981593FC8}"
 EndProject
@@ -20,11 +20,18 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CBNF", "CBNF.vcxproj", "{A04415FD-2036-4B35-900C-ED9208F8FB24}"
 	ProjectSection(ProjectDependencies) = postProject
 		{B186497C-9D84-4657-83E4-E0B066F466BA} = {B186497C-9D84-4657-83E4-E0B066F466BA}
+		{68574FB2-1CDE-47B1-979E-52216B73C04A} = {68574FB2-1CDE-47B1-979E-52216B73C04A}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CPScheme", "CPScheme.vcxproj", "{81E9CF23-22EC-4671-9D97-284D71D856C0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "Tests.vcxproj", "{2A02DC54-8512-416E-9383-F0BAC96D56ED}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Library", "Library.vcxproj", "{68574FB2-1CDE-47B1-979E-52216B73C04A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3C33E63D-A5FB-4985-BF26-C86981593FC8} = {3C33E63D-A5FB-4985-BF26-C86981593FC8}
+		{B186497C-9D84-4657-83E4-D0B066F466BA} = {B186497C-9D84-4657-83E4-D0B066F466BA}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -98,6 +105,14 @@ Global
 		{2A02DC54-8512-416E-9383-F0BAC96D56ED}.Release|x64.Build.0 = Release|x64
 		{2A02DC54-8512-416E-9383-F0BAC96D56ED}.Release|x86.ActiveCfg = Release|Win32
 		{2A02DC54-8512-416E-9383-F0BAC96D56ED}.Release|x86.Build.0 = Release|Win32
+		{68574FB2-1CDE-47B1-979E-52216B73C04A}.Debug|x64.ActiveCfg = Release|x64
+		{68574FB2-1CDE-47B1-979E-52216B73C04A}.Debug|x64.Build.0 = Release|x64
+		{68574FB2-1CDE-47B1-979E-52216B73C04A}.Debug|x86.ActiveCfg = Debug|Win32
+		{68574FB2-1CDE-47B1-979E-52216B73C04A}.Debug|x86.Build.0 = Debug|Win32
+		{68574FB2-1CDE-47B1-979E-52216B73C04A}.Release|x64.ActiveCfg = Release|x64
+		{68574FB2-1CDE-47B1-979E-52216B73C04A}.Release|x64.Build.0 = Release|x64
+		{68574FB2-1CDE-47B1-979E-52216B73C04A}.Release|x86.ActiveCfg = Release|Win32
+		{68574FB2-1CDE-47B1-979E-52216B73C04A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

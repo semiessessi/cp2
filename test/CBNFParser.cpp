@@ -70,6 +70,8 @@ const CP2::Parser::Grammar& GetCBNFGrammar()
 		CP2::Parser::GrammarProduction("<string-expression>",
 			GE( "language" ) + GE( "." ) + GE( "name" ) ),
 		CP2::Parser::GrammarProduction("<string-expression>",
+			GE( "ssi-counter" ) ),
+		CP2::Parser::GrammarProduction("<string-expression>",
 			GE( "<identifier>" ) + GE( "." ) + GE( "input-name" ) ),
 		CP2::Parser::GrammarProduction("<string-expression>",
 			GE( "<string-expression>" ) + GE( "." ) + GE( "lower-case" ) ),
@@ -202,6 +204,7 @@ const CP2::Parser::Grammar& GetCBNFGrammar()
 		kxCBNFGrammar.AddKeyword( "\"quote-stripped\"" );
 		kxCBNFGrammar.AddKeyword( "\"regex-escaped\"" );
 		kxCBNFGrammar.AddKeyword( "\"double-regex-escaped\"" );
+		kxCBNFGrammar.AddKeyword( "\"ssi-counter\"" );
 		kxCBNFGrammar.AddOperator( "\"=\"" );
 		kxCBNFGrammar.AddOperator( "\"{\"" );
 		kxCBNFGrammar.AddOperator( "\"}\"" );

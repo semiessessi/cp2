@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="library">
+      <UniqueIdentifier>{c0f5a4a4-93a2-4c37-a49a-918b7db2e93f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\library\cpp\Library.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\library\cpp\Library.h">
+      <Filter>library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\library\cpp\CommandLineHandler.h">
+      <Filter>library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\library\cpp\SwitchHandler.h">
+      <Filter>library</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

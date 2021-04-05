@@ -123,7 +123,7 @@ void WriteOutput( const CP2::Parser::Grammar& xGrammar )
 int main( const int iArgumentCount, const char* const* const pszArguments )
 {
 	CP2::Message( "CBNF - CP2 Grammar Tool" );
-	CP2::Message( "Copyright (c) 2017 Cranium Software Ltd. All rights reserved." );
+	CP2::Message( "Copyright (c) 2017-2021 Cranium Software Ltd. All rights reserved." );
 
 	const CommandLineHandler xCommandLine( iArgumentCount, pszArguments,
 		sizeof( kaszSwitchHandlers ) / sizeof( kaszSwitchHandlers[ 0 ] ), kaszSwitchHandlers );

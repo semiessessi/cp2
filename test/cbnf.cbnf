@@ -48,6 +48,7 @@ string-expression = string-expression "+" string-expression ;
 string-expression = string-expression "-" string-expression ;
 string-expression = identifier "." "name" ;
 string-expression = "language" "." "name" ;
+string-expression = "ssi-counter" ;
 string-expression = identifier "." "input-name" ;
 string-expression = string-expression "." "lower-case" ;
 string-expression = string-expression "." "quote-stripped" ;
@@ -135,6 +136,7 @@ keywords
 	"quote-stripped"
 	"regex-escaped"
 	"double-regex-escaped"
+	"ssi-counter"
 }
 
 identifiers
@@ -283,6 +285,55 @@ pass "cpp"
     write "\}\n" ;
     write "CP2::ASTNode* " + language .name + "Parse( const std::vector< CP2::Token >& axTokens )\n" + "{\n" + "\treturn CP2::Parser::Parse( axTokens, Get" + language .name + "Grammar() );\n" + "}\n" ;
     write "\n" ;
+} 
+
+pass "llvm"
+
+{ 
+    output language .name + ".llvm" ;
+    write "; LLVM IR code for compiler for " + language .name + "\n\n" ;
+    write "declare ccc i32 @puts( i8* nocapture ) nounwind\n" ;
+    write "declare ccc i32 @clParseCommandLine( i32, i8** nocapture ) nounwind\n" ;
+    write "declare ccc i32 @clHasSwitch( i8* nocapture ) nounwind\n" ;
+    write "declare ccc i32 @clFileCount() nounwind\n" ;
+    write "\n" ;
+    write "@.message1 = private constant [24 x i8] c\"CBNF - CP2 Grammar Tool\\00\"\n" ;
+    write "@.message2 = private constant [67 x i8] c\"Copyright (c) 2017-2021 Cranium Software Ltd. All rights reserved.\\00\"\n" ;
+    write "@.error1001 = private constant [43 x i8] c\"cbnf: error 1001: No source files provided\\00\"\n" ;
+    write "@.error1002 = private constant [42 x i8] c\"cbnf: error 1002: No output path provided\\00\"\n" ;
+    write "@.outputSwitchShort = private constant [2 x i8] c\"o\\00\"\n" ;
+    for each compiler-pass in language .passes 
+    { 
+        write "@.pass_" + compiler-pass .name + " = private constant [5 x i8] c\"test\\00\"\n" ;
+    } 
+    write "define ccc i32 @main(i32 %argumentCount, i8** %argumentList) nounwind\n{\n" ;
+    write "\t%" + ssi-counter + " = call i32 @puts(i8* getelementptr inbounds ([24 x i8]* @.message1, i32 0, i32 0))\n" ;
+    write "\t%" + ssi-counter + " = call i32 @puts(i8* getelementptr inbounds ([67 x i8]* @.message2, i32 0, i32 0))\n" ;
+    write "\t%" + ssi-counter + " = call i32 @clParseCommandLine(i32 %argumentCount, i8** %argumentList)\n" ;
+    fileCount = ssi-counter ;
+    write "\t%" + fileCount + " = call i32 @clFileCount()\n" ;
+    fileCountCheck = ssi-counter ;
+    write "\t%" + fileCountCheck + " = icmp ne i32 %" + fileCount + ", 0\n" ;
+    write "\tbr i1 %" + fileCountCheck + ", label %hasFiles, label %noFiles\n" ;
+    write "noFiles:\n" ;
+    write "\t%" + ssi-counter + " = call i32 @puts(i8* getelementptr inbounds ([43 x i8]* @.error1001, i32 0, i32 0))\n" ;
+    write "\tret i32 -1\n" ;
+    write "hasFiles:\n" ;
+    outputFile = ssi-counter ;
+    write "\t%" + outputFile + " = call i32 @clHasSwitch(i8* getelementptr inbounds ([2 x i8]* @.outputSwitchShort, i32 0, i32 0))\n" ;
+    outputFileCheck = ssi-counter ;
+    write "\t%" + outputFileCheck + " = icmp ne i32 %" + outputFile + ", 0\n" ;
+    write "\tbr i1 %" + outputFileCheck + ", label %hasOutputFile, label %noOutputFile\n" ;
+    write "noOutputFile:\n" ;
+    write "\t%" + ssi-counter + " = call i32 @puts(i8* getelementptr inbounds ([42 x i8]* @.error1002, i32 0, i32 0))\n" ;
+    write "\tret i32 -1\n" ;
+    write "hasOutputFile:\n" ;
+    for each compiler-pass in language .passes 
+    { 
+        write "\t%" + ssi-counter + " = call i32 @clHasSwitch(i8* getelementptr inbounds ([5 x i8]* @.pass_" + compiler-pass .name + ", i32 0, i32 0))\n" ;
+    } 
+    write "\tret i32 0\n" ;
+    write "}\n" ;
 } 
 
 pass "cbnf"
