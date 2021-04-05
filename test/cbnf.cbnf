@@ -50,6 +50,8 @@ string-expression = identifier "." "name" ;
 string-expression = "language" "." "name" ;
 string-expression = "ssi-counter" ;
 string-expression = identifier "." "input-name" ;
+string-expression = string-expression "." "length" ;
+string-expression = string-expression "." "length-with-null" ;
 string-expression = string-expression "." "lower-case" ;
 string-expression = string-expression "." "quote-stripped" ;
 string-expression = string-expression "." "regex-escaped" ;
@@ -137,6 +139,8 @@ keywords
 	"regex-escaped"
 	"double-regex-escaped"
 	"ssi-counter"
+	"length"
+	"length-with-null"
 }
 
 identifiers
@@ -295,6 +299,7 @@ pass "llvm"
     write "declare ccc i32 @puts( i8* nocapture ) nounwind\n" ;
     write "declare ccc i32 @clParseCommandLine( i32, i8** nocapture ) nounwind\n" ;
     write "declare ccc i32 @clHasSwitch( i8* nocapture ) nounwind\n" ;
+    write "declare ccc i8* @clMapSwitch( i8* nocapture ) nounwind\n" ;
     write "declare ccc i32 @clFileCount() nounwind\n" ;
     write "\n" ;
     write "@.message1 = private constant [24 x i8] c\"CBNF - CP2 Grammar Tool\\00\"\n" ;
@@ -302,23 +307,19 @@ pass "llvm"
     write "@.error1001 = private constant [43 x i8] c\"cbnf: error 1001: No source files provided\\00\"\n" ;
     write "@.error1002 = private constant [42 x i8] c\"cbnf: error 1002: No output path provided\\00\"\n" ;
     write "@.outputSwitchShort = private constant [2 x i8] c\"o\\00\"\n" ;
+    for each value in language .line-comments 
+    { 
+    } 
     for each compiler-pass in language .passes 
     { 
-        write "@.pass_" + compiler-pass .name + " = private constant [5 x i8] c\"test\\00\"\n" ;
+        write "@.pass_" + compiler-pass .name + " = private constant [" ;
+        write compiler-pass .name .length-with-null ;
+        write " x i8] c\"" + compiler-pass .name + "\\00\"\n" ;
     } 
     write "define ccc i32 @main(i32 %argumentCount, i8** %argumentList) nounwind\n{\n" ;
     write "\t%" + ssi-counter + " = call i32 @puts(i8* getelementptr inbounds ([24 x i8]* @.message1, i32 0, i32 0))\n" ;
     write "\t%" + ssi-counter + " = call i32 @puts(i8* getelementptr inbounds ([67 x i8]* @.message2, i32 0, i32 0))\n" ;
     write "\t%" + ssi-counter + " = call i32 @clParseCommandLine(i32 %argumentCount, i8** %argumentList)\n" ;
-    fileCount = ssi-counter ;
-    write "\t%" + fileCount + " = call i32 @clFileCount()\n" ;
-    fileCountCheck = ssi-counter ;
-    write "\t%" + fileCountCheck + " = icmp ne i32 %" + fileCount + ", 0\n" ;
-    write "\tbr i1 %" + fileCountCheck + ", label %hasFiles, label %noFiles\n" ;
-    write "noFiles:\n" ;
-    write "\t%" + ssi-counter + " = call i32 @puts(i8* getelementptr inbounds ([43 x i8]* @.error1001, i32 0, i32 0))\n" ;
-    write "\tret i32 -1\n" ;
-    write "hasFiles:\n" ;
     outputFile = ssi-counter ;
     write "\t%" + outputFile + " = call i32 @clHasSwitch(i8* getelementptr inbounds ([2 x i8]* @.outputSwitchShort, i32 0, i32 0))\n" ;
     outputFileCheck = ssi-counter ;
@@ -328,9 +329,22 @@ pass "llvm"
     write "\t%" + ssi-counter + " = call i32 @puts(i8* getelementptr inbounds ([42 x i8]* @.error1002, i32 0, i32 0))\n" ;
     write "\tret i32 -1\n" ;
     write "hasOutputFile:\n" ;
+    outputFileName = ssi-counter ;
+    write "\t%" + outputFileName + " = call i8* @clMapSwitch(i8* getelementptr inbounds ([2 x i8]* @.outputSwitchShort, i32 0, i32 0))\n" ;
+    fileCount = ssi-counter ;
+    write "\t%" + fileCount + " = call i32 @clFileCount()\n" ;
+    fileCountCheck = ssi-counter ;
+    write "\t%" + fileCountCheck + " = icmp ne i32 %" + fileCount + ", 0\n" ;
+    write "\tbr i1 %" + fileCountCheck + ", label %hasFiles, label %noFiles\n" ;
+    write "noFiles:\n" ;
+    write "\t%" + ssi-counter + " = call i32 @puts(i8* getelementptr inbounds ([43 x i8]* @.error1001, i32 0, i32 0))\n" ;
+    write "\tret i32 -1\n" ;
+    write "hasFiles:\n" ;
     for each compiler-pass in language .passes 
     { 
-        write "\t%" + ssi-counter + " = call i32 @clHasSwitch(i8* getelementptr inbounds ([5 x i8]* @.pass_" + compiler-pass .name + ", i32 0, i32 0))\n" ;
+        write "\t%" + ssi-counter + " = call i32 @clHasSwitch(i8* getelementptr inbounds ([" ;
+        write compiler-pass .name .length-with-null ;
+        write " x i8]* @.pass_" + compiler-pass .name + ", i32 0, i32 0))\n" ;
     } 
     write "\tret i32 0\n" ;
     write "}\n" ;

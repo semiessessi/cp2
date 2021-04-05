@@ -75,6 +75,8 @@ const std::vector< Rule >& CBNFLexerRules()
         Rule( "regex-escaped",					Token( "regex-escaped",	        40 ) ),
         Rule( "double-regex-escaped",			Token( "double-regex-escaped",  41 ) ),
         Rule( "ssi-counter",			        Token("ssi-counter",            42)),
+        Rule("length",			                Token("length",                 43)),
+        Rule("length-with-null",                Token("length-with-null",       44)),
 
 		Rule( "[_a-zA-Z][_\\-a-zA-Z0-9]*",		Token( "<identifier>",		    1000, true ) ),
 		//Rule( "\"(?:[^\\\"\\\\]|\\\\.)*\"",		Token( "<string>",			1001, true ) ),

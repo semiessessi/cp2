@@ -3,6 +3,7 @@
 declare ccc i32 @puts( i8* nocapture ) nounwind
 declare ccc i32 @clParseCommandLine( i32, i8** nocapture ) nounwind
 declare ccc i32 @clHasSwitch( i8* nocapture ) nounwind
+declare ccc i8* @clMapSwitch( i8* nocapture ) nounwind
 declare ccc i32 @clFileCount() nounwind
 
 @.message1 = private constant [24 x i8] c"CBNF - CP2 Grammar Tool\00"
@@ -10,32 +11,33 @@ declare ccc i32 @clFileCount() nounwind
 @.error1001 = private constant [43 x i8] c"cbnf: error 1001: No source files provided\00"
 @.error1002 = private constant [42 x i8] c"cbnf: error 1002: No output path provided\00"
 @.outputSwitchShort = private constant [2 x i8] c"o\00"
-@.pass_cpp = private constant [5 x i8] c"test\00"
-@.pass_llvm = private constant [5 x i8] c"test\00"
-@.pass_cbnf = private constant [5 x i8] c"test\00"
-@.pass_vscode = private constant [5 x i8] c"test\00"
+@.pass_cpp = private constant [4 x i8] c"cpp\00"
+@.pass_llvm = private constant [5 x i8] c"llvm\00"
+@.pass_cbnf = private constant [5 x i8] c"cbnf\00"
+@.pass_vscode = private constant [7 x i8] c"vscode\00"
 define ccc i32 @main(i32 %argumentCount, i8** %argumentList) nounwind
 {
 	%1 = call i32 @puts(i8* getelementptr inbounds ([24 x i8]* @.message1, i32 0, i32 0))
 	%2 = call i32 @puts(i8* getelementptr inbounds ([67 x i8]* @.message2, i32 0, i32 0))
 	%3 = call i32 @clParseCommandLine(i32 %argumentCount, i8** %argumentList)
-	%4 = call i32 @clFileCount()
+	%4 = call i32 @clHasSwitch(i8* getelementptr inbounds ([2 x i8]* @.outputSwitchShort, i32 0, i32 0))
 	%5 = icmp ne i32 %4, 0
-	br i1 %5, label %hasFiles, label %noFiles
-noFiles:
-	%6 = call i32 @puts(i8* getelementptr inbounds ([43 x i8]* @.error1001, i32 0, i32 0))
-	ret i32 -1
-hasFiles:
-	%7 = call i32 @clHasSwitch(i8* getelementptr inbounds ([2 x i8]* @.outputSwitchShort, i32 0, i32 0))
-	%8 = icmp ne i32 %7, 0
-	br i1 %8, label %hasOutputFile, label %noOutputFile
+	br i1 %5, label %hasOutputFile, label %noOutputFile
 noOutputFile:
-	%9 = call i32 @puts(i8* getelementptr inbounds ([42 x i8]* @.error1002, i32 0, i32 0))
+	%6 = call i32 @puts(i8* getelementptr inbounds ([42 x i8]* @.error1002, i32 0, i32 0))
 	ret i32 -1
 hasOutputFile:
-	%10 = call i32 @clHasSwitch(i8* getelementptr inbounds ([5 x i8]* @.pass_cpp, i32 0, i32 0))
-	%11 = call i32 @clHasSwitch(i8* getelementptr inbounds ([5 x i8]* @.pass_llvm, i32 0, i32 0))
-	%12 = call i32 @clHasSwitch(i8* getelementptr inbounds ([5 x i8]* @.pass_cbnf, i32 0, i32 0))
-	%13 = call i32 @clHasSwitch(i8* getelementptr inbounds ([5 x i8]* @.pass_vscode, i32 0, i32 0))
+	%7 = call i8* @clMapSwitch(i8* getelementptr inbounds ([2 x i8]* @.outputSwitchShort, i32 0, i32 0))
+	%8 = call i32 @clFileCount()
+	%9 = icmp ne i32 %8, 0
+	br i1 %9, label %hasFiles, label %noFiles
+noFiles:
+	%10 = call i32 @puts(i8* getelementptr inbounds ([43 x i8]* @.error1001, i32 0, i32 0))
+	ret i32 -1
+hasFiles:
+	%11 = call i32 @clHasSwitch(i8* getelementptr inbounds ([4 x i8]* @.pass_cpp, i32 0, i32 0))
+	%12 = call i32 @clHasSwitch(i8* getelementptr inbounds ([5 x i8]* @.pass_llvm, i32 0, i32 0))
+	%13 = call i32 @clHasSwitch(i8* getelementptr inbounds ([5 x i8]* @.pass_cbnf, i32 0, i32 0))
+	%14 = call i32 @clHasSwitch(i8* getelementptr inbounds ([7 x i8]* @.pass_vscode, i32 0, i32 0))
 	ret i32 0
 }

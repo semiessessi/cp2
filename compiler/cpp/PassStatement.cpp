@@ -499,6 +499,16 @@ std::string PassStatement::EvaluateStringExpression(
                 {
                     return pxVariable->DoubleRegexEscape();
                 }
+
+                if (pxAST->GetChild( 2 )->GetProductionName() == "length")
+                {
+                    return std::to_string(pxVariable->GetValue().length());
+                }
+
+                if (pxAST->GetChild(2)->GetProductionName() == "length-with-null")
+                {
+                    return std::to_string(pxVariable->GetValue().length() + 1);
+                }
             }
         }
     }

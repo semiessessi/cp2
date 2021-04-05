@@ -31,8 +31,9 @@ pass "llvm" switch
     // check for each pass having it's switch set.
     for each compiler-pass in language.passes
     {
-        // todo: length and content
-        write "@.pass_" + compiler-pass.name + " = private constant [5 x i8] c\"test\\00\"\n" ;
+        write "@.pass_" + compiler-pass.name + " = private constant [" ;
+        write compiler-pass.name.length-with-null ;
+        write " x i8] c\"" + compiler-pass.name + "\\00\"\n" ;
     }
 
     // functions for passes...
@@ -77,7 +78,9 @@ pass "llvm" switch
     // check for each pass having it's switch set.
     for each compiler-pass in language.passes
     {
-        write "\t%" + ssi-counter + " = call i32 @clHasSwitch(i8* getelementptr inbounds ([5 x i8]* @.pass_" + compiler-pass.name + ", i32 0, i32 0))\n" ;
+        write "\t%" + ssi-counter + " = call i32 @clHasSwitch(i8* getelementptr inbounds ([" ;
+        write compiler-pass.name.length-with-null ;
+        write " x i8]* @.pass_" + compiler-pass.name + ", i32 0, i32 0))\n" ;
     }
 
     write "\tret i32 0\n" ;

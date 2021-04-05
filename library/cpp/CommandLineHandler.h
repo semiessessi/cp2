@@ -64,17 +64,20 @@ public:
                     {
                         mxMappedArguments[szSwitch] = maxParsedArguments[i + 1];
                         // remove as unmapped argument
+                        (void)std::remove(maxUnmappedArguments.begin(), maxUnmappedArguments.end(), szSwitch);
                         (void)std::remove(maxUnmappedArguments.begin(), maxUnmappedArguments.end(), maxParsedArguments[i + 1]);
                         return mxMappedArguments[szSwitch];
                     }
 
                     mxMappedArguments[szSwitch] = "";
-                    static std::string lsxEmpty = "";
-                    return lsxEmpty;
+                    break;
                 }
                 //else if( xCurrent.substr(  ) ) // SE: something to let the parameter not be seperated by a space
             }
         }
+
+        static std::string lsxEmpty = "";
+        return lsxEmpty;
     }
 
 private:

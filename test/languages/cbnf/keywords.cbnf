@@ -42,6 +42,8 @@ keywords
     "regex-escaped"
     "double-regex-escaped"
     "ssi-counter"
+    "length"
+    "length-with-null"
 }
 
 identifiers
