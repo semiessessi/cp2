@@ -37,7 +37,7 @@
         "keywords": {
             "patterns": [{
                 "name": "keyword.cbnf",
-                "match": "\\b(keywords|identifiers|operators|separators|terminators|strings|language|comment|quote|lexeme|pass|requires|output|switch|write|name|for|each|in|productions|names|is\\-optional|is\\-non\\-empty|is\\-list|true|false|input\\-name|quotes|lexemes|block\\-comments|line\\-comments|passes|parse|walk|as|lower\\-case|quote\\-stripped|regex\\-escaped|double\\-regex\\-escaped|ssi\\-counter|length|length\\-with\\-null)\\b"
+                "match": "\\b(keywords|identifiers|operators|separators|terminators|strings|language|comment|quote|lexeme|pass|requires|output|switch|write|name|for|each|in|productions|names|is\\-optional|is\\-non\\-empty|is\\-list|true|false|input\\-name|quotes|lexemes|block\\-comments|line\\-comments|passes|parse|walk|as|lower\\-case|quote\\-stripped|regex\\-escaped|double\\-regex\\-escaped|ssi\\-counter|length|length\\-with\\-null|to\\-string)\\b"
             }]
         },
         "string": {

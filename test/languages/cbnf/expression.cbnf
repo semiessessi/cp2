@@ -4,6 +4,10 @@ string-expression           =   string ;
 string-expression           =   identifier ;
 
 integer-expression          =   integer ;
+integer-expression          =   identifier ;
+
+integer-expression          =   integer-expression "+" integer-expression ;
+integer-expression          =   integer-expression "-" integer-expression ;
 
 //string-expression           =   "(" boolean-expression ")" ;
 //string-expression           =   "(" integer-expression ")" ;
@@ -16,6 +20,7 @@ string-expression           =   identifier "." "name" ;
 string-expression           =   "language" "." "name" ;
 string-expression           =   "ssi-counter" ;
 string-expression           =   identifier "." "input-name" ;
+string-expression           =   integer-expression "." "to-string" ;
 string-expression           =   string-expression "." "length" ;
 string-expression           =   string-expression "." "length-with-null" ;
 string-expression           =   string-expression "." "lower-case" ;

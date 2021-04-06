@@ -316,6 +316,7 @@ Variable* PassStatement::EvaluateArrayExpression(
 bool PassStatement::EvaluateBooleanExpression(
     const ASTNode* const pxAST, const Context& xContext )
 {
+    // todo: identifiers?
     if( pxAST->GetChildCount() == 1 )
     {
         return pxAST->GetChild( 0 )->GetProductionName() == "true";
@@ -375,6 +376,50 @@ bool PassStatement::EvaluateBooleanExpression(
 
     // SE - TODO: error?
     return false;
+}
+
+int PassStatement::EvaluateIntegerExpression(const ASTNode* const pxAST, const Context& xContext)
+{
+    if (pxAST->GetChildCount() == 1)
+    {
+        if (pxAST->GetChild(0)->GetProductionName() == "<integer>")
+        {
+            return atoi(pxAST->GetChild(0)->GetTokenValue().c_str());
+        }
+        else if (pxAST->GetChild(0)->GetProductionName() == "<identifier>")
+        {
+            const Variable* const pxVariable
+                = xContext.GetVariable(
+                    pxAST->GetChild(0)->GetTokenValue());
+            if (pxVariable)
+            {
+                // todo: lame.
+                return atoi(pxVariable->GetValue().c_str());
+            }
+
+            // error, unidentified variable.
+        }
+    }
+    else if (pxAST->GetChildCount() == 3)
+    {
+        if (pxAST->GetChild(1)->GetProductionName() == "+")
+        {
+            // addition...
+            return EvaluateIntegerExpression(pxAST->GetChild(0), xContext)
+                + EvaluateIntegerExpression(pxAST->GetChild(2), xContext);
+        }
+        else if (pxAST->GetChild(1)->GetProductionName() == "-")
+        {
+            // subtraction...
+            const int iFirst =
+                EvaluateIntegerExpression(pxAST->GetChild(0), xContext);
+            const int iSecond =
+                EvaluateIntegerExpression(pxAST->GetChild(2), xContext);
+
+            return iFirst - iSecond;
+        }
+    }
+    return 0;
 }
 
 static int giSSICounter = 1;
@@ -462,6 +507,7 @@ std::string PassStatement::EvaluateStringExpression(
                 pxVariable = &xStringVariable;
             }
 
+            // todo: variable is integer expression.
             if( pxVariable == nullptr )
             {
                 pxVariable = xContext.GetVariable(
@@ -470,6 +516,12 @@ std::string PassStatement::EvaluateStringExpression(
 
             if( pxVariable )
             {
+                // works on integer expression or variable.
+                if (pxAST->GetChild(2)->GetProductionName() == "to-string")
+                {
+                    return pxVariable->GetValue();
+                }
+
                 if( pxAST->GetChild( 2 )->GetProductionName() == "name" )
                 {
                     return pxVariable->GetNameValue();

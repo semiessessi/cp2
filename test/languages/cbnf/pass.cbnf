@@ -6,6 +6,7 @@ pass-statement      =   "output" string-expression ";" ;
 pass-statement      =   "write" string-expression ";"
 pass-statement      =   identifier "=" string-expression ";" ;
 pass-statement      =   identifier "=" boolean-expression ";" ;
+pass-statement      =   identifier "=" integer-expression ";" ;
 
 pass-statement      =   "{" pass-statement* "}" ;
 walk-statement      =   "{" walk-statement* "}" ;

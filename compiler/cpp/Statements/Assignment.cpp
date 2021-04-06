@@ -4,6 +4,7 @@
 
 #include "../Context.h"
 #include "../Variables/BooleanVariable.h"
+#include "../Variables/IntegerVariable.h"
 #include "../../../common/cpp/ASTNode.h"
 
 namespace CP2
@@ -34,6 +35,14 @@ void Assignment::Execute( Context& xContext )
         xContext.UpdateVariable(
             mxVariableName,
             &xResult );
+    }
+    else if (mpxExpression->GetProductionName() == "<integer-expression>")
+    {
+        const IntegerVariable xResult(mxVariableName,
+            EvaluateIntegerExpression(mpxExpression, xContext));
+        xContext.UpdateVariable(
+            mxVariableName,
+            &xResult);
     }
 }
 

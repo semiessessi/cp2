@@ -68,6 +68,7 @@ const Grammar& GetCBNFGrammar()
         GrammarProduction( "<pass-statement>", GE( "output" ) + GE( "<string-expression>" ) + GE( ";" ) ),
         GrammarProduction( "<pass-statement>", GE( "write" ) + GE( "<string-expression>" ) + GE( ";" ) ),
         GrammarProduction( "<pass-statement>", GE( "<identifier>" ) + GE( "=" ) + GE( "<string-expression>" ) + GE( ";" ) ),
+        GrammarProduction( "<pass-statement>", GE("<identifier>") + GE("=") + GE("<integer-expression>") + GE(";")),
         GrammarProduction( "<pass-statement>", GE( "<identifier>" ) + GE( "=" ) + GE( "<boolean-expression>" ) + GE( ";" ) ),
 
         GrammarProduction( "<pass-statement>", GE( "{" ) + !GE( "<pass-statement>" ) + GE( "}" ) ),
@@ -103,9 +104,15 @@ const Grammar& GetCBNFGrammar()
         GrammarProduction( "<pass-names>", GE( "{" ) + !GE( "<string>" ) + GE( "}" ) ),
 
         GrammarProduction( "<integer-expression>", GE( "<integer>" ) ),
+        GrammarProduction( "<integer-expression>", GE("<identifier>") ),
 
         GrammarProduction( "<string-expression>", GE( "<string>" ) ),
         GrammarProduction( "<string-expression>", GE( "<identifier>" ) ),
+
+        GrammarProduction("<integer-expression>", GE("<integer-expression>")
+            + GE("+") + GE("<integer-expression>")),
+        GrammarProduction("<integer-expression>", GE("<integer-expression>")
+            + GE("-") + GE("<integer-expression>")),
 
         GrammarProduction( "<string-expression>", GE( "<string-expression>" )
             + GE( "+" ) + GE( "<string-expression>" ) ),
@@ -116,6 +123,7 @@ const Grammar& GetCBNFGrammar()
         GrammarProduction( "<string-expression>", GE( "ssi-counter" ) ),
         GrammarProduction( "<string-expression>", GE( "language" ) + GE( "." ) + GE( "name" ) ),
         GrammarProduction( "<string-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "input-name" ) ),
+        GrammarProduction( "<string-expression>", GE("<integer-expression>") + GE(".") + GE("to-string")),
         GrammarProduction( "<string-expression>", GE( "<string-expression>" ) + GE( "." ) + GE( "lower-case" ) ),
         GrammarProduction( "<string-expression>", GE( "<string-expression>" ) + GE( "." ) + GE( "quote-stripped" ) ),
         GrammarProduction( "<string-expression>", GE( "<string-expression>" ) + GE( "." ) + GE( "regex-escaped" ) ),
@@ -225,6 +233,7 @@ const Grammar& GetCBNFGrammar()
         kxCBNFGrammar.AddKeyword("\"ssi-counter\"");
         kxCBNFGrammar.AddKeyword("\"length\"");
         kxCBNFGrammar.AddKeyword("\"length-with-null\"");
+        kxCBNFGrammar.AddKeyword("\"to-string\"");
 
         kxCBNFGrammar.AddTerminator( "\";\"" );
             

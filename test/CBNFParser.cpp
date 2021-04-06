@@ -61,6 +61,12 @@ const CP2::Parser::Grammar& GetCBNFGrammar()
 			GE( "<identifier>" ) ),
 		CP2::Parser::GrammarProduction("<integer-expression>",
 			GE( "<integer>" ) ),
+		CP2::Parser::GrammarProduction("<integer-expression>",
+			GE( "<identifier>" ) ),
+		CP2::Parser::GrammarProduction("<integer-expression>",
+			GE( "<integer-expression>" ) + GE( "+" ) + GE( "<integer-expression>" ) ),
+		CP2::Parser::GrammarProduction("<integer-expression>",
+			GE( "<integer-expression>" ) + GE( "-" ) + GE( "<integer-expression>" ) ),
 		CP2::Parser::GrammarProduction("<string-expression>",
 			GE( "<string-expression>" ) + GE( "+" ) + GE( "<string-expression>" ) ),
 		CP2::Parser::GrammarProduction("<string-expression>",
@@ -73,6 +79,8 @@ const CP2::Parser::Grammar& GetCBNFGrammar()
 			GE( "ssi-counter" ) ),
 		CP2::Parser::GrammarProduction("<string-expression>",
 			GE( "<identifier>" ) + GE( "." ) + GE( "input-name" ) ),
+		CP2::Parser::GrammarProduction("<string-expression>",
+			GE( "<integer-expression>" ) + GE( "." ) + GE( "to-string" ) ),
 		CP2::Parser::GrammarProduction("<string-expression>",
 			GE( "<string-expression>" ) + GE( "." ) + GE( "length" ) ),
 		CP2::Parser::GrammarProduction("<string-expression>",
@@ -211,6 +219,7 @@ const CP2::Parser::Grammar& GetCBNFGrammar()
 		kxCBNFGrammar.AddKeyword( "\"ssi-counter\"" );
 		kxCBNFGrammar.AddKeyword( "\"length\"" );
 		kxCBNFGrammar.AddKeyword( "\"length-with-null\"" );
+		kxCBNFGrammar.AddKeyword( "\"to-string\"" );
 		kxCBNFGrammar.AddOperator( "\"=\"" );
 		kxCBNFGrammar.AddOperator( "\"{\"" );
 		kxCBNFGrammar.AddOperator( "\"}\"" );
