@@ -94,6 +94,10 @@ const CP2::Parser::Grammar& GetCBNFGrammar()
 		CP2::Parser::GrammarProduction("<string-expression>",
 			GE( "<string-expression>" ) + GE( "." ) + GE( "double-regex-escaped" ) ),
 		CP2::Parser::GrammarProduction("<string-expression>",
+			GE( "<string-expression>" ) + GE( "." ) + GE( "unescaped" ) ),
+		CP2::Parser::GrammarProduction("<string-expression>",
+			GE( "<string-expression>" ) + GE( "." ) + GE( "llvm-escaped" ) ),
+		CP2::Parser::GrammarProduction("<string-expression>",
 			GE( "<array-expression>" ) + GE( "[" ) + GE( "<integer-expression>" ) + GE( "]" ) ),
 		CP2::Parser::GrammarProduction("<array-expression>",
 			GE( "language" ) + GE( "." ) + GE( "productions" ) ),
@@ -149,6 +153,8 @@ const CP2::Parser::Grammar& GetCBNFGrammar()
 			GE( "<identifier>" ) ),
 		CP2::Parser::GrammarProduction("<boolean-expression>",
 			GE( "<string-expression>" ) + GE( "==" ) + GE( "<string-expression>" ) ),
+		CP2::Parser::GrammarProduction("<boolean-expression>",
+			GE( "<integer-expression>" ) + GE( "==" ) + GE( "<integer-expression>" ) ),
 		CP2::Parser::GrammarProduction("<boolean-expression>",
 			GE( "<boolean-expression>" ) + GE( "==" ) + GE( "<boolean-expression>" ) ),
 		CP2::Parser::GrammarProduction("<boolean-expression>",
@@ -216,6 +222,7 @@ const CP2::Parser::Grammar& GetCBNFGrammar()
 		kxCBNFGrammar.AddKeyword( "\"quote-stripped\"" );
 		kxCBNFGrammar.AddKeyword( "\"regex-escaped\"" );
 		kxCBNFGrammar.AddKeyword( "\"double-regex-escaped\"" );
+		kxCBNFGrammar.AddKeyword( "\"unescaped\"" );
 		kxCBNFGrammar.AddKeyword( "\"ssi-counter\"" );
 		kxCBNFGrammar.AddKeyword( "\"length\"" );
 		kxCBNFGrammar.AddKeyword( "\"length-with-null\"" );

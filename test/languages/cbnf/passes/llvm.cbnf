@@ -7,13 +7,20 @@ pass "llvm" switch
     write "; LLVM IR code for compiler for " + language.name + "\n\n" ;
 
     // externs...
+    //write "declare ccc i32 @printf( i8* nocapture, ... ) nounwind\n" ;
     write "declare ccc i32 @puts( i8* nocapture ) nounwind\n" ;
     write "declare ccc i32 @clParseCommandLine( i32, i8** nocapture ) nounwind\n" ;
     write "declare ccc i32 @clHasSwitch( i8* nocapture ) nounwind\n" ;
     write "declare ccc i8* @clMapSwitch( i8* nocapture ) nounwind\n" ;
     write "declare ccc i32 @clFileCount() nounwind\n" ;
+    write "declare ccc i8* @clGetFile( i32 ) nounwind\n" ;
     write "declare ccc i32 @clLexerLineComment( i8* nocapture ) nounwind\n" ;
     write "declare ccc i32 @clLexerBlockComment( i8* nocapture, i8* nocapture ) nounwind\n" ;
+    write "declare ccc i32 @clLexerQuote( i8* nocapture, i8* nocapture, i8* nocapture, i8* nocapture ) nounwind\n" ;
+    write "declare ccc i32 @clLexerRule( i8* nocapture, i8* nocapture ) nounwind\n" ;
+    write "declare ccc i32 @clLex( i8* nocapture ) nounwind\n" ;
+    write "declare ccc i32 @clParseAppendExpression( i8* nocapture, i8, i8, i8 ) nounwind\n" ;
+    write "declare ccc i32 @clParseCreateProduction( i8* nocapture ) nounwind\n" ;
 
     write "\n" ;
 
@@ -23,6 +30,8 @@ pass "llvm" switch
     write title.length-with-null ;
     write " x i8] c\"" + title + "\\00\"\n" ;
     write "@.message2 = private constant [67 x i8] c\"Copyright (c) 2017-2021 Cranium Software Ltd. All rights reserved.\\00\"\n" ;
+    write "@.message3 = private constant [16 x i8] c\"Lexing files...\\00\"\n" ;
+    write "@.message4 = private constant [7 x i8] c\"%s...\\0A\\00\"\n" ;
     write "@.error1001 = private constant [43 x i8] c\"cbnf: error 1001: No source files provided\\00\"\n" ;
     write "@.error1002 = private constant [42 x i8] c\"cbnf: error 1002: No output path provided\\00\"\n" ;
     write "@.outputSwitchShort = private constant [2 x i8] c\"o\\00\"\n" ;
@@ -31,11 +40,10 @@ pass "llvm" switch
     commentCounter = 1 ;
     for each value in language.line-comments
     {
-        commentString = value ;
         commentId = commentCounter.to-string;
         write "@.comment" + commentId + " = private constant [" ;
-        write commentString.length-with-null ;
-        write " x i8] c\"" + commentString + "\\00\"\n" ;
+        write value.length-with-null ;
+        write " x i8] c\"" + value + "\\00\"\n" ;
         commentCounter = commentCounter + 1 ;
     }
 
@@ -52,7 +60,152 @@ pass "llvm" switch
         }        
     }
 
-    // check for each pass having it's switch set.
+    quoteCounter = 1 ;
+    for each value in language.quotes
+    {
+        quoteId = quoteCounter.to-string;
+        write "@.quote" + quoteId + " = private constant [" ;
+        write value.name.length-with-null ;
+        write " x i8] c\"" + value.name + "\\00\"\n" ;
+        quoteCounter = quoteCounter + 1 ;
+
+        for each part in value
+        {
+            quoteId = quoteCounter.to-string;
+            write "@.quote" + quoteId + " = private constant [" ;
+            cleanPart = part.unescaped ;
+            write cleanPart.length-with-null ;
+            write " x i8] c\"" ;
+            write part.llvm-escaped ;
+            write "\\00\"\n" ;
+            quoteCounter = quoteCounter + 1 ;
+        }        
+    }
+
+    ruleCounter = 1 ;
+    for each value in language.keywords
+    {
+        strippedValue = value.quote-stripped ;
+        ruleId = ruleCounter.to-string ;
+        write "@.rule" + ruleId + " = private constant [" ;
+        cleanPart = strippedValue.unescaped ;
+        write cleanPart.length-with-null ;
+        write " x i8] c\"" ;
+        write strippedValue.llvm-escaped ;
+        write "\\00\"\n" ;
+        ruleCounter = ruleCounter + 1 ;
+    }
+
+    for each value in language.lexemes
+    {
+        if value.is-optional
+        {
+        }
+        else
+        {
+            strippedValue = value.name.quote-stripped ;
+            strippedValue = "<" + strippedValue + ">" ;
+            ruleId = ruleCounter.to-string ;
+            write "@.rule" + ruleId + " = private constant [" ;
+            cleanPart = strippedValue.unescaped ;
+            write cleanPart.length-with-null ;
+            write " x i8] c\"" ;
+            write strippedValue.llvm-escaped ;
+            write "\\00\"\n" ;
+            ruleCounter = ruleCounter + 1 ;
+
+            strippedValue = value.quote-stripped ;
+            ruleId = ruleCounter.to-string ;
+            write "@.rule" + ruleId + " = private constant [" ;
+            cleanPart = strippedValue.unescaped ;
+            write cleanPart.length-with-null ;
+            write " x i8] c\"" ;
+            write strippedValue.llvm-escaped ;
+            write "\\00\"\n" ;
+            ruleCounter = ruleCounter + 1 ;
+        }
+    }
+
+    for each value in language.operators
+    {
+        strippedValue = value.quote-stripped ;
+        ruleId = ruleCounter.to-string ;
+        write "@.rule" + ruleId + " = private constant [" ;
+        cleanPart = strippedValue.unescaped ;
+        write cleanPart.length-with-null ;
+        write " x i8] c\"" ;
+        write strippedValue.llvm-escaped ;
+        write "\\00\"\n" ;
+        ruleCounter = ruleCounter + 1 ;
+
+        strippedValue = value.quote-stripped ;
+        strippedValue = strippedValue.double-regex-escaped ;
+        ruleId = ruleCounter.to-string ;
+        write "@.rule" + ruleId + " = private constant [" ;
+        cleanPart = strippedValue.unescaped ;
+        write cleanPart.length-with-null ;
+        write " x i8] c\"" ;
+        write strippedValue.llvm-escaped ;
+        write "\\00\"\n" ;
+        ruleCounter = ruleCounter + 1 ;
+    }
+
+    for each value in language.terminators
+    {
+        strippedValue = value.quote-stripped ;
+        ruleId = ruleCounter.to-string ;
+        write "@.rule" + ruleId + " = private constant [" ;
+        cleanPart = strippedValue.unescaped ;
+        write cleanPart.length-with-null ;
+        write " x i8] c\"" ;
+        write strippedValue.llvm-escaped ;
+        write "\\00\"\n" ;
+        ruleCounter = ruleCounter + 1 ;
+
+        strippedValue = value.quote-stripped ;
+        strippedValue = strippedValue.double-regex-escaped ;
+        ruleId = ruleCounter.to-string ;
+        write "@.rule" + ruleId + " = private constant [" ;
+        cleanPart = strippedValue.unescaped ;
+        write cleanPart.length-with-null ;
+        write " x i8] c\"" ;
+        write strippedValue.llvm-escaped ;
+        write "\\00\"\n" ;
+        ruleCounter = ruleCounter + 1 ;
+    }
+
+    // parser constants
+    productionCounter = 1 ;
+    for each production in language.productions
+    {
+        productionName = production.name;
+        productionId = productionCounter.to-string ;
+        productionCounter = productionCounter + 1 ;
+        write "@.production" + productionId + " = private constant [" ;
+        cleanPart = productionName.unescaped ;
+        write cleanPart.length-with-null ;
+        write " x i8] c\"" ;
+        write productionName.llvm-escaped ;
+        write "\\00\"\n" ;
+
+        for each production-name in production.names
+        {
+            productionId = productionCounter.to-string ;
+            productionCounter = productionCounter + 1 ;
+            write "@.production" + productionId + " = private constant [" ;
+            cleanPart = production-name.unescaped ;
+            write cleanPart.length-with-null ;
+            write " x i8] c\"" ;
+            write production-name.llvm-escaped ;
+            write "\\00\"\n" ;
+        }
+    }
+
+    write "@.languageName = private constant [" ;
+    write language.name.length-with-null ;
+    write " x i8] c\"" + language.name + "\\00\"\n" ;
+
+    // pass names
     for each compiler-pass in language.passes
     {
         write "@.pass_" + compiler-pass.name + " = private constant [" ;
@@ -110,10 +263,9 @@ pass "llvm" switch
     commentCounter = 1 ;
     for each value in language.line-comments
     {
-        commentString = value ;
         commentId = commentCounter.to-string;
         write "\t%" + ssi-counter + " = call i32 @clLexerLineComment(i8* getelementptr inbounds ([" ;
-        write commentString.length-with-null ;
+        write value.length-with-null ;
         write " x i8]* @.comment" + commentId + ", i32 0, i32 0))\n" ;
         commentCounter = commentCounter + 1 ;
     }
@@ -135,6 +287,196 @@ pass "llvm" switch
         }
         write ")\n" ;
     }
+
+    quoteCounter = 1 ;
+    for each value in language.quotes
+    {
+        quoteId = quoteCounter.to-string;
+        write "\t%" + ssi-counter + " = call i32 @clLexerQuote(" ;
+        write "i8* getelementptr inbounds ([" ;
+        write value.name.length-with-null ;
+        write " x i8]* @.quote" + quoteId + ", i32 0, i32 0), ";
+        rest = "" ;
+        quoteCounter = quoteCounter + 1 ;
+        for each part in value
+        {
+            quoteId = quoteCounter.to-string;
+            rest = rest + "i8* getelementptr inbounds ([" ;
+            cleanPart = part.unescaped ;
+            rest = rest + cleanPart.length-with-null ;
+            rest = rest +  " x i8]* @.quote" + quoteId + ", i32 0, i32 0), ";
+            quoteCounter = quoteCounter + 1 ;
+        }
+
+        rest = rest - ", " ;
+        write rest + ")\n" ;
+    }
+
+    ruleCounter = 1 ;
+    for each value in language.keywords
+    {
+        strippedValue = value.quote-stripped ;
+        ruleId = ruleCounter.to-string ;
+        write "\t%" + ssi-counter + " = call i32 @clLexerRule(" ;
+        write "i8* getelementptr inbounds ([" ;
+        cleanPart = strippedValue.unescaped ;
+        write cleanPart.length-with-null ;
+        write " x i8]* @.rule" + ruleId + ", i32 0, i32 0), ";
+        write "i8* getelementptr inbounds ([" ;
+        write cleanPart.length-with-null ;
+        write " x i8]* @.rule" + ruleId + ", i32 0, i32 0))\n";
+        ruleCounter = ruleCounter + 1 ;
+    }
+
+    for each value in language.lexemes
+    {
+        if value.is-optional
+        {
+        }
+        else
+        {
+            strippedValue = value.name.quote-stripped ;
+            strippedValue = "<" + strippedValue + ">" ;
+            ruleId = ruleCounter.to-string ;
+            write "\t%" + ssi-counter + " = call i32 @clLexerRule(" ;
+            write "i8* getelementptr inbounds ([" ;
+            cleanPart = strippedValue.unescaped ;
+            write cleanPart.length-with-null ;
+            write " x i8]* @.rule" + ruleId + ", i32 0, i32 0), ";
+            ruleCounter = ruleCounter + 1 ;
+
+            strippedValue = value.quote-stripped ;
+            ruleId = ruleCounter.to-string ;
+            write "i8* getelementptr inbounds ([" ;
+            cleanPart = strippedValue.unescaped ;
+            write cleanPart.length-with-null ;
+            write " x i8]* @.rule" + ruleId + ", i32 0, i32 0))\n";
+            ruleCounter = ruleCounter + 1 ;
+        }
+    }
+
+    for each value in language.operators
+    {
+        strippedValue = value.quote-stripped ;
+        ruleId = ruleCounter.to-string ;
+        write "\t%" + ssi-counter + " = call i32 @clLexerRule(" ;
+        write "i8* getelementptr inbounds ([" ;
+        cleanPart = strippedValue.unescaped ;
+        write cleanPart.length-with-null ;
+        write " x i8]* @.rule" + ruleId + ", i32 0, i32 0), ";
+        ruleCounter = ruleCounter + 1 ;
+
+        strippedValue = value.quote-stripped ;
+        strippedValue = strippedValue.double-regex-escaped ;
+        ruleId = ruleCounter.to-string ;
+        write "i8* getelementptr inbounds ([" ;
+        cleanPart = strippedValue.unescaped ;
+        write cleanPart.length-with-null ;
+        write " x i8]* @.rule" + ruleId + ", i32 0, i32 0))\n";
+        ruleCounter = ruleCounter + 1 ;
+    }
+
+    for each value in language.terminators
+    {
+        strippedValue = value.quote-stripped ;
+        ruleId = ruleCounter.to-string ;
+        write "\t%" + ssi-counter + " = call i32 @clLexerRule(" ;
+        write "i8* getelementptr inbounds ([" ;
+        cleanPart = strippedValue.unescaped ;
+        write cleanPart.length-with-null ;
+        write " x i8]* @.rule" + ruleId + ", i32 0, i32 0), ";
+        ruleCounter = ruleCounter + 1 ;
+
+        strippedValue = value.quote-stripped ;
+        strippedValue = strippedValue.double-regex-escaped ;
+        ruleId = ruleCounter.to-string ;
+        write "i8* getelementptr inbounds ([" ;
+        cleanPart = strippedValue.unescaped ;
+        write cleanPart.length-with-null ;
+        write " x i8]* @.rule" + ruleId + ", i32 0, i32 0))\n";
+        ruleCounter = ruleCounter + 1 ;
+    }
+
+    // get it to lex all the files
+    write "\t%" + ssi-counter + " = call i32 @puts(i8* getelementptr inbounds ([16 x i8]* @.message3, i32 0, i32 0))\n" ;
+
+    // do a phi (!)
+    // this is necessary for the loop variable to increment but start at zero
+    // whilst respecting SSA
+    lexCounter = ssi-counter ;
+    nextCounter = ssi-counter ;
+    write "\tbr label %lexHeader\n" ;
+    write "lexHeader:\n" ;
+    write "\tbr label %lexNextFile\n" ;
+    write "lexNextFile:\n" ;
+    write "\t%" + lexCounter + " = phi i32 [0, %lexHeader], [%" + nextCounter + ", %lexNextFile]\n" ;
+    write "\t%" + nextCounter + " = add i32 %" + lexCounter + ", 1\n" ;
+
+    lexFilename = ssi-counter;
+    write "\t%" + lexFilename + " = call i8* @clGetFile(i32 %" + lexCounter + ")\n" ;
+    //write "\t%" + ssi-counter + " = call i32 (i8*, ...)* @printf(i8* getelementptr inbounds ([7 x i8]* @.message4, i32 0, i32 0), i8* %" + lexFilename + ")\n" ;
+    write "\t%" + ssi-counter + " = call i32 @puts(i8* %" + lexFilename + ")\n" ;
+    write "\t%" + ssi-counter + " = call i32 @clLex(i8* %" + lexFilename + ")\n" ;
+
+    loopCheck = ssi-counter;
+    write "\t%" + loopCheck + " = icmp slt i32 %" + nextCounter + ", %" + fileCount + "\n" ;
+    write "\tbr i1 %" + loopCheck + ", label %lexNextFile, label %lexDone\n" ;
+    
+    write "lexDone:\n" ;
+
+    // setup parser
+        productionCounter = 1 ;
+    for each production in language.productions
+    {
+        productionName = production.name;
+        productionId = productionCounter.to-string ;
+        productionCounter = productionCounter + 1 ;
+        productionNameParameter = "i8* getelementptr inbounds ([" ;
+        cleanPart = productionName.unescaped ;
+        productionNameParameter = productionNameParameter + cleanPart.length-with-null ;
+        productionNameParameter = productionNameParameter +  " x i8]* @.production" + productionId ;
+        productionNameParameter = productionNameParameter + ", i32 0, i32 0)" ;
+
+        for each production-name in production.names
+        {
+            productionId = productionCounter.to-string ;
+            productionCounter = productionCounter + 1 ;
+            nameParameter = "i8* getelementptr inbounds ([" ;
+            cleanPart = production-name.unescaped ;
+            nameParameter = nameParameter + cleanPart.length-with-null ;
+            nameParameter = nameParameter +  " x i8]* @.production" + productionId ;
+            nameParameter = nameParameter + ", i32 0, i32 0)" ;
+
+            listValue = "0" ;
+            nonEmptyValue = "0" ;
+            optionalValue = "0" ;
+
+            if production-name.is-list
+            {
+                listValue = "1";
+            }
+
+            if production-name.is-optional
+            {
+                optionalValue = "1";
+            }
+
+            if production-name.is-non-empty
+            {
+                nonEmptyValue = "1";
+            }
+
+            write "\t%" + ssi-counter + " = call i32 @clParseAppendExpression(" + nameParameter
+                + ", i8 " + listValue + ", i8 " + nonEmptyValue + ", i8 " + optionalValue + ")\n" ;
+        }
+
+        write "\t%" + ssi-counter + " = call i32 @clParseCreateProduction(" + productionNameParameter + ")\n" ;
+    }
+
+    grammarNameParameter = "i8* getelementptr inbounds ([" ;
+    grammarNameParameter = grammarNameParameter + language.name.length-with-null ;
+    grammarNameParameter = grammarNameParameter + " x i8]* @.languageName, i32 0, i32 0)" ;
+    write "\t%" + ssi-counter + " = call i32 @clParseCreateGrammar(" + grammarNameParameter + ")\n" ;
 
     // check for each pass having it's switch set.
     for each compiler-pass in language.passes

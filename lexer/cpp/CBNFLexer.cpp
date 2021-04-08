@@ -78,10 +78,12 @@ const std::vector< Rule >& CBNFLexerRules()
         Rule( "length",			                Token( "length",                43 ) ),
         Rule( "length-with-null",               Token( "length-with-null",      44 ) ),
         Rule( "to-string",                      Token( "to-string",             45 ) ),
+        Rule( "unescaped",                      Token( "unescaped",             46 ) ),
+        Rule( "llvm-escaped",                   Token( "llvm-escaped",          47 ) ),
 
 		Rule( "[_a-zA-Z][_\\-a-zA-Z0-9]*",		Token( "<identifier>",		    1000, true ) ),
 		//Rule( "\"(?:[^\\\"\\\\]|\\\\.)*\"",		Token( "<string>",			1001, true ) ),
-        Rule( "[0-9]*",		                    Token( "<integer>",		        1002, true ) ),
+        Rule( "[0-9]+",		                    Token( "<integer>",		        1002, true ) ),
 
 		Rule( "\\=",							Token( "=",					     2000 ) ),
 		Rule( "\\;",							Token( ";",					    2001 ) ),

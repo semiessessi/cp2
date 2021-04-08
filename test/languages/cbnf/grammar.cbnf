@@ -12,7 +12,7 @@ quote string "\"" "\"" "\\" ;
 
 // define some lexemes
 lexeme identifier "[_a-zA-Z][_\\-a-zA-Z0-9]*" ;
-lexeme integer "[0-9]*" ;
+lexeme integer "[0-9]+" ;
 
 // a grammar is a list of statements
 grammar             =   statement* ;

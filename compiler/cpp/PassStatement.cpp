@@ -21,6 +21,7 @@
 #include "Variables/Variable.h"
 
 #include "../../common/cpp/ASTNode.h"
+#include "../../common/cpp/Escaping.h"
 #include "../../parser/cpp/Grammar.h"
 
 namespace CP2
@@ -371,6 +372,13 @@ bool PassStatement::EvaluateBooleanExpression(
                     == EvaluateBooleanExpression(
                         pxAST->GetChild( 2 ), xContext );
             }
+            else if (pxAST->GetChild(0)->GetProductionName() == "<integer-expression>")
+            {
+                return EvaluateIntegerExpression(
+                        pxAST->GetChild(0), xContext)
+                    == EvaluateIntegerExpression(
+                        pxAST->GetChild(2), xContext);
+            }
         }
     }
 
@@ -550,6 +558,32 @@ std::string PassStatement::EvaluateStringExpression(
                 if( pxAST->GetChild( 2 )->GetProductionName() == "double-regex-escaped" )
                 {
                     return pxVariable->DoubleRegexEscape();
+                }
+
+                if (pxAST->GetChild(2)->GetProductionName() == "unescaped")
+                {
+                    return CP2::HandleEscapes(CP2::HandleEscapes(pxVariable->GetValue()));
+                }
+
+                if (pxAST->GetChild(2)->GetProductionName() == "llvm-escaped")
+                {
+                    // replace with hex values
+                    std::string xBase = CP2::HandleEscapes(pxVariable->GetValue());
+                    size_t uOffset = xBase.find('\\', 0);
+                    while (uOffset != std::string::npos)
+                    {
+                        char c = xBase[uOffset + 1];
+                        int iHigh = (c & 0xF0) >> 4;
+                        int iLow = (c & 0xF);
+                        xBase.insert(uOffset + 1, 1,
+                            (iHigh > 9) ? ('A' + (iHigh - 10)) : ('0' + iHigh));
+                        xBase[uOffset + 2] =
+                            (iLow > 9) ? ('A' + (iLow - 10)) : ('0' + iLow );
+                        ++uOffset;
+                        uOffset = xBase.find('\\', uOffset);
+                    }
+                    
+                    return CP2::SlashEscape(xBase);
                 }
 
                 if (pxAST->GetChild( 2 )->GetProductionName() == "length")

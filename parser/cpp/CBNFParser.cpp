@@ -128,8 +128,10 @@ const Grammar& GetCBNFGrammar()
         GrammarProduction( "<string-expression>", GE( "<string-expression>" ) + GE( "." ) + GE( "quote-stripped" ) ),
         GrammarProduction( "<string-expression>", GE( "<string-expression>" ) + GE( "." ) + GE( "regex-escaped" ) ),
         GrammarProduction( "<string-expression>", GE( "<string-expression>" ) + GE( "." ) + GE( "double-regex-escaped" ) ),
-        GrammarProduction( "<string-expression>", GE("<string-expression>") + GE(".") + GE("length") ),
-        GrammarProduction("<string-expression>", GE("<string-expression>") + GE(".") + GE("length-with-null")),
+        GrammarProduction( "<string-expression>", GE( "<string-expression>" ) + GE( "." ) + GE( "unescaped" ) ),
+        GrammarProduction( "<string-expression>", GE( "<string-expression>") + GE(".") + GE("llvm-escaped")),
+        GrammarProduction( "<string-expression>", GE( "<string-expression>") + GE(".") + GE("length") ),
+        GrammarProduction( "<string-expression>", GE( "<string-expression>") + GE(".") + GE("length-with-null")),
 
         GrammarProduction( "<string-expression>", GE( "<array-expression>" ) + GE( "[" ) + GE( "<integer-expression>" ) + GE( "]" ) ),
 
@@ -162,6 +164,7 @@ const Grammar& GetCBNFGrammar()
         GrammarProduction( "<array-expression>", GE( "<identifier>" ) ),
 
         GrammarProduction( "<boolean-expression>", GE( "<string-expression>" ) + GE( "==" ) + GE( "<string-expression>" ) ),
+        GrammarProduction( "<boolean-expression>", GE( "<integer-expression>" ) + GE( "==" ) + GE( "<integer-expression>" ) ),
         GrammarProduction( "<boolean-expression>", GE( "<boolean-expression>" ) + GE( "==" ) + GE( "<boolean-expression>" ) ),
         GrammarProduction( "<boolean-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "is-optional" ) ),
         GrammarProduction( "<boolean-expression>", GE( "<identifier>" ) + GE( "." ) + GE( "is-non-empty" ) ),
@@ -230,10 +233,12 @@ const Grammar& GetCBNFGrammar()
         kxCBNFGrammar.AddKeyword( "\"quote-stripped\"" );
         kxCBNFGrammar.AddKeyword( "\"regex-escaped\"" );
         kxCBNFGrammar.AddKeyword( "\"double-regex-escaped\"" );
+        kxCBNFGrammar.AddKeyword("\"unescaped\"");
         kxCBNFGrammar.AddKeyword("\"ssi-counter\"");
         kxCBNFGrammar.AddKeyword("\"length\"");
         kxCBNFGrammar.AddKeyword("\"length-with-null\"");
         kxCBNFGrammar.AddKeyword("\"to-string\"");
+        kxCBNFGrammar.AddKeyword("\"llvm-escaped\"");
 
         kxCBNFGrammar.AddTerminator( "\";\"" );
             

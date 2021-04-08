@@ -9,6 +9,7 @@
 #include "../../common/cpp/Token.h"
 
 #include <algorithm>
+#include <iterator>
 
 namespace CP2
 {

@@ -27,6 +27,8 @@ string-expression           =   string-expression "." "lower-case" ;
 string-expression           =   string-expression "." "quote-stripped" ;
 string-expression           =   string-expression "." "regex-escaped" ;
 string-expression           =   string-expression "." "double-regex-escaped" ;
+string-expression           =   string-expression "." "unescaped" ;
+string-expression           =   string-expression "." "llvm-escaped" ;
 
 string-expression           =   array-expression "[" integer-expression "]" ;
 
@@ -58,6 +60,7 @@ array-expression            =   identifier "." "names" ;
 array-expression            =   identifier ;
 
 boolean-expression          =   string-expression "==" string-expression ;
+boolean-expression          =   integer-expression "==" integer-expression ;
 boolean-expression          =   boolean-expression "==" boolean-expression ;
 boolean-expression          =   identifier "." "is-optional" ;
 boolean-expression          =   identifier "." "is-non-empty" ;

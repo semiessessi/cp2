@@ -10,3 +10,5 @@ Win32/
 *.user
 test/*.exe
 test/test/
+projects/Debug/
+projects/Release/

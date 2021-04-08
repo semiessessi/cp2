@@ -1,0 +1,1 @@
+cbnf.llvm.exe languages/cbnf/grammar.cbnf languages/cbnf/production.cbnf languages/cbnf/expression.cbnf languages/cbnf/keywords.cbnf languages/cbnf/passes/cpp.cbnf languages/cbnf/passes/cbnf.cbnf languages/cbnf/passes/llvm.cbnf languages/cbnf/passes/vscode.cbnf -o test -vsix -vscode -cpp -cbnf 

@@ -41,6 +41,7 @@ keywords
     "quote-stripped"
     "regex-escaped"
     "double-regex-escaped"
+    "unescaped"
     "ssi-counter"
     "length"
     "length-with-null"

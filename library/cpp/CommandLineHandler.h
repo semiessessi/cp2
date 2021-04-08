@@ -64,8 +64,12 @@ public:
                     {
                         mxMappedArguments[szSwitch] = maxParsedArguments[i + 1];
                         // remove as unmapped argument
-                        (void)std::remove(maxUnmappedArguments.begin(), maxUnmappedArguments.end(), szSwitch);
-                        (void)std::remove(maxUnmappedArguments.begin(), maxUnmappedArguments.end(), maxParsedArguments[i + 1]);
+                        maxUnmappedArguments.erase(
+                            std::remove(maxUnmappedArguments.begin(), maxUnmappedArguments.end(), szSwitch),
+                            maxUnmappedArguments.end());
+                        maxUnmappedArguments.erase(
+                            std::remove(maxUnmappedArguments.begin(), maxUnmappedArguments.end(), maxParsedArguments[i + 1]),
+                            maxUnmappedArguments.end());
                         return mxMappedArguments[szSwitch];
                     }
 

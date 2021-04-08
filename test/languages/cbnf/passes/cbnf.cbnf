@@ -165,32 +165,32 @@ pass "cbnf" switch
                     if node == ";"
                     {
                         write node + "\n" ;
-                        current-prefix = tab-prefix ;
+                        current-prefix = tab-prefix + "" ; // + "" as hack to reduce parse complexity
                     }
                     else
                     {
                         if node == "{"
                         {
                             write "\n" ;
-                            current-prefix = tab-prefix ;
+                            current-prefix = tab-prefix + "" ; // + "" as hack to reduce parse complexity
                             tab-prefix = tab-prefix + "    " ;
                         }
                         if node == "}"
                         {
                             tab-prefix = tab-prefix - "    " ;
-                            current-prefix = tab-prefix ;
+                            current-prefix = tab-prefix + "" ; // + "" as hack to reduce parse complexity
                         }
                         write current-prefix + node + " " ;
                         current-prefix = "" ;
                         if node == "{"
                         {
                             write "\n" ;
-                            current-prefix = tab-prefix ;
+                            current-prefix = tab-prefix  + "" ; // + "" as hack to reduce parse complexity
                         }
                         if node == "}"
                         {
                             write "\n";
-                            current-prefix = tab-prefix ;
+                            current-prefix = tab-prefix + "" ; // + "" as hack to reduce parse complexity
                         }
                         
                     }
