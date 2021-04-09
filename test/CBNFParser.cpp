@@ -34,6 +34,10 @@ const CP2::Parser::Grammar& GetCBNFGrammar()
 		CP2::Parser::GrammarProduction("<terminal>",
 			GE( "<string>" ) ),
 		CP2::Parser::GrammarProduction("<production>",
+			GE( "language" ) + GE( "<string>" ) + GE( ";" ) ),
+		CP2::Parser::GrammarProduction("<production>",
+			GE( "language" ) + GE( "<string>" ) + GE( "<string>" ) + GE( ";" ) ),
+		CP2::Parser::GrammarProduction("<production>",
 			GE( "comment" ) + GE( "<string>" ) + GE( ";" ) ),
 		CP2::Parser::GrammarProduction("<production>",
 			GE( "comment" ) + GE( "<string>" ) + GE( "<string>" ) + GE( ";" ) ),
@@ -55,6 +59,46 @@ const CP2::Parser::Grammar& GetCBNFGrammar()
 			GE( "<identifier>" ) + GE( "?" ) ),
 		CP2::Parser::GrammarProduction("<rule-expression>",
 			GE( "<identifier>" ) + GE( "+" ) ),
+		CP2::Parser::GrammarProduction("<pass-definition>",
+			GE( "pass" ) + GE( "<string>" ) + GE( "<pass-modifiers>" ) + GE( "<pass-statements>" ) ),
+		CP2::Parser::GrammarProduction("<pass-statement>",
+			GE( "output" ) + GE( "<string-expression>" ) + GE( ";" ) ),
+		CP2::Parser::GrammarProduction("<pass-statement>",
+			GE( "write" ) + GE( "<string-expression>" ) + GE( ";" ) ),
+		CP2::Parser::GrammarProduction("<pass-statement>",
+			GE( "<identifier>" ) + GE( "=" ) + GE( "<string-expression>" ) + GE( ";" ) ),
+		CP2::Parser::GrammarProduction("<pass-statement>",
+			GE( "<identifier>" ) + GE( "=" ) + GE( "<boolean-expression>" ) + GE( ";" ) ),
+		CP2::Parser::GrammarProduction("<pass-statement>",
+			GE( "<identifier>" ) + GE( "=" ) + GE( "<integer-expression>" ) + GE( ";" ) ),
+		CP2::Parser::GrammarProduction("<pass-statement>",
+			GE( "{" ) + !GE( "<pass-statement>" ) + GE( "}" ) ),
+		CP2::Parser::GrammarProduction("<walk-statement>",
+			GE( "{" ) + !GE( "<walk-statement>" ) + GE( "}" ) ),
+		CP2::Parser::GrammarProduction("<walk-statement>",
+			GE( "<pass-statement>" ) ),
+		CP2::Parser::GrammarProduction("<pass-statement>",
+			GE( "for" ) + GE( "each" ) + GE( "<identifier>" ) + GE( "in" ) + GE( "<array-expression>" ) + GE( "<pass-statements>" ) ),
+		CP2::Parser::GrammarProduction("<pass-statement>",
+			GE( "walk" ) + GE( "<parse-expression>" ) + GE( "as" ) + GE( "<identifier>" ) + GE( "<walk-statements>" ) ),
+		CP2::Parser::GrammarProduction("<pass-statement>",
+			GE( "if" ) + GE( "<boolean-expression>" ) + GE( "<pass-statements>" ) ),
+		CP2::Parser::GrammarProduction("<pass-statement>",
+			GE( "if" ) + GE( "<boolean-expression>" ) + GE( "<pass-statements>" ) + GE( "else" ) + GE( "<pass-statements>" ) ),
+		CP2::Parser::GrammarProduction("<pass-modifier>",
+			GE( "requires" ) + GE( "<pass-names>" ) ),
+		CP2::Parser::GrammarProduction("<pass-modifier>",
+			GE( "switch" ) ),
+		CP2::Parser::GrammarProduction("<pass-modifier>",
+			GE( "switch" ) + GE( "<string>" ) ),
+		CP2::Parser::GrammarProduction("<pass-modifiers>",
+			!GE( "<pass-modifier>" ) ),
+		CP2::Parser::GrammarProduction("<pass-statements>",
+			GE( "{" ) + !GE( "<pass-statement>" ) + GE( "}" ) ),
+		CP2::Parser::GrammarProduction("<walk-statements>",
+			GE( "{" ) + !GE( "<walk-statement>" ) + GE( "}" ) ),
+		CP2::Parser::GrammarProduction("<pass-names>",
+			GE( "{" ) + !GE( "<string>" ) + GE( "}" ) ),
 		CP2::Parser::GrammarProduction("<string-expression>",
 			GE( "<string>" ) ),
 		CP2::Parser::GrammarProduction("<string-expression>",
@@ -182,7 +226,7 @@ const CP2::Parser::Grammar& GetCBNFGrammar()
 		kxCBNFGrammar.AddBlockComment( "/*", "*/" );
 		kxCBNFGrammar.AddQuote( "<string>", "\"", "\"", "\\" );
 		kxCBNFGrammar.AddLexeme( "<identifier>", "[_a-zA-Z][_\\-a-zA-Z0-9]*" );
-		kxCBNFGrammar.AddLexeme( "<integer>", "[0-9]*" );
+		kxCBNFGrammar.AddLexeme( "<integer>", "[0-9]+" );
 		kxCBNFGrammar.AddKeyword( "\"keywords\"" );
 		kxCBNFGrammar.AddKeyword( "\"identifiers\"" );
 		kxCBNFGrammar.AddKeyword( "\"operators\"" );
@@ -199,6 +243,8 @@ const CP2::Parser::Grammar& GetCBNFGrammar()
 		kxCBNFGrammar.AddKeyword( "\"switch\"" );
 		kxCBNFGrammar.AddKeyword( "\"write\"" );
 		kxCBNFGrammar.AddKeyword( "\"name\"" );
+		kxCBNFGrammar.AddKeyword( "\"if\"" );
+		kxCBNFGrammar.AddKeyword( "\"else\"" );
 		kxCBNFGrammar.AddKeyword( "\"for\"" );
 		kxCBNFGrammar.AddKeyword( "\"each\"" );
 		kxCBNFGrammar.AddKeyword( "\"in\"" );
@@ -223,6 +269,7 @@ const CP2::Parser::Grammar& GetCBNFGrammar()
 		kxCBNFGrammar.AddKeyword( "\"regex-escaped\"" );
 		kxCBNFGrammar.AddKeyword( "\"double-regex-escaped\"" );
 		kxCBNFGrammar.AddKeyword( "\"unescaped\"" );
+		kxCBNFGrammar.AddKeyword( "\"llvm-escaped\"" );
 		kxCBNFGrammar.AddKeyword( "\"ssi-counter\"" );
 		kxCBNFGrammar.AddKeyword( "\"length\"" );
 		kxCBNFGrammar.AddKeyword( "\"length-with-null\"" );

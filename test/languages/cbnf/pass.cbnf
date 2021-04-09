@@ -3,7 +3,7 @@
 pass-definition     =   "pass" string pass-modifiers pass-statements ;
 
 pass-statement      =   "output" string-expression ";" ;
-pass-statement      =   "write" string-expression ";"
+pass-statement      =   "write" string-expression ";" ;
 pass-statement      =   identifier "=" string-expression ";" ;
 pass-statement      =   identifier "=" boolean-expression ";" ;
 pass-statement      =   identifier "=" integer-expression ";" ;
@@ -13,9 +13,9 @@ walk-statement      =   "{" walk-statement* "}" ;
 walk-statement      =   pass-statement ;
 
 pass-statement      =   "for" "each" identifier "in" array-expression pass-statements ;
-pass-statement      =   "walk" parse-expression walk-statements ;
-pass-statement      =   "if" boolean-expresion pass-statements ;
-pass-statement      =   "if" boolean-expresion pass-statements "else" pass-statements ;
+pass-statement      =   "walk" parse-expression "as" identifier walk-statements ;
+pass-statement      =   "if" boolean-expression pass-statements ;
+pass-statement      =   "if" boolean-expression pass-statements "else" pass-statements ;
 
 pass-modifier       =   "requires" pass-names ;
 pass-modifier       =   "switch" ;

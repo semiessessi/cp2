@@ -310,11 +310,11 @@ pass "vscode" switch
             + "            \"name\": \"string.quotes." + string-definition.name + "." + lower-case-name + "\",\n"
             + "            \"begin\": \"" ;
 		string-values = string-values
-			+ first-quote ;
+			+ first-quote + "" ; // + "" as hack to remove ambiguity for parser.
 		string-values = string-values + "\",\n"
             + "            \"end\": \"" ;
 		string-values = string-values
-			+ second-quote ;
+			+ second-quote + "" ; // + "" as hack to remove ambiguity for parser.
 		string-values = string-values
 			+ "\",\n"
             + "            \"patterns\": [\n"
@@ -322,7 +322,7 @@ pass "vscode" switch
             + "                    \"name\": \"constant.character.escape." + string-definition.name + "." + lower-case-name + "\",\n"
             + "                    \"match\": \"" ;
 		string-values = string-values
-			+ escape ;
+			+ escape + "" ; // + "" as hack to remove ambiguity for parser.
 		string-values = string-values
 			+ "\\\\.\"\n"
             + "                }\n"
@@ -343,7 +343,7 @@ pass "vscode" switch
             + "            \"name\": \"comment.line." + lower-case-name + "\",\n"
             + "            \"begin\": \"" ;
 		line-comment-values = line-comment-values
-			+ line-comment ;
+			+ line-comment + "" ; // + "" as hack to remove ambiguity for parser.
 		line-comment-values = line-comment-values + "\",\n"
             + "            \"end\": \"\\n\",\n"
             + "            \"patterns\": []\n"

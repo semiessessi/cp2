@@ -1,6 +1,10 @@
 // Copyright (c) 2017-2019 Cranium Software
 
 // SE - TODO: refactor these to somewhere not part of productions
+production          =   "language" string ";" ; 
+production          =   "language" string string ";" ; 
+
+// SE - TODO: refactor these to somewhere not part of productions
 production          =   "comment" string ";" ;
 production          =   "comment" string string ";" ;
 

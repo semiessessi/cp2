@@ -16,6 +16,7 @@ static std::vector<CP2::Lexer::Comment> gaxComments;
 static std::vector<CP2::Lexer::Quote> gaxQuotes;
 
 static std::vector<std::vector<CP2::Token>> gaxLexerResults;
+static std::vector<CP2::ASTNode*> gaxParserResults;
 static std::vector<CP2::Parser::GrammarProduction> gaxProductions;
 static std::vector<CP2::Parser::GrammarExpression> gaxWorkingExpressions;
 static CP2::Parser::Grammar gxGrammar;
@@ -100,6 +101,7 @@ EXPORT int __cdecl clLex(const char* const szFilename)
 	const std::vector< CP2::Token > xTokenList =
 		CP2::Lexer::Lex(szFilename, gaxRules, gaxComments, gaxQuotes);
 	gaxLexerResults.push_back(xTokenList);
+	gaxParserResults.push_back(nullptr);
 	return static_cast< int >( gaxLexerResults.size() ) - 1;
 }
 
@@ -149,5 +151,15 @@ EXPORT int __cdecl clParseCreateProduction(const char* const szName)
 EXPORT int __cdecl clParseCreateGrammar(const char* const szName)
 {
 	gxGrammar = CP2::Parser::Grammar(gaxProductions);
+	gxGrammar.SetName(szName);
+	gxGrammar.SetShortName(szName);
+	return 0;
+}
+
+EXPORT int __cdecl clParseLex(const int iLex)
+{
+	CP2::ASTNode* const pxParse = CP2::Parser::Parse(gaxLexerResults[iLex], gxGrammar);
+	gaxParserResults.push_back(pxParse);
+
 	return 0;
 }

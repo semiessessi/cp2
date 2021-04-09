@@ -21,6 +21,8 @@ pass "llvm" switch
     write "declare ccc i32 @clLex( i8* nocapture ) nounwind\n" ;
     write "declare ccc i32 @clParseAppendExpression( i8* nocapture, i8, i8, i8 ) nounwind\n" ;
     write "declare ccc i32 @clParseCreateProduction( i8* nocapture ) nounwind\n" ;
+    write "declare ccc i32 @clParseCreateGrammar( i8* nocapture ) nounwind\n" ;
+    write "declare ccc i32 @clParseLex( i32 ) nounwind\n" ;
 
     write "\n" ;
 
@@ -31,7 +33,7 @@ pass "llvm" switch
     write " x i8] c\"" + title + "\\00\"\n" ;
     write "@.message2 = private constant [67 x i8] c\"Copyright (c) 2017-2021 Cranium Software Ltd. All rights reserved.\\00\"\n" ;
     write "@.message3 = private constant [16 x i8] c\"Lexing files...\\00\"\n" ;
-    write "@.message4 = private constant [7 x i8] c\"%s...\\0A\\00\"\n" ;
+    write "@.message4 = private constant [17 x i8] c\"Parsing files...\\00\"\n" ;
     write "@.error1001 = private constant [43 x i8] c\"cbnf: error 1001: No source files provided\\00\"\n" ;
     write "@.error1002 = private constant [42 x i8] c\"cbnf: error 1002: No output path provided\\00\"\n" ;
     write "@.outputSwitchShort = private constant [2 x i8] c\"o\\00\"\n" ;
@@ -65,8 +67,9 @@ pass "llvm" switch
     {
         quoteId = quoteCounter.to-string;
         write "@.quote" + quoteId + " = private constant [" ;
-        write value.name.length-with-null ;
-        write " x i8] c\"" + value.name + "\\00\"\n" ;
+        quoteName = "<" + value.name + ">" ;
+        write quoteName.length-with-null ;
+        write " x i8] c\"" + quoteName + "\\00\"\n" ;
         quoteCounter = quoteCounter + 1 ;
 
         for each part in value
@@ -294,7 +297,8 @@ pass "llvm" switch
         quoteId = quoteCounter.to-string;
         write "\t%" + ssi-counter + " = call i32 @clLexerQuote(" ;
         write "i8* getelementptr inbounds ([" ;
-        write value.name.length-with-null ;
+        quoteName = "<" + value.name + ">" ;
+        write quoteName.length-with-null ;
         write " x i8]* @.quote" + quoteId + ", i32 0, i32 0), ";
         rest = "" ;
         quoteCounter = quoteCounter + 1 ;
@@ -425,7 +429,7 @@ pass "llvm" switch
     write "lexDone:\n" ;
 
     // setup parser
-        productionCounter = 1 ;
+    productionCounter = 1 ;
     for each production in language.productions
     {
         productionName = production.name;
@@ -478,15 +482,54 @@ pass "llvm" switch
     grammarNameParameter = grammarNameParameter + " x i8]* @.languageName, i32 0, i32 0)" ;
     write "\t%" + ssi-counter + " = call i32 @clParseCreateGrammar(" + grammarNameParameter + ")\n" ;
 
+    // get it to parse all the lexer results
+    write "\t%" + ssi-counter + " = call i32 @puts(i8* getelementptr inbounds ([17 x i8]* @.message4, i32 0, i32 0))\n" ;
+
+    // do a phi (!)
+    // this is necessary for the loop variable to increment but start at zero
+    // whilst respecting SSA
+    parseCounter = ssi-counter ;
+    nextCounter = ssi-counter ;
+    write "\tbr label %parseHeader\n" ;
+    write "parseHeader:\n" ;
+    write "\tbr label %parseNextFile\n" ;
+    write "parseNextFile:\n" ;
+    write "\t%" + parseCounter + " = phi i32 [0, %parseHeader], [%" + nextCounter + ", %parseNextFile]\n" ;
+    write "\t%" + nextCounter + " = add i32 %" + parseCounter + ", 1\n" ;
+
+    parseFilename = ssi-counter;
+    write "\t%" + parseFilename + " = call i8* @clGetFile(i32 %" + parseCounter + ")\n" ;
+    write "\t%" + ssi-counter + " = call i32 @puts(i8* %" + parseFilename + ")\n" ;
+    write "\t%" + ssi-counter + " = call i32 @clParseLex(i32 %" + parseCounter + ")\n" ;
+
+    loopCheck = ssi-counter;
+    write "\t%" + loopCheck + " = icmp slt i32 %" + nextCounter + ", %" + fileCount + "\n" ;
+    write "\tbr i1 %" + loopCheck + ", label %parseNextFile, label %parseDone\n" ;
+    
+    write "parseDone:\n" ;
+
     // check for each pass having it's switch set.
     for each compiler-pass in language.passes
     {
-        write "\t%" + ssi-counter + " = call i32 @clHasSwitch(i8* getelementptr inbounds ([" ;
+        hasSwitchId = ssi-counter ;
+        switchCheckId = ssi-counter ;
+        write "\t%" + hasSwitchId + " = call i32 @clHasSwitch(i8* getelementptr inbounds ([" ;
         write compiler-pass.name.length-with-null ;
         write " x i8]* @.pass_" + compiler-pass.name + ", i32 0, i32 0))\n" ;
+        write "\t%" + switchCheckId + " = icmp ne i32 %" + hasSwitchId + ", 0\n" ;
+        write "\tbr i1 %" + switchCheckId
+            + ", label %doPass" + compiler-pass.name
+            + ", label %skipPass" +  compiler-pass.name + "\n" ;
+        
+        write "doPass" +  compiler-pass.name + ":\n" ;
+        // do the pass
+
+
+
+        write "skipPass" +  compiler-pass.name + ":\n" ;
     }
 
     write "\tret i32 0\n" ;
-    write "}\n";
+    write "}\n" ;
 
 }
